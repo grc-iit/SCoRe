@@ -1,0 +1,11 @@
+/home/neeraj/DarkSync/Projects/CLionProjects/SCoRe/build/CMakeFiles/rebuild_cache.dir
+/home/neeraj/DarkSync/Projects/CLionProjects/SCoRe/build/CMakeFiles/edit_cache.dir
+/home/neeraj/DarkSync/Projects/CLionProjects/SCoRe/build/CMakeFiles/score.dir
+/home/neeraj/DarkSync/Projects/CLionProjects/SCoRe/build/CMakeFiles/json_test.dir
+/home/neeraj/DarkSync/Projects/CLionProjects/SCoRe/build/CMakeFiles/main.dir
+/home/neeraj/DarkSync/Projects/CLionProjects/SCoRe/build/CMakeFiles/redis_test.dir
+/home/neeraj/DarkSync/Projects/CLionProjects/SCoRe/build/CMakeFiles/SCoRe.dir
+/home/neeraj/DarkSync/Projects/CLionProjects/SCoRe/build/CMakeFiles/queue_test.dir
+/home/neeraj/DarkSync/Projects/CLionProjects/SCoRe/build/CMakeFiles/score_server.dir
+/home/neeraj/DarkSync/Projects/CLionProjects/SCoRe/build/CMakeFiles/bench.dir
+/home/neeraj/DarkSync/Projects/CLionProjects/SCoRe/build/CMakeFiles/rtqn_test.dir
