@@ -2,7 +2,7 @@
 // Created by neeraj on 4/26/20.
 //
 
-#include "redis.h"
+#include "common/queue/redis.h"
 
 redis_client::redis_client(std::string url, std::string topic) {
 	// constructor
