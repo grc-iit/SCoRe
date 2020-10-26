@@ -6,8 +6,8 @@
 #define SCORE_QUEUE_KEY_H
 
 #include <cstdint>
-#include "queue_type.h"
-#include "../../../old/include/enum.h"
+#include "common/queue/queue_type.h"
+#include "common/enumerations.h"
 
 
 class QueueKey {

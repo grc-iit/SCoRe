@@ -2,7 +2,7 @@
 // Created by neeraj on 4/26/20.
 //
 
-#include "queue_type.h"
+#include "common/queue/queue_type.h"
 
 QueueType::QueueType(const QueueType &type) {
 	this->value = type.value;
