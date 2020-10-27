@@ -2,7 +2,7 @@
 // Created by neeraj on 4/27/20.
 //
 
-#include "common/queue/queue_config.h"
+#include "queue_config.h"
 
 
 QueueConfig::QueueConfig(QueueKey key, std::string url, std::string topic, Mode mode, double_function hook) {
