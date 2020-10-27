@@ -2,7 +2,7 @@
 // Created by neeraj on 4/17/20.
 //
 
-#include "../include/s_queues.h"
+#include <score/common/queue/Queue.h>
 #include <iostream>
 #include <unistd.h>
 //#include "debug.h"
@@ -12,81 +12,30 @@ double cap(){
 }
 
 int main(){
-	d_dict val;
-//	AutoTrace val_trace = AutoTrace("Queue Value",val);
-	unsigned int microseconds = 1000;
-	val.insert(std::make_pair <std::string ,std::string> ("this time", "we we will rock"));
-	auto url = "tcp://127.0.0.1";
-	auto topic1 = "q_test1";
-	auto topic2 = "q_test2";
 
-	QueueKey key(2, 3, QueueType(QueueValue::NODE_CAPACITY, 0.2), Mode::SERVER);
-	QueueConfig config(key, url, topic1, Mode::SERVER, cap);
-	mon_queue qu1(config);
+    auto url = "tcp://127.0.0.1:6379";
+    auto topic1 = "q_test1";
 
-//	qu1.redis->subscribe_all();
-//	std::cout << "IDS " << qu1.lat_sub_id<< ' ' << qu1.lat_pub_id << std::endl;
+    Queue queue(url, topic1);
 
-	QueueKey key2(2, 3, QueueType(QueueValue::TIER_CAPACITY, 0.2), Mode::SERVER);
-	QueueConfig config2(key, url, topic2, Mode::SERVER, cap);
-	capacity_queue qu2(config2);
+    d_dict val1;
+    d_dict val2;
+    d_dict val3;
+    val1.insert(std::make_pair <std::string ,std::string> ("1", "test1"));
+    val2.insert(std::make_pair <std::string ,std::string> ("2", "test2"));
+    val2.insert(std::make_pair <std::string ,std::string> ("3", "test3"));
+    val3.insert(std::make_pair <std::string ,std::string> ("4", "test4"));
+    val3.insert(std::make_pair <std::string ,std::string> ("5", "test5"));
+    val3.insert(std::make_pair <std::string ,std::string> ("6", "test6"));
 
-//	AutoTrace queue_trace = AutoTrace("Queue 1",qu1);
+    queue.publish(val1);
+    queue.publish(val2);
+    item_stream res1 = queue.subscribe();
 
-	qu1.populate();
-	qu1.subscribe();
-//	std::cout<<"populated\n";
-//	std::cout << "IDS " << qu1.lat_sub_id<< ' ' << qu1.lat_pub_id << std::endl;
-//
-//	std::cout << ++te << " FIRST " << qu1.lat_pub_id << std::endl;
-//
-//	std::cout<< "reading\n";
-/*	for (auto i: qu1.subscribe()){
+    queue.publish(val3);
+    item_stream res2 = queue.subscribe();
 
-		std::cout << i.first << ' ';
-		for (auto j: i.second ){
-			std::cout << j.first << ' ' << j.second << std::endl;
-		}
-	}*/
-
-//	std::cout<<te << " and here we go\n" ;
-	usleep(microseconds);
-//	std::cout << "IDS " << qu1.lat_sub_id<< ' ' << qu1.lat_pub_id << std::endl;
-
-	qu1.populate();
-//	std::cout<<"populated\n";
-
-	te++;
-//	std::cout << "ReADINF";
-	for (auto i: qu1.subscribe()){
-
-		std::cout << i.first << ' ' ;
-		for (auto j: i.second ){
-			std::cout << j.first << ' ' << j.second << std::endl;
-		}
-	}
-
-	te++;
-
-//	std::cout<<te << "ANNNNNND here we go\n" ;
-//	usleep(microseconds);
-//
-//	std::cout<<"NOT populated\n";
-//
-	te++;
-	std::cout << "ReADING\n";
-
-	std::cout << "IDS " << qu1.lat_sub_id<< ' ' << qu1.lat_pub_id << std::endl;
-
-/*
-	for (auto i: qu1.subscribe()){
-
-		std::cout << i.first << ' ' ;
-		for (auto j: i.second ){
-//			std::cout << j.first << ' ' << j.second << std::endl;
-		}
-	}
-*/
+    item_stream res3 = queue.subscribe();
 
 	return 0;
 }
