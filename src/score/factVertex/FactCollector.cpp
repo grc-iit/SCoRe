@@ -20,6 +20,8 @@ void FactCollector::Run(std::future<void> futureObj, common::daemon<FactCollecto
 void FactCollector::RunInternal(std::future<void> futureObj) {
     while(futureObj.wait_for(std::chrono::milliseconds(1000)) == std::future_status::timeout) {
         // Need to push onto queue?
-        MemUsed();
+        std::unordered_map<double, double> my_vals;
+        my_vals.insert(MemUsed());
+        statQueue->publish(my_vals);
     }
 }
