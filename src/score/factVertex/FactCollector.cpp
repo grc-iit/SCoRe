@@ -3,3 +3,11 @@
 //
 
 #include "../../../include/score/factVertex/FactCollector.h"
+
+std::pair<double, double> FactCollector::MemUsed() {
+    FILE *pipe = popen("free -m | awk '$1==\"Mem:\" {print $4/$2*100}'", "r");
+    char buf[128];
+    fgets(buf, sizeof(buf), pipe);
+    pclose(pipe);
+    return std::make_pair(time->endTime(), atof(buf));
+}
