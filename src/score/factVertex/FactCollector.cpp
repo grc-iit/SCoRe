@@ -11,3 +11,15 @@ std::pair<double, double> FactCollector::MemUsed() {
     pclose(pipe);
     return std::make_pair(time->endTime(), atof(buf));
 }
+
+void FactCollector::Run(std::future<void> futureObj, common::daemon<FactCollector> *obj) {
+    daemon = obj;
+    RunInternal(std::move(futureObj));
+}
+
+void FactCollector::RunInternal(std::future<void> futureObj) {
+    while(futureObj.wait_for(std::chrono::milliseconds(1000)) == std::future_status::timeout) {
+        // Need to push onto queue?
+        MemUsed();
+    }
+}
