@@ -5,7 +5,7 @@
 #ifndef SCORE_REVERSE_TRIE_QUEUE_NODE_CONFIG_H
 #define SCORE_REVERSE_TRIE_QUEUE_NODE_CONFIG_H
 #include "reverse_trie_queue_node_key.h"
-#include "../queue_config.h"
+#include "../../include/common/queue/queue_config.h"
 
 class ReverseTrieQueueNodeConfig {
 
