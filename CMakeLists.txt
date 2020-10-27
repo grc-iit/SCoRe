@@ -13,10 +13,7 @@ set(LIBS -lpthread -lmpi -L${CMAKE_BINARY_DIR}/scs_io_common -lscs_io_common)
 set(SCORE_COMMON include/common/data_structure.h include/common/enumerations.h
                  include/common/queue/queue.h include/common/queue/queue_config.h
                  include/common/queue/queue_type.h include/common/queue/queue_key.h
-                 include/common/queue/redis.h
-                 src/common/queue/queue.cpp src/common/queue/queue_config.cpp
-                 src/common/queue/queue_type.cpp src/common/queue/queue_key.cpp
-                 src/common/queue/redis.cpp)
+                 include/common/queue/redis.h)
 
 set(FACT_INCLUDE include/score/factVertex/FactCollector.h include/score/factVertex/FactCollector.h
                  include/score/factVertex/Pythio.h)

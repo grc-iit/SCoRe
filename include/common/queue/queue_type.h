@@ -7,7 +7,7 @@
 #define SCORE_QUEUE_TYPE_H
 
 #include <cstdint>
-#include "common/enumerations.h"
+#include "../../../old/include/enum.h"
 
 
 class QueueType  {

@@ -2,7 +2,7 @@
 // Created by neeraj on 4/26/20.
 //
 
-#include "common/queue/queue_key.h"
+#include "queue_key.h"
 // why the redline?
 bool QueueKey::operator==(QueueKey obj) const {
 	return obj.type_ == this->type_ && obj.node_index_ == this->node_index_ && obj.mode_ == this->mode_ &&

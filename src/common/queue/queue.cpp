@@ -14,8 +14,8 @@
  * */
 
 
-#include "common/queue/queue_config.h"
-#include "common/queue/queue.h"
+#include "queue_config.h"
+#include "queue.h"
 
 //#include "timer.h"
 

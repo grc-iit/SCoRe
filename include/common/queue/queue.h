@@ -3,14 +3,13 @@
 #ifndef SCORE_QUEUE_H
 #define SCORE_QUEUE_H
 
-#include "common/queue/queue_config.h"
-#include "common/queue/queue_key.h"
-#include "common/queue/redis.h"
+#include "queue_config.h"
+#include "../../../old/include/enum.h"
+#include "queue_key.h"
+#include "redis.h"
 #include <ctime>
 #include <string>
 #include <unordered_map>
-#include <common/enumerations.h>
-#include <memory>
 
 #ifdef BENCH_TIMER
 #include "timer.h"
