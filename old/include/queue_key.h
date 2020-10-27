@@ -7,7 +7,7 @@
 
 #include <cstdint>
 #include "queue_type.h"
-#include "../../../old/include/enum.h"
+#include "enum.h"
 
 
 class QueueKey {

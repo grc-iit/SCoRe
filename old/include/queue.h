@@ -4,7 +4,7 @@
 #define SCORE_QUEUE_H
 
 #include "queue_config.h"
-#include "../../../old/include/enum.h"
+#include "enum.h"
 #include "queue_key.h"
 #include "redis.h"
 #include <ctime>

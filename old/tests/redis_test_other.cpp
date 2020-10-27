@@ -5,7 +5,7 @@
 //
 // Created by neeraj on 4/17/20.
 //
-#include "../../../include/common/queue/redis.h"
+#include "../include/redis.h"
 #include<iostream>
 //#include "src/reverse_triequeue.h"
 

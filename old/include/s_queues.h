@@ -3,7 +3,7 @@
 #define SCORE_S_QUEUES_H
 
 
-#include"../../include/common/queue/queue.h"
+#include"queue.h"
 #include"enum.h"
 
 
