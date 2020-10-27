@@ -5,7 +5,7 @@
 #ifndef SCORE_QUEUE_CONFIG_H
 #define SCORE_QUEUE_CONFIG_H
 
-#include "common/queue/queue_key.h"
+#include "queue_key.h"
 #include <string>
 
 using double_function = double (*)();
