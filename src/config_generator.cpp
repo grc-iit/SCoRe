@@ -31,7 +31,6 @@ conf::map_to_ReverseTriequeueNodeConfig(int me, std::unordered_map<int, conf::js
 	conf::json rtq_node = index_to_json_map[me];
 	std::string hostname = strip(rtq_node["hostname"]);
 
-	std::vector<int> children = rtq_node["children"];
 	std::vector<QueueConfig> queue_configs;
 	auto key = json_to_ReverseTriequeueNodeKey(rtq_node["key"]);
 
@@ -42,13 +41,20 @@ conf::map_to_ReverseTriequeueNodeConfig(int me, std::unordered_map<int, conf::js
 
 	std::vector<std::shared_ptr<ReverseTrieQueueNodeConfig>> children_configs;
 	std::vector<int> rtq_children_vec = rtq_node["children"];
+    std::vector<int> children_topics = rtq_node["children_queues"];
 
-	for (auto child_iter: rtq_children_vec) {
-		auto temp_node_conf = map_to_ReverseTriequeueNodeConfig(child_iter, index_to_json_map);
-		children_configs.push_back(std::make_shared<ReverseTrieQueueNodeConfig>(temp_node_conf));
+    std::vector<QueueConfig> child_queue_configs;
+    for (size_t index = 0; index < rtq_children_vec.size(); ++index){
+        int children_id = rtq_children_vec[index];
+        int queue_id = children_topics[index];
 
-	}
-	auto t = ReverseTrieQueueNodeConfig(key, hostname, queue_configs, children_configs, key.node_index_);
+        conf::json rtq_node_children = index_to_json_map[children_id];
+        std::vector<json> children_queue_confs = rtq_node_children["queues"];
+        json children_queue_conf = children_queue_confs[queue_id];
+        QueueConfig queueConfig = json_to_QueueConfig(children_queue_conf);
+        child_queue_configs.push_back(std::move(queueConfig));
+    }
+	auto t = ReverseTrieQueueNodeConfig(key, hostname, queue_configs, child_queue_configs, key.node_index_);
 	return t;
 }
 
@@ -72,13 +78,17 @@ QueueConfig conf::json_to_QueueConfig(conf::json queue_config) {
 	auto topic = strip(queue_config["topic"]);
 	auto url = strip(queue_config["url"]);
 
+    json pyhtio_key_json = queue_config["pythio"];
+    Model model = pyhtio_key_json["model"];
+    std::string weights = pyhtio_key_json["weights"];
+
 	json queue_key_json = queue_config["key"];
 	QueueKey queue_key = json_to_QueueKey(queue_key_json);
 
 	std::string mode_ = strip(queue_key_json["mode"]);
 	Mode mode = mode_.compare("SERVER") ? Mode::SERVER : Mode::CLIENT;
 
-	return QueueConfig(queue_key, url, topic, mode, hook);
+	return QueueConfig(queue_key, url, topic, mode, hook, model, weights);
 
 }
 

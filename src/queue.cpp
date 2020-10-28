@@ -20,46 +20,12 @@
 //#include "timer.h"
 
 
-queue::queue(QueueConfig config) {
-	// initializes queue based on config
-	// config sets the key 
-	if (this->key.mode_ == Mode::SERVER) { // clean up topic_ logic
-	}
-	redis = std::make_shared<redis_client>(config.url_, config.topic_);
-	key = config.key_;
-	lat_pub_id = "1"; // just an initial value
-	lat_sub_id = "-"; // - implies from the dawn of time.
-	mon_hook = config.hook_;
-
-}
-
-queue::queue(const queue &pQueue) {
-	// copy constructor
-	key = pQueue.key;
-	lat_pub_id = pQueue.lat_pub_id;
-	lat_sub_id = pQueue.lat_sub_id;
-	lat_published = pQueue.lat_published;
-	mon_hook = pQueue.mon_hook;
-
-}
-
-queue::queue(QueueKey kei, std::string url, std::string topic) {
-	// copy constructor
-	redis = std::make_shared<redis_client>(url, topic);
-	key = kei;
-	lat_pub_id = "";
-	lat_sub_id = "";
-	mon_hook = NULL;
-
-}
-
 std::string queue::publish(d_dict value) {
-	// publishs a value to the queue
-	lat_published = value;
-	lat_pub_id = redis->publish(value);
-//	myvector.append(value);
-//    myvector.erase (myvector.begin()+(myvector.length()-config.window_size));
-	return lat_pub_id;
+    lat_pub_id_ = redis_->publish(value);
+
+	lat_published_.push_back(value);
+    lat_published_.erase (lat_published_.begin()+(lat_published_.size()-window_size));
+	return lat_pub_id_;
 }
 
 item_stream queue::subscribe() {
@@ -68,8 +34,8 @@ item_stream queue::subscribe() {
 	Timer sub_timer;
 	sub_timer.startTime();
 #endif
-	item_stream result = redis->subscribe_all(lat_sub_id);
-	lat_sub_id = result.back().first;
+	item_stream result = redis_->subscribe_all(lat_sub_id_);
+	lat_sub_id_ = result.back().first;
 #ifdef BENCH_TIMER
 	sub_timer.endTimeWithPrint("[Queue][Subscribe()]");
 #endif
@@ -77,7 +43,7 @@ item_stream queue::subscribe() {
 }
 
 d_dict queue::get_latest() {
-	return lat_published;
+	return lat_published_.back();
 }
 
 bool queue::is_synced(std::vector<QM_type> children) {
@@ -85,7 +51,7 @@ bool queue::is_synced(std::vector<QM_type> children) {
 	bool next = false;
 	for (auto i : children) {
 		for (auto j : i)
-			next |= j.second->redis->sub_sync;   // <<---- this name isnt intuitive
+			next |= j.second->redis_->sub_sync;   // <<---- this name isnt intuitive
 
 		if (next)
 			break;
@@ -100,13 +66,29 @@ std::string queue::populate() {
 	pop_timer.startTime();
 #endif
 
-	d_dict val({{std::to_string(std::time(nullptr)), std::to_string(mon_hook())}});
+	d_dict val({{std::to_string(std::time(nullptr)), std::to_string(mon_hook_())}});
 
 #ifdef BENCH_TIMER
 	pop_timer.endTimeWithPrint("[Queue][Populate()->mon_hook]");
 #endif
 
 	return publish(val);
+}
+
+std::string queue::populate_pythio() {
+    // populates a value from the mon hook function. Fact collector
+#ifdef BENCH_TIMER
+    Timer pop_timer;
+	pop_timer.startTime();
+#endif
+
+    d_dict val({{std::to_string(std::time(nullptr)), std::to_string(pythio_.Predict())}});
+
+#ifdef BENCH_TIMER
+    pop_timer.endTimeWithPrint("[Queue][Populate()->mon_hook]");
+#endif
+
+    return publish(val);
 }
 
 //std::string queue::populate_pythio() {
@@ -136,19 +118,18 @@ std::string queue::populate(std::vector<std::unordered_map<QueueKey, std::shared
 #endif
 	d_dict val;
 	double second = 0;
-	auto id = lat_pub_id;
+	auto id = lat_pub_id_;
 	do {
 		for (auto i: child_queue_maps) {
 			for (auto j : i) {
 				// << TODO Do optional type_ check  HERE
-				auto k = j.second->redis->subscribe_next();
+				auto k = j.second->redis_->subscribe_next();
 				if (k) {
 					for (auto l : k->second) {
 						second += std::stod(l.second);
 
 					}
 					val.insert({{std::to_string(std::time(nullptr)), std::to_string(second)}});
-					lat_published = val;
 
 					#ifdef BENCH_TIMER
 						Timer pub_timer;
@@ -160,7 +141,7 @@ std::string queue::populate(std::vector<std::unordered_map<QueueKey, std::shared
 					#ifdef BENCH_TIMER
 						pub_timer.endTimeWithPrint("[GenericQueue][Populate(vector)->Publish]");
 					#endif
-					lat_pub_id = id;
+					lat_pub_id_ = id;
 
 				} else {
 					// what to do if the val is not there?

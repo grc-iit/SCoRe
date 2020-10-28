@@ -26,7 +26,7 @@ public:
 	ReverseTrieQueueNodeKey key;
 	QM_type queue_map;
 	std::shared_ptr<ReverseTrieQueueNode> parent;
-	std::vector<std::shared_ptr<ReverseTrieQueueNode>> children;
+	std::vector<QueueConfig> children;
 	std::vector<std::thread> pool;
 	std::vector< std::promise<void> > promises;
 	std::vector< std::future<void>> futures_;
@@ -39,7 +39,7 @@ public:
 	ReverseTrieQueueNode(int argc, char* argv[]);
 	ReverseTrieQueueNode(ReverseTrieQueueNodeConfig conf, Mode mode = Mode::CLIENT);
 	std::shared_ptr<queue> get(QueueKey key);
-	void add_child(std::shared_ptr<ReverseTrieQueueNode> child);
+	void add_child(QueueConfig child);
 	[[maybe_unused]] int del(QueueKey key);
 	void single_loop(std::pair<QueueKey, std::shared_ptr<queue>> obj, std::future<void> futureObj);
 	void async_loop();

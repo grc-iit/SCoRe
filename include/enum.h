@@ -1,4 +1,3 @@
-#pragma once
 #ifndef SCORE_ENUM_H
 #define SCORE_ENUM_H
 
@@ -33,5 +32,11 @@ enum struct Mode {
 	SERVER,
 	CLIENT
 };
+enum struct Model {
+    LINEAR,
+    QUAD,
+    OTHER
+};
+
 
 #endif

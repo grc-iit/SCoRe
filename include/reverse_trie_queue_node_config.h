@@ -13,14 +13,14 @@ public:
 	ReverseTrieQueueNodeKey key_;
 	int me_;
 	std::vector<QueueConfig> QueueConfigs_;
-	std::vector<std::shared_ptr<ReverseTrieQueueNodeConfig>> children_;
+    std::vector<QueueConfig> children_;
 	std::string hostname_;
 
 	ReverseTrieQueueNodeConfig(ReverseTrieQueueNodeKey key, std::string hostname , std::vector<QueueConfig> configs,
-			std::vector<std::shared_ptr<ReverseTrieQueueNodeConfig>> children, int me);
-	ReverseTrieQueueNodeConfig();
+			std::vector<QueueConfig> children, int me): key_(key), me_(me), QueueConfigs_(children),
+			children_(configs), hostname_(hostname){};
+	ReverseTrieQueueNodeConfig()=default;
 };
-
 
 
 #endif //SCORE_REVERSE_TRIE_QUEUE_NODE_CONFIG_H
