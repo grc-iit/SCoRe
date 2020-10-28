@@ -91,6 +91,52 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
 			if(j.first.tier_index_ == this->key.level_ )child_queue.push_back({j});
 	}
 	// infinite loop till kill comes thru
+	uv_loop_t *loop;
+	loop = uv_default_loop();
+	uv_timer_t timer_req;
+	uv_timer_init(loop, &timer_req);
+	uv_timer_cb populate_cb = [&obj, &child_queue](uv_timer_t *handle){
+    #ifdef BENCH_TIMER
+        Timer single_loop_timer;
+        single_loop_timer.startTime();
+    #endif
+	    if (obj.second->mon_hook == NULL) {
+            obj.second->populate(child_queue);
+        }
+	    else {
+	        obj.second->populate();
+	    }
+	    int64_t new_repeat = 1000;
+	    uv_timer_set_repeat(handle, new_repeat);
+    #ifdef BENCH_TIMER
+        // some ugly formatting here [RTQN][single loop(pair)]2[0.000142] < -- the 2 is off see?
+        std::string prt_str = "[RTQN][single loop(pair)]" + std::to_string(obj.second->mon_hook == NULL? -1 : child_queue.size());
+	    single_loop_timer.endTimeWithPrint(prt_str.c_str());
+    #endif
+	};
+    uv_timer_cb populate_pythio_cb = [&obj, &child_queue](uv_timer_t *handle){
+#ifdef BENCH_TIMER
+        Timer single_loop_timer;
+        single_loop_timer.startTime();
+#endif
+        if (obj.second->mon_hook == NULL) {
+            obj.second->populate_pythio(child_queue);
+        }
+        else {
+            obj.second->populate_pythio();
+        }
+        int64_t new_repeat = 1000;
+        uv_timer_set_repeat(handle, new_repeat);
+#ifdef BENCH_TIMER
+        // some ugly formatting here [RTQN][single loop(pair)]2[0.000142] < -- the 2 is off see?
+        std::string prt_str = "[RTQN][single loop(pair)]" + std::to_string(obj.second->mon_hook == NULL? -1 : child_queue.size());
+	    single_loop_timer.endTimeWithPrint(prt_str.c_str());
+#endif
+    };
+    uv_timer_start(&timer_req, populate_cb, 0, std::chrono::milliseconds(obj.first.type_.interval));
+    uv_timer_start(&timer_req, populate_pythio_cb, 0, std::chrono::milliseconds(1000));
+    uv_run(loop, UV_RUN_DEFAULT);
+    /*
 	while (futureObj.wait_for(std::chrono::microseconds(obj.first.type_.interval)) == std::future_status::timeout) {
 	#ifdef BENCH_TIMER
 			Timer single_loop_timer;
@@ -109,6 +155,7 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
 			single_loop_timer.endTimeWithPrint(prt_str.c_str());
 	#endif
 	}  // while loop
+     */
 }
 
 std::vector<std::shared_ptr<ReverseTrieQueueNode>>

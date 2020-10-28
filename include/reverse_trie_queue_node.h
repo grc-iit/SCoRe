@@ -14,6 +14,7 @@
 #include "reverse_trie_queue_node_key.h"
 #include "config_generator.h"
 #include "reverse_trie_queue_node_config.h"
+#include <uv.h>
 
 #ifdef BENCH_TIMER
 #include "timer.h"
