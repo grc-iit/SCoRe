@@ -5,7 +5,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 #include_directories(scs_io_common/include)
 include_directories(include)
-set(LIBS -lpthread -lrpc  -lhiredis -lredis++ -lmpi)
+set(LIBS -lpthread -lrpc  -lhiredis -lredis++ -lmpi -luv)
 #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D BENCH_TIMER")
 set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
 

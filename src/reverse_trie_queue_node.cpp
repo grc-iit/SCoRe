@@ -95,11 +95,14 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
 	loop = uv_default_loop();
 	uv_timer_t timer_req;
 	uv_timer_init(loop, &timer_req);
-	uv_timer_cb populate_cb = [&obj, &child_queue](uv_timer_t *handle){
+	uv_timer_cb populate_cb = [](uv_timer_t *handle){
     #ifdef BENCH_TIMER
         Timer single_loop_timer;
         single_loop_timer.startTime();
     #endif
+         auto data = (std::pair<std::pair<QueueKey, std::shared_ptr<queue>>,  std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>>> *)handle->data;
+         auto obj = data->first;
+         auto child_queue = data->second;
 	    if (obj.second->mon_hook == NULL) {
             obj.second->populate(child_queue);
         }
@@ -114,11 +117,14 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
 	    single_loop_timer.endTimeWithPrint(prt_str.c_str());
     #endif
 	};
-    uv_timer_cb populate_pythio_cb = [&obj, &child_queue](uv_timer_t *handle){
+    uv_timer_cb populate_pythio_cb = [](uv_timer_t *handle){
 #ifdef BENCH_TIMER
         Timer single_loop_timer;
         single_loop_timer.startTime();
 #endif
+        auto data = (std::pair<std::pair<QueueKey, std::shared_ptr<queue>>,  std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>>> *)handle->data;
+        auto obj = data->first;
+        auto child_queue = data->second;
         if (obj.second->mon_hook == NULL) {
             obj.second->populate_pythio(child_queue);
         }
@@ -126,6 +132,7 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
             obj.second->populate_pythio();
         }
         int64_t new_repeat = 1000;
+        // How much reduce or increase interval to get expected rate?
         uv_timer_set_repeat(handle, new_repeat);
 #ifdef BENCH_TIMER
         // some ugly formatting here [RTQN][single loop(pair)]2[0.000142] < -- the 2 is off see?
@@ -133,29 +140,31 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
 	    single_loop_timer.endTimeWithPrint(prt_str.c_str());
 #endif
     };
-    uv_timer_start(&timer_req, populate_cb, 0, std::chrono::milliseconds(obj.first.type_.interval));
-    uv_timer_start(&timer_req, populate_pythio_cb, 0, std::chrono::milliseconds(1000));
+    static std::pair<std::pair<QueueKey, std::shared_ptr<queue>>,  std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>>> dat = std::make_pair(obj, child_queue);
+    timer_req.data = &dat;
+    uv_timer_start(&timer_req, populate_cb, 0, std::chrono::milliseconds(obj.first.type_.interval).count());
+    uv_timer_start(&timer_req, populate_pythio_cb, 0, std::chrono::milliseconds(1000).count());
     uv_run(loop, UV_RUN_DEFAULT);
-    /*
-	while (futureObj.wait_for(std::chrono::microseconds(obj.first.type_.interval)) == std::future_status::timeout) {
-	#ifdef BENCH_TIMER
-			Timer single_loop_timer;
+	/* Single thread idea: Outer loop monitoring, inner loop pythio, monitor time defined as time of n pythios. */
+	/*
+    while (futureObj.wait_for(std::chrono::microseconds(obj.first.type_.interval)) == std::future_status::timeout) {
+#ifdef BENCH_TIMER
+        Timer single_loop_timer;
 			single_loop_timer.startTime();
-	#endif
-
-		if (obj.second->mon_hook == NULL) {
-			obj.second->populate(child_queue);
-		} else {
-			obj.second->populate();
-		}
-	// add logic to change the interval of lookup
-	#ifdef BENCH_TIMER
-			// some ugly formatting here [RTQN][single loop(pair)]2[0.000142] < -- the 2 is off see?
+#endif
+        if (obj.second->mon_hook == NULL) {
+            obj.second->populate(child_queue);
+        } else {
+            obj.second->populate();
+        }
+        // add logic to change the interval of lookup
+#ifdef BENCH_TIMER
+        // some ugly formatting here [RTQN][single loop(pair)]2[0.000142] < -- the 2 is off see?
 			std::string prt_str = "[RTQN][single loop(pair)]" + std::to_string(obj.second->mon_hook == NULL? -1 : child_queue.size());
 			single_loop_timer.endTimeWithPrint(prt_str.c_str());
-	#endif
-	}  // while loop
-     */
+#endif
+    }  // while loop
+    */
 }
 
 std::vector<std::shared_ptr<ReverseTrieQueueNode>>
