@@ -1,37 +1,64 @@
-cmake_minimum_required(VERSION 3.10)
-project(SCoRe VERSION 1.0.0 DESCRIPTION "")
+cmake_minimum_required(VERSION 3.15)
+project(SCoRe)
+
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -w -g")
 
-add_subdirectory(scs_io_common)
-
-include_directories(scs_io_common/include)
+#include_directories(scs_io_common/include)
 include_directories(include)
+set(LIBS -lpthread -lrpc  -lhiredis -lredis++ -lmpi)
+#set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D BENCH_TIMER")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
 
-set(LIBS -lpthread -lmpi -L${CMAKE_BINARY_DIR}/scs_io_common -lscs_io_common)
+set(QUEUE_COMMON src/queue.cpp src/queue_key.cpp src/queue_type.cpp src/mon_hooks.cpp
+        include/redis.h src/redis.cpp include/queue_config.h src/queue_config.cpp)
 
-set(SCORE_COMMON include/score/common/data_structure.h include/score/common/enumerations.h
-        include/score/common/queue/Queue.h _old/queue_config.h
-        _old/queue_type.h _old/queue_key.h
-        include/score/common/queue/redis.h
-        src/common/queue/Queue.cpp _old/queue_config.cpp
-        _old/queue_type.cpp _old/queue_key.cpp
-                 src/common/queue/redis.cpp)
 
-set(FACT_INCLUDE include/score/factVertex/FactCollector.h include/score/factVertex/FactCollector.h
-                 include/score/factVertex/Pythio.h)
-set(FACT_DRC src/score/factVertex/FactCollector.cpp src/score/factVertex/FactCollector.cpp
-             src/score/factVertex/Pythio.cpp src/score/factVertex/main.cpp)
-set(FACT_VERTEX ${SCORE_COMMON} ${FACT_INCLUDE} ${FACT_DRC})
-add_executable(factVertex ${FACT_VERTEX})
-target_link_libraries(factVertex ${LIBS})
+add_executable(SCoRe ${QUEUE_COMMON} include/reverse_trie_queue_node_config.h src/reverse_trie_queue_node_config.cpp
+                     include/config_generator.h src/config_generator.cpp
+                     include/SCoRe.h src/SCoRe.cpp)
+target_link_libraries(SCoRe ${LIBS})
 
-set(INSIGHT_INCLUDE include/score/insightVertex/InsightCollector.h include/score/insightVertex/InsightVertex.h)
-set(INSIGHT_SRC src/score/insightVertex/InsightCollector.cpp src/score/insightVertex/InsightVertex.cpp
-                src/score/factVertex/Pythio.cpp src/score/insightVertex/main.cpp)
+add_executable(redis_test ${QUEUE_COMMON} tests/redis_test.cpp)
+target_link_libraries(redis_test ${LIBS})
 
-set(INSIGHT_VERTEX ${SCORE_COMMON} ${INSIGHT_INCLUDE} ${INSIGHT_SRC})
-add_executable(insightVertex ${INSIGHT_VERTEX})
-target_link_libraries(insightVertex ${LIBS})
+add_executable(queue_test ${QUEUE_COMMON} tests/queue_test.cpp src/debug.cpp src/timer.cpp  src/s_queues.cpp)
+target_link_libraries(queue_test ${LIBS})
 
-add_subdirectory(test)
+add_executable(rtqn_test ${QUEUE_COMMON} tests/reverse_triequeue_node_test.cpp src/reverse_trie_queue_node_key.cpp
+               src/reverse_trie_queue_node.cpp src/reverse_trie_queue_node_config.cpp
+               src/timer.cpp src/s_queues.cpp
+               src/config_generator.cpp)
+target_link_libraries(rtqn_test ${LIBS})
+
+add_executable(bench ${QUEUE_COMMON} bench.cpp src/SCoRe.cpp src/timer.cpp src/reverse_trie_queue.cpp src/reverse_trie_queue_node_key.cpp
+               src/reverse_trie_queue_node.cpp src/reverse_trie_queue_node_config.cpp
+                 src/s_queues.cpp
+               src/config_generator.cpp)
+target_link_libraries(bench ${LIBS})
+
+add_executable(main ${QUEUE_COMMON} main.cpp
+        src/SCoRe.cpp
+        src/reverse_trie_queue.cpp
+        src/reverse_trie_queue_node_key.cpp
+        src/reverse_trie_queue_node.cpp
+        src/reverse_trie_queue_node_config.cpp
+        src/s_queues.cpp
+        src/config_generator.cpp
+        )
+target_link_libraries(main ${LIBS})
+
+add_executable(json_test tests/json_tester.cpp include/reverse_trie_queue_node.h)
+target_link_libraries(json_test ${LIBS})
+
+add_executable(score_server tests/score_server.cpp src/reverse_trie_queue_node_key.cpp src/reverse_trie_queue_node.cpp
+               src/reverse_trie_queue_node_config.cpp
+               src/s_queues.cpp src/config_generator.cpp
+               src/SCoRe.cpp)
+target_link_libraries(score_server ${LIBS})
+
+add_executable(score tests/score.cpp src/reverse_trie_queue_node_key.cpp src/reverse_trie_queue_node.cpp
+               src/reverse_trie_queue_node_config.cpp
+               src/s_queues.cpp src/config_generator.cpp
+               src/SCoRe.cpp)
+target_link_libraries(score ${LIBS})
+
