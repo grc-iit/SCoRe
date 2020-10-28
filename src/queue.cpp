@@ -61,88 +61,62 @@ bool queue::is_synced(std::vector<QM_type> children) {
 
 std::string queue::populate() {
 	// populates a value from the mon hook function. Fact collector
-#ifdef BENCH_TIMER
-	Timer pop_timer;
-	pop_timer.startTime();
-#endif
-
+    #ifdef BENCH_TIMER
+        Timer pop_timer;
+        pop_timer.startTime();
+    #endif
 	d_dict val({{std::to_string(std::time(nullptr)), std::to_string(mon_hook_())}});
-
-#ifdef BENCH_TIMER
-	pop_timer.endTimeWithPrint("[Queue][Populate()->mon_hook]");
-#endif
-
+    #ifdef BENCH_TIMER
+        pop_timer.endTimeWithPrint("[Queue][Populate()->mon_hook]");
+    #endif
 	return publish(val);
 }
 
 std::string queue::populate_pythio() {
     // populates a value from the mon hook function. Fact collector
-#ifdef BENCH_TIMER
-    Timer pop_timer;
-	pop_timer.startTime();
-#endif
-
-    d_dict val({{std::to_string(std::time(nullptr)), std::to_string(pythio_.Predict())}});
-
-#ifdef BENCH_TIMER
-    pop_timer.endTimeWithPrint("[Queue][Populate()->mon_hook]");
-#endif
-
+    #ifdef BENCH_TIMER
+        Timer pop_timer;
+        pop_timer.startTime();
+    #endif
+    d_dict val(pythio_.Predict(lat_published_));
+    #ifdef BENCH_TIMER
+        pop_timer.endTimeWithPrint("[Queue][Populate()->mon_hook]");
+    #endif
     return publish(val);
 }
-
-//std::string queue::populate_pythio() {
-//    // populates a value from the mon hook function. Fact collector
-//#ifdef BENCH_TIMER
-//    Timer pop_timer;
-//    pop_timer.startTime();
-//#endif
-//
-//    d_dict val({{std::to_string(std::time(nullptr)), std::to_string(pythio.predict(lat_sub_id))}});
-//
-//#ifdef BENCH_TIMER
-//    pop_timer.endTimeWithPrint("[Queue][Populate()->mon_hook]");
-//#endif
-//
-//    return publish(val);
-//}
 
 std::string queue::populate(std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> child_queue_maps) {
 	// if populate has params, its a knowledge curator
 	// Takes queues from the vector of child queue maps and populates from there in a breadth first style
 	// These are generic queues, in s_queues.* you will see queues made to trace the REMCAP, LOAD and AVAIL at 
 	// different tier leveles
-#ifdef BENCH_TIMER
-	Timer pop_timer;
-	pop_timer.startTime();
-#endif
+    #ifdef BENCH_TIMER
+        Timer pop_timer;
+        pop_timer.startTime();
+    #endif
 	d_dict val;
 	double second = 0;
 	auto id = lat_pub_id_;
 	do {
 		for (auto i: child_queue_maps) {
 			for (auto j : i) {
-				// << TODO Do optional type_ check  HERE
-				auto k = j.second->redis_->subscribe_next();
+				//TODO: Do optional type_ check  HERE
+				auto k = j.second->redis_->subscribe_next(); //TODO: Change this to get last element
 				if (k) {
 					for (auto l : k->second) {
 						second += std::stod(l.second);
 
 					}
 					val.insert({{std::to_string(std::time(nullptr)), std::to_string(second)}});
-
 					#ifdef BENCH_TIMER
 						Timer pub_timer;
 						pub_timer.startTime();
 					#endif
-
 					id = publish(val);
-
 					#ifdef BENCH_TIMER
 						pub_timer.endTimeWithPrint("[GenericQueue][Populate(vector)->Publish]");
 					#endif
 					lat_pub_id_ = id;
-
 				} else {
 					// what to do if the val is not there?
 
@@ -150,8 +124,8 @@ std::string queue::populate(std::vector<std::unordered_map<QueueKey, std::shared
 			}
 		}
 	} while (!is_synced(child_queue_maps));
-#ifdef BENCH_TIMER
-	pop_timer.endTimeWithPrint("[Queue][Populate(vector)]");
-#endif
+    #ifdef BENCH_TIMER
+        pop_timer.endTimeWithPrint("[Queue][Populate(vector)]");
+    #endif
 	return id;
 }

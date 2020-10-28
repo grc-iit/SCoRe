@@ -65,13 +65,10 @@ public:
 	queue(queue const &pQueue)=default;
 	queue(QueueConfig config):
             redis_(std::make_shared<redis_client>(config.url_, config.topic_)), key_(config.key_), lat_pub_id_("1"), lat_sub_id_("_"),
-            mon_hook_(config.hook_), pythio_(Pythio(config.model_, config.weights_)){
-	    // clean up topic_ logic
-        if (key_.mode_ == Mode::SERVER) { } //TODO: What is the point of this
-	}
+            mon_hook_(config.hook_), pythio_(Pythio(config.model_, config.weights_)){}
 	queue(QueueKey key, std::string url, std::string topic, Model model, std::string weights):
 	    redis_(std::make_shared<redis_client>(url, topic)), key_(key), lat_pub_id_(""), lat_sub_id_(""),
-	    mon_hook_(NULL), pythio_(Pythio(model, weights)){};
+	    mon_hook_(NULL), pythio_(Pythio(model, weights)){}
 
 	std::string publish(d_dict value);
 	item_stream subscribe();

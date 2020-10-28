@@ -28,7 +28,7 @@ set(SCORE_COMMON include/reverse_trie_queue_node_config.h src/reverse_trie_queue
 
 set(DEBUG_COMMON src/debug.cpp src/timer.cpp)
 
-add_executable(SCoRe ${QUEUE_COMMON} ${SCORE_COMMON})
+add_executable(SCoRe ${QUEUE_COMMON} ${SCORE_COMMON} main.cpp)
 target_link_libraries(SCoRe ${LIBS})
 
 add_executable(redis_test ${QUEUE_COMMON} tests/redis_test.cpp)
@@ -43,15 +43,15 @@ target_link_libraries(rtqn_test ${LIBS})
 add_executable(bench ${QUEUE_COMMON} ${DEBUG_COMMON} ${SCORE_COMMON} bench.cpp)
 target_link_libraries(bench ${LIBS})
 
-add_executable(main ${QUEUE_COMMON} ${DEBUG_COMMON} ${SCORE_COMMON} main.cpp)
-target_link_libraries(main ${LIBS})
+add_executable(score_server tests/score_server.cpp ${QUEUE_COMMON} ${DEBUG_COMMON} ${SCORE_COMMON})
+target_link_libraries(score_server ${LIBS})
+
+#add_executable(main ${QUEUE_COMMON} ${DEBUG_COMMON} ${SCORE_COMMON} main.cpp)
+#target_link_libraries(main ${LIBS})
 
 #These tests seems to rely on the HCL config code
 #add_executable(json_test ${QUEUE_COMMON} ${DEBUG_COMMON} ${SCORE_COMMON} tests/json_tester.cpp)
 #target_link_libraries(json_test ${LIBS})
-
-add_executable(score_server tests/score_server.cpp ${QUEUE_COMMON} ${DEBUG_COMMON} ${SCORE_COMMON})
-target_link_libraries(score_server ${LIBS})
 
 #This tests doesnt even have stuff
 #add_executable(score tests/score.cpp ${QUEUE_COMMON} ${DEBUG_COMMON} ${SCORE_COMMON})

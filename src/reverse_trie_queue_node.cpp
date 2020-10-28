@@ -86,10 +86,10 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
 	// ensures that they are all in the same level
 	std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> child_queue = {};
 	for (QueueConfig i : children) {
-		// TODO check tier type of queue before adding it into node
         std::unordered_map<QueueKey, std::shared_ptr<queue>> single_child_queue;
         single_child_queue.insert(make_pair(i.key_, add(i)));
-		if(i.key_.tier_index_ == this->key.level_ )child_queue.push_back(single_child_queue);
+//		if(i.key_.tier_index_ == this->key.level_ )child_queue.push_back(single_child_queue);
+		child_queue.push_back(single_child_queue);
 	}
 	// infinite loop till kill comes thru
 	while (futureObj.wait_for(std::chrono::microseconds(obj.first.type_.interval)) == std::future_status::timeout) {
