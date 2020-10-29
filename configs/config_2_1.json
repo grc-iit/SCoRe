@@ -1,0 +1,34 @@
+[
+  {
+    "hostname": "localhost",
+    "key" : {
+      "node_index": 0,
+      "level": 0,
+      "type": "LEAF"
+    },
+    "queues": [
+      {
+        "key":{
+          "node_index": 0,
+          "tier_index": 0,
+          "mode" : "SERVER",
+          "type": {
+            "value": "NODE_CAPACITY",
+            "interval": 10000
+          }
+        },
+        "url": "tcp://localhost",
+        "queue_port": 3000,
+        "hook": "CAPACITY",
+        "topic": "NODE_CAPACITY",
+        "pythio":{
+          "model": "MODEL_LINEAR",
+          "weights": "PATH_MODEL_WEIGHTS"
+        }
+      }
+    ],
+    "children": [],
+    "children_queues": [],
+    "parent": 0
+  }
+]

@@ -17,8 +17,8 @@ public:
 	std::string hostname_;
 
 	ReverseTrieQueueNodeConfig(ReverseTrieQueueNodeKey key, std::string hostname , std::vector<QueueConfig> configs,
-			std::vector<QueueConfig> children, int me): key_(key), me_(me), QueueConfigs_(children),
-			children_(configs), hostname_(hostname){};
+			std::vector<QueueConfig> children, int me): key_(key), me_(me), QueueConfigs_(configs),
+			children_(children), hostname_(hostname){};
 	ReverseTrieQueueNodeConfig()=default;
 };
 

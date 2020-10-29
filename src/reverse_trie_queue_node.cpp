@@ -224,7 +224,7 @@ std::shared_ptr<queue> ReverseTrieQueueNode::get(QueueKey key) {
 ReverseTrieQueueNode::ReverseTrieQueueNode(int argc, char **argv) {
 	std::string conf_name;
 	int node_index = 0;
-	if (argc < 2) conf_name = "../configs/config_1.json";
+	if (argc < 2) conf_name = "../configs/config_2_1.json";
 	else conf_name = argv[1];
 	if (argc < 3) node_index = 0;
 	else node_index = atoi(argv[2]);

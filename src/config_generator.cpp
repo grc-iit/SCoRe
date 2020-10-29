@@ -31,12 +31,14 @@ conf::map_to_ReverseTriequeueNodeConfig(int me, std::unordered_map<int, conf::js
 	conf::json rtq_node = index_to_json_map[me];
 	std::string hostname = strip(rtq_node["hostname"]);
 
-	std::vector<QueueConfig> queue_configs;
-	auto key = json_to_ReverseTriequeueNodeKey(rtq_node["key"]);
 
+	auto key = json_to_ReverseTriequeueNodeKey(rtq_node["key"]);
 	std::vector<json> queue_confs = rtq_node["queues"];
+
+    std::vector<QueueConfig> queue_configs;
 	for (json queue_conf: queue_confs) {
-		queue_configs.push_back(std::move(json_to_QueueConfig(queue_conf)));
+	    QueueConfig queue_config = json_to_QueueConfig(queue_conf);
+		queue_configs.push_back(std::move(queue_config));
 	}
 
 	std::vector<std::shared_ptr<ReverseTrieQueueNodeConfig>> children_configs;
@@ -78,11 +80,14 @@ QueueConfig conf::json_to_QueueConfig(conf::json queue_config) {
 	auto topic = strip(queue_config["topic"]);
 	auto url = strip(queue_config["url"]);
 
-	std::string queue_port = strip(queue_config["queue_port"]);
+	int queue_port = queue_config["queue_port"];
 
     json pyhtio_key_json = queue_config["pythio"];
-    Model model = pyhtio_key_json["model"];
-    std::string weights = pyhtio_key_json["weights"];
+    auto json_model = strip(pyhtio_key_json["model"]);
+    Model model = json_model.compare("LINEAR") ? Model::LINEAR :
+                  json_model.compare("QUAD") ? Model::QUAD :
+                  Model::OTHER;
+    std::string weights = strip(pyhtio_key_json["weights"]);
 
 	json queue_key_json = queue_config["key"];
 	QueueKey queue_key = json_to_QueueKey(queue_key_json);
@@ -90,7 +95,7 @@ QueueConfig conf::json_to_QueueConfig(conf::json queue_config) {
 	std::string mode_ = strip(queue_key_json["mode"]);
 	Mode mode = mode_.compare("SERVER") ? Mode::SERVER : Mode::CLIENT;
 
-	return QueueConfig(queue_key, url, topic, mode, hook, model, weights, std::stoi(queue_port));
+	return QueueConfig(queue_key, url, topic, mode, hook, model, weights, queue_port);
 
 }
 
