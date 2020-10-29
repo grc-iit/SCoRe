@@ -24,7 +24,7 @@ std::string queue::publish(d_dict value) {
     lat_pub_id_ = redis_->publish(value);
 
 	lat_published_.push_back(value);
-    lat_published_.erase (lat_published_.begin()+(lat_published_.size()-window_size));
+	if(lat_published_.size() > window_size) lat_published_.erase (lat_published_.begin()+(lat_published_.size()-window_size));
 	return lat_pub_id_;
 }
 

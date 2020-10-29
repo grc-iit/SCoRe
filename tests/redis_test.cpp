@@ -4,40 +4,20 @@
 //#include "src/reverse_triequeue.h"
 
 #include <sw/redis++/redis++.h>
+#include <redis.h>
 using namespace sw::redis;
 
 
 int main(){
-	auto t = redis_client("tcp://127.0.0.1", "new_test");
-//	d_dict val;
+    std::shared_ptr<redis_client> redisClient = std::make_shared<redis_client>("tcp://127.0.0.1", "new_test");
+    d_dict attrs = { {"f1", "v1"}, {"f2", "v2"} };
+    auto lat_pub_id_ = redisClient->publish(attrs);
+    d_dict attrs1 = { {"f3", "v3"}, {"f4", "v4"} };
+    lat_pub_id_ = redisClient->publish(attrs1);
+    d_dict attrs2 = { {"f5", "v5"}, {"f6", "v6"} };
+    lat_pub_id_ = redisClient->publish(attrs2);
 
-	t.latest_sub_id = "1587352845893-0";
-//	std::cout <<' ' << t.latest_published_id<< ' ' <<t.latest_sub_id << std::endl;
-
-
-	std::vector<Optional<std::pair<std::string, item_stream>>> result;
-
-	t.redis->xread(t.topic, t.latest_sub_id, 1, std::back_inserter(result));
-	std::cout<<result.size();
-	for (const auto i : result) {
-		if (i) {
-
-			std::cout<<"I1 : "<<i->first<<std::endl;
-			for(auto j : i->second){
-				std::cout <<"J1 : " << j.first<<std::endl;
-				for(auto k: j.second){
-					std::cout<<"K1 : " << k.first << " K2 : " <<k.second<<std::endl;
-					}
-				}
-			}
-
-		}
-
-
-	/*	for (auto i: result){
-			std::cout<<;
-
-		}*/
-
+    auto anwer = redisClient->subscribe_all();
+    auto anwer2 = redisClient->subscribe_all();
 	return  0;
 }

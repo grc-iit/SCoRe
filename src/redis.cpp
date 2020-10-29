@@ -48,8 +48,13 @@ item_stream redis_client::subscribe_all(std::string ls_id) {
 std::string redis_client::publish(d_dict val) {
 	// publishs val to the queue, the topic is fixed per queue
 	this->latest_entry = val;
-	this->latest_pub_id = this->redis->xadd(topic, "*", val.begin(), val.end());
+	auto begin = val.begin();
+	auto end = val.end();
+	this->latest_pub_id = this->redis->xadd(topic, "*", begin, end);
 	return latest_pub_id;
+//    d_dict attrs = { {"f1", "v1"}, {"f2", "v2"} };
+//	this->latest_pub_id = this->redis->xadd(topic, "*", attrs.begin(), attrs.end());
+//	return latest_pub_id;
 
 }
 
