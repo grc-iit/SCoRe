@@ -18,6 +18,7 @@
           }
         },
         "url": "tcp://localhost",
+        "queue_port": 3000,
         "hook": "NULL",
         "topic": "TIER_CAPACITY",
         "pythio":{

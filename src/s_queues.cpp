@@ -26,16 +26,12 @@ availability_queue::populate(std::vector<std::unordered_map<QueueKey, std::share
 				// << TODO Do optional type_ check  HERE
 				auto k = j.second->redis_->subscribe_next();
 				if (k) {
-					for (auto l : k->second) {
-//							second += std::stod(l.second);
-						// here the OR operation is done on the data
-						second |= (bool) std::stoi(l.second);
+					auto l = k->second;
+                    // here the OR operation is done on the data
+                    second |= (bool) std::stoi(l.back().second);
 
-					}
-					val.insert({{std::to_string(std::time(nullptr)), std::to_string(second)}});
-
-
-
+                    d_dict val;
+                    val.push_back({std::to_string(std::time(nullptr)), std::to_string(second)});
 					#ifdef BENCH_TIMER
 						Timer pub_timer;
 						pub_timer.startTime();
@@ -73,13 +69,14 @@ std::string capacity_queue::populate(std::vector<std::unordered_map<QueueKey, st
 		for (auto i: child_queue_maps) {
 			for (auto j : i) {
 				// << TODO Do optional type_ check  HERE
-				auto k = j.second->redis_->subscribe_next();
-				if (k) {
-					for (auto l : k->second) {
-						// Summation is done for the cacpacity
-						second += std::stod(l.second);
-					}
-					val.insert({{std::to_string(std::time(nullptr)), std::to_string(second)}});
+                auto k = j.second->redis_->subscribe_next();
+                if (k) {
+                    auto l = k->second;
+                    // Summation is done for the cacpacity
+                    second += std::stod(l.back().second);
+
+                    d_dict val;
+                    val.push_back({std::to_string(std::time(nullptr)), std::to_string(second)});
 					#ifdef BENCH_TIMER
 						Timer pub_timer;
 						pub_timer.startTime();
@@ -116,14 +113,14 @@ std::string load_queue::populate(std::vector<std::unordered_map<QueueKey, std::s
 		for (auto i: child_queue_maps) {
 			for (auto j : i) {
 				// << TODO Do optional type_ check  HERE
-				auto k = j.second->redis_->subscribe_next();
-				if (k) {
-					for (auto l : k->second) {
-						// Summation done here
-						second += std::stod(l.second);
-					}
-					// divided by size done here to get average 
-					val.insert({{std::to_string(std::time(nullptr)), std::to_string(second / k->second.size())}});
+                auto k = j.second->redis_->subscribe_next();
+                if (k) {
+                    auto l = k->second;
+                    // Summation done here
+                    second += std::stod(l.back().second);
+
+                    d_dict val;
+                    val.push_back({std::to_string(std::time(nullptr)), std::to_string(second)});
 					#ifdef BENCH_TIMER
 						Timer pub_timer;
 						pub_timer.startTime();

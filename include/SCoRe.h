@@ -25,23 +25,23 @@ namespace client {
 	};
 }
 
-typedef std::unordered_map<std::string, d_dict> SCoRe_return;
-namespace server{
-
-	class SCoRe {
-
-	protected:
-		std::shared_ptr<ReverseTrieQueue> score;
-
-	public:
-
-		auto get_latest();
-		SCoRe(std::unordered_map<int, ReverseTrieQueueNodeConfig> node_list);
-		ReverseTrieQueueNodeConfig LoadConfiguration(std::string basicString, int index);
-		void Stop();
-		SCoRe(int argc, char* argv[]);
-		rpc::server *server;
-	};
-}
+//typedef std::unordered_map<std::string, d_dict> SCoRe_return;
+//namespace server{
+//
+//	class SCoRe {
+//
+//	protected:
+//		std::shared_ptr<ReverseTrieQueue> score;
+//
+//	public:
+//
+//		auto get_latest();
+//		SCoRe(std::unordered_map<int, ReverseTrieQueueNodeConfig> node_list);
+//		ReverseTrieQueueNodeConfig LoadConfiguration(std::string basicString, int index);
+//		void Stop();
+//		SCoRe(int argc, char* argv[]);
+//		rpc::server *server;
+//	};
+//}
 
 #endif //SCORE_SCORE_H
