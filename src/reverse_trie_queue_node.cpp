@@ -16,11 +16,25 @@ ReverseTrieQueueNode::ReverseTrieQueueNode(ReverseTrieQueueNodeConfig conf, Mode
 		async_loop();
 }
 
-int64_t ReverseTrieQueueNode::PopulateInterval() {
-    return populate_interval_;
+int64_t ReverseTrieQueueNode::PopulateInterval(std::string val) {
+    if (adapt_) {
+        double curr_val = std::atof(val.data());
+        if (curr_val < last_val_*(1+fluctuation_percentage_) && curr_val > last_val_ * (1 - fluctuation_percentage_)) {
+            last_val_ = curr_val;
+            return populate_interval_ += 100;
+        }
+        else {
+            last_val_ = curr_val;
+            return populate_interval_ -= 100;
+        }
+    }
+    else {
+        adapt_ = true;
+        return populate_interval_;
+    }
 }
 
-int64_t ReverseTrieQueueNode::PythioInterval() {
+int64_t ReverseTrieQueueNode::PythioInterval(std::string val) {
     return pythio_interval_;
 }
 
@@ -152,8 +166,10 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
     uv_run(loop, UV_RUN_DEFAULT);
     */
 	/* Single thread idea: Outer loop monitoring, inner loop pythio, monitor time defined as time of n pythios. */
+	fluctuation_percentage_ = 0.1;
+	adapt_ = false;
 	pythio_ratio_ = 5;
-	pythio_counter_ = 0;
+	pythio_counter_ = 5;
 	populate_interval_ = obj.first.type_.interval;
 	pythio_interval_ = populate_interval_ / pythio_ratio_;
     while (futureObj.wait_for(std::chrono::microseconds(populate_interval_)) == std::future_status::timeout) {
@@ -166,13 +182,13 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
         } else {
             if (pythio_counter_ < pythio_ratio_) {
                 pythio_counter_++;
-                obj.second->populate_pythio();
-                populate_interval_ = PopulateInterval();
+                std::string val = obj.second->populate_pythio();
+                populate_interval_ = PopulateInterval(val);
             }
             else {
                 pythio_counter_ = 0;
-                obj.second->populate();
-                pythio_interval_ = PythioInterval();
+                std::string val = obj.second->populate();
+                pythio_interval_ = PythioInterval(val);
                 pythio_ratio_ = populate_interval_ / pythio_interval_;
             }
         }
