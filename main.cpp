@@ -15,8 +15,7 @@ int main(int argc, char*argv[]) {
 	else node_index = atoi(argv[2]);
 
 	std::cout<<"CONF: "<<conf_name<<", NODE INDEX: "<<node_index<<std::endl;
-	if (node_index == 0 ) auto daemon_i=Singleton<Daemon<server::SCoRe>>::GetInstance(argc,argv);
-	else auto daemon_i=Singleton<Daemon<ReverseTrieQueueNode>>::GetInstance(argc,argv);
+    auto daemon_i=Singleton<Daemon<ReverseTrieQueueNode>>::GetInstance(argc,argv);
 
     std::cout << "Hello there";
 

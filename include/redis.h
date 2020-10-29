@@ -9,7 +9,7 @@
 #include <vector>
 #include <iostream>
 
-using d_dict = std::unordered_map<std::string, std::string>;
+using d_dict = std::vector<std::pair<std::string, std::string>>;
 using item = std::pair<std::string, d_dict>;
 using item_stream = std::vector<item>;
 
@@ -29,7 +29,7 @@ public:
 
 	redis_client(std::string url, std::string topic);
 	redis_client &operator=(const redis_client obj);
-	[[maybe_unused]] item_stream subscribe_all();
+	item_stream subscribe_all();
 	item_stream subscribe_all(std::string ls_id);
 	std::string publish(d_dict val);
 	std::optional<item> subscribe_next();

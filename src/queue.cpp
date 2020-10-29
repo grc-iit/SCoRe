@@ -65,7 +65,8 @@ std::string queue::populate() {
         Timer pop_timer;
         pop_timer.startTime();
     #endif
-	d_dict val({{std::to_string(std::time(nullptr)), std::to_string(mon_hook_())}});
+        d_dict val;
+        val.push_back({std::to_string(std::time(nullptr)), std::to_string(mon_hook_())});
     #ifdef BENCH_TIMER
         pop_timer.endTimeWithPrint("[Queue][Populate()->mon_hook]");
     #endif
@@ -101,13 +102,13 @@ std::string queue::populate(std::vector<std::unordered_map<QueueKey, std::shared
 		for (auto i: child_queue_maps) {
 			for (auto j : i) {
 				//TODO: Do optional type_ check  HERE
-				auto k = j.second->redis_->subscribe_next(); //TODO: Change this to get last element
-				if (k) {
-					for (auto l : k->second) {
-						second += std::stod(l.second);
+                auto k = j.second->redis_->subscribe_next();
+                if (k) {
+                    auto l = k->second;
+                    second += std::stod(l.back().second);
 
-					}
-					val.insert({{std::to_string(std::time(nullptr)), std::to_string(second)}});
+                    d_dict val;
+                    val.push_back({std::to_string(std::time(nullptr)), std::to_string(second)});
 					#ifdef BENCH_TIMER
 						Timer pub_timer;
 						pub_timer.startTime();

@@ -78,6 +78,8 @@ QueueConfig conf::json_to_QueueConfig(conf::json queue_config) {
 	auto topic = strip(queue_config["topic"]);
 	auto url = strip(queue_config["url"]);
 
+	std::string queue_port = strip(queue_config["queue_port"]);
+
     json pyhtio_key_json = queue_config["pythio"];
     Model model = pyhtio_key_json["model"];
     std::string weights = pyhtio_key_json["weights"];
@@ -88,7 +90,7 @@ QueueConfig conf::json_to_QueueConfig(conf::json queue_config) {
 	std::string mode_ = strip(queue_key_json["mode"]);
 	Mode mode = mode_.compare("SERVER") ? Mode::SERVER : Mode::CLIENT;
 
-	return QueueConfig(queue_key, url, topic, mode, hook, model, weights);
+	return QueueConfig(queue_key, url, topic, mode, hook, model, weights, std::stoi(queue_port));
 
 }
 

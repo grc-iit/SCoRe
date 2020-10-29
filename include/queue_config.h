@@ -19,12 +19,14 @@ public:
 	double_function hook_;
     Model model_;
     std::string weights_;
+    int queue_port_;
 
 	QueueConfig(QueueKey key, std::string url, std::string topic, Mode mode, double_function hook, Model model,
-             std::string weights):key_(key),url_(url),topic_(topic),mode_(mode),hook_(hook),model_(model),
-             weights_(weights){};
-	QueueConfig(QueueKey key, std::string url, std::string topic, Mode mode, Model model, std::string weights):
-	        key_(key),url_(url),topic_(topic),mode_(mode),hook_(nullptr),model_(model),weights_(weights){};
+             std::string weights, int queue_port):key_(key),url_(url),topic_(topic),mode_(mode),hook_(hook),model_(model),
+             weights_(weights), queue_port_(queue_port){};
+	QueueConfig(QueueKey key, std::string url, std::string topic, Mode mode, Model model, std::string weights, int queue_port):
+	        key_(key),url_(url),topic_(topic),mode_(mode),hook_(nullptr),model_(model),weights_(weights),
+	        queue_port_(queue_port){};
 	QueueConfig(const QueueConfig &obj)=default;
 };
 #endif //SCORE_QUEUE_CONFIG_H
