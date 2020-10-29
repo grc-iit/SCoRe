@@ -4,7 +4,6 @@
 
 #include "SCoRe.h"
 
-
 client::SCoRe::SCoRe() {
 	url_ = "127.0.0.1";
 	port_ = 6666;
@@ -23,12 +22,13 @@ void client::SCoRe::get_latest() {
 	client_->call("get_latest").as<SCoRe_return>();
 }
 
+/********************************************************************************************************************/
 auto server::SCoRe::get_latest() {
 	SCoRe_return aggregate;
 	for (auto i:score->root->queue_map) {
 //			auto key_ = i.first.type_.value;
-		auto val = i.second->lat_published;
-		auto topic = i.second->redis->topic;
+		auto val = i.second->lat_published_.back();
+		auto topic = i.second->redis_->topic;
 		aggregate.insert({{topic, val}});
 	}
 	return aggregate;

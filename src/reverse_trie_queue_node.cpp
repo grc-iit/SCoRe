@@ -8,7 +8,7 @@ ReverseTrieQueueNode::ReverseTrieQueueNode(ReverseTrieQueueNodeConfig conf, Mode
 	// Constructor
 	this->key = ReverseTrieQueueNodeKey(conf.key_);
 	this->hostname_ = conf.hostname_;
-	this->children = get_children(conf.children_);
+	this->children = conf.children_;
 	for (auto &i : conf.QueueConfigs_) {
 		add(i);
 	}
@@ -85,10 +85,11 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
 	// a the single loop that runs in a thread async 
 	// ensures that they are all in the same level
 	std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> child_queue = {};
-	for (auto i : children) {
-		// TODO check tier type of queue before adding it into node
-		for (auto j : i->queue_map)
-			if(j.first.tier_index_ == this->key.level_ )child_queue.push_back({j});
+	for (QueueConfig i : children) {
+        std::unordered_map<QueueKey, std::shared_ptr<queue>> single_child_queue;
+        single_child_queue.insert(make_pair(i.key_, add(i)));
+//		if(i.key_.tier_index_ == this->key.level_ )child_queue.push_back(single_child_queue);
+		child_queue.push_back(single_child_queue);
 	}
 	// infinite loop till kill comes thru
 	uv_loop_t *loop;
@@ -198,6 +199,6 @@ ReverseTrieQueueNode::ReverseTrieQueueNode(int argc, char **argv) {
 	ReverseTrieQueueNode(conf, Mode::SERVER);
 }
 
-void ReverseTrieQueueNode::add_child(std::shared_ptr<ReverseTrieQueueNode> child) {
+void ReverseTrieQueueNode::add_child(QueueConfig child) {
 	children.push_back(child);
 }

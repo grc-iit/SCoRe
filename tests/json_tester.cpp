@@ -39,8 +39,7 @@ int main(){
 //	IStreamWrapper isw(file_);
 //	Document json_doc;
 //	json_doc.ParseStream(file_);
-	doc.
-	config(doc, "", DJOURNAL_SERVER_LISTS);
+	doc.config(doc, "", DJOURNAL_SERVER_LISTS);
 
 
 

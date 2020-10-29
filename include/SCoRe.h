@@ -7,7 +7,8 @@
 
 #include <rpc/server.h>
 #include <rpc/client.h>
-#include "SCoReServer.h"
+#include "redis.h"
+#include "reverse_trie_queue.h"
 
 namespace client {
 	class SCoRe {
@@ -24,9 +25,8 @@ namespace client {
 	};
 }
 
+typedef std::unordered_map<std::string, d_dict> SCoRe_return;
 namespace server{
-
-	using SCoRe_return = std::unordered_map<std::string, d_dict>;
 
 	class SCoRe {
 
@@ -42,9 +42,6 @@ namespace server{
 		SCoRe(int argc, char* argv[]);
 		rpc::server *server;
 	};
-
-
-
 }
 
 #endif //SCORE_SCORE_H

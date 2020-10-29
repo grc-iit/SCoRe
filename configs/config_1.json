@@ -19,10 +19,15 @@
         },
         "url": "tcp://localhost",
         "hook": "NULL",
-        "topic": "TIER_CAPACITY"
+        "topic": "TIER_CAPACITY",
+        "pythio":{
+          "model": "MODEL_LINEAR",
+          "weights": "PATH_MODEL_WEIGHTS"
+        }
       }
     ],
-    "children": [1, 2],
+    "children": [1, 1, 2],
+    "children_queues": [0, 1, 0],
     "parent": "NULL"
   },
   {
@@ -78,7 +83,4 @@
     "children": [],
     "parent": 0
   }
-
-
-
 ]

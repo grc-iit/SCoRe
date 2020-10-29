@@ -20,24 +20,3 @@ ReverseTrieQueueNode::~ReverseTrieQueueNode() {
 	Stop();
 }
 
-ReverseTrieQueueNodeConfig::ReverseTrieQueueNodeConfig() {
-	ReverseTrieQueueNodeKey k;
-	hostname_ = "localhost";
-	key_ = k;
-	me_ = 0;
-	QueueKey qk;
-	QueueConfig qc(qk, "tcp://localhost", "UNSET", Mode::SERVER);
-	children_ = {};
-	QueueConfigs_ = {qc};
-}
-
-ReverseTrieQueueNodeConfig::ReverseTrieQueueNodeConfig(ReverseTrieQueueNodeKey key, std::string hostname,
-                                                       std::vector<QueueConfig> configs,
-                                                       std::vector<std::shared_ptr<ReverseTrieQueueNodeConfig>> children, int me) {
-	key_ = key;
-	me_ = me;
-	children_ = children;
-	QueueConfigs_ = configs;
-	hostname_ = hostname;
-
-}
