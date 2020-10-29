@@ -16,26 +16,27 @@ ReverseTrieQueueNode::ReverseTrieQueueNode(ReverseTrieQueueNodeConfig conf, Mode
 		async_loop();
 }
 
-int64_t ReverseTrieQueueNode::PopulateInterval(std::string val) {
-    if (adapt_) {
-        double curr_val = std::atof(val.data());
-        if (curr_val < last_val_*(1+fluctuation_percentage_) && curr_val > last_val_ * (1 - fluctuation_percentage_)) {
-            last_val_ = curr_val;
-            return populate_interval_ += 100;
-        }
-        else {
-            last_val_ = curr_val;
-            return populate_interval_ -= 100;
-        }
+int64_t ReverseTrieQueueNode::PopulateInterval(double last_val, double curr_val) {
+    if (curr_val < last_val*(1+fluctuation_percentage_) && curr_val > last_val * (1 - fluctuation_percentage_)) {
+        return populate_interval_ += 100;
     }
     else {
-        adapt_ = true;
-        return populate_interval_;
+        return populate_interval_ -= 100;
     }
 }
 
-int64_t ReverseTrieQueueNode::PythioInterval(std::string val) {
-    return pythio_interval_;
+int64_t ReverseTrieQueueNode::PythioInterval(double last_val, double curr_val) {
+    if (curr_val < last_val*(1+fluctuation_percentage_) && curr_val > last_val * (1 - fluctuation_percentage_)) {
+        return pythio_ratio_ += 1;
+    }
+    else {
+        if (pythio_ratio_ > 0) {
+            return pythio_ratio_ -= 1;
+        }
+        else {
+            return pythio_ratio_;
+        }
+    }
 }
 
 std::shared_ptr<queue> ReverseTrieQueueNode::add(QueueConfig config) {
@@ -167,11 +168,11 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
     */
 	/* Single thread idea: Outer loop monitoring, inner loop pythio, monitor time defined as time of n pythios. */
 	fluctuation_percentage_ = 0.1;
-	adapt_ = false;
+	last_measured_ = -1;
+	last_predicted_ = -1;
 	pythio_ratio_ = 5;
 	pythio_counter_ = 5;
 	populate_interval_ = obj.first.type_.interval;
-	pythio_interval_ = populate_interval_ / pythio_ratio_;
     while (futureObj.wait_for(std::chrono::microseconds(populate_interval_)) == std::future_status::timeout) {
 #ifdef BENCH_TIMER
         Timer single_loop_timer;
@@ -183,13 +184,20 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
             if (pythio_counter_ < pythio_ratio_) {
                 pythio_counter_++;
                 std::string val = obj.second->populate_pythio();
-                populate_interval_ = PopulateInterval(val);
+                double curr_val = std::strtod(val.data(), NULL);
+                if (last_predicted_ > -1) {
+                    pythio_ratio_ = PythioInterval(last_predicted_, curr_val);
+                }
+                last_predicted_ = curr_val;
             }
             else {
                 pythio_counter_ = 0;
                 std::string val = obj.second->populate();
-                pythio_interval_ = PythioInterval(val);
-                pythio_ratio_ = populate_interval_ / pythio_interval_;
+                double curr_val = std::strtod(val.data(), NULL);
+                if (last_measured_ > -1) {
+                    populate_interval_ = PopulateInterval(last_measured_, curr_val);
+                }
+                last_measured_ = curr_val;
             }
         }
         // add logic to change the interval of lookup
