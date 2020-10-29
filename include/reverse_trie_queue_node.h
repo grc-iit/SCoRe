@@ -22,7 +22,15 @@
 
 
 class ReverseTrieQueueNode {
-
+private:
+    std::pair<QueueKey, std::shared_ptr<queue>> curr_obj_;
+    std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> curr_child_queue_;
+    int64_t PopulateInterval();
+    int64_t PythioInterval();
+    int pythio_ratio_;
+    int pythio_counter_;
+    int64_t populate_interval_;
+    int64_t pythio_interval_;
 public:
 	ReverseTrieQueueNodeKey key;
 	QM_type queue_map;
