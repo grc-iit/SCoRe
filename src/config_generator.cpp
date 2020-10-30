@@ -136,3 +136,26 @@ std::string conf::strip(std::string s) {
 	);
 	return s;
 }
+
+std::string conf::topic_to_redis(json config, std::string topic) {
+    std::vector<json> queue_confs = config["queues"];
+    for (json queue_conf: queue_confs) {
+        if(strip(queue_conf["topic"]) == topic){
+            return strip(queue_conf["url"]);
+        }
+    }
+    return "";
+}
+
+std::string conf::topic_to_redis(std::unordered_map<int, conf::json> config, std::string topic) {
+    for (auto node_config : config) {
+        std::vector<json> queue_confs = node_config.second["queues"];
+        for (json queue_conf: queue_confs) {
+            if(strip(queue_conf["topic"]) == topic){
+                return strip(queue_conf["url"]);
+            }
+        }
+    }
+    return "";
+}
+

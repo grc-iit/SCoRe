@@ -69,7 +69,7 @@ std::string load_queue::populate(std::vector<std::unordered_map<QueueKey, std::s
 				// Summation done here
 				second += std::stod(l.back().second);
 			} else {
-				// what to do if the val is not there?
+				return "0";
 			}
 		}
 	}
