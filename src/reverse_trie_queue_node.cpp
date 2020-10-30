@@ -18,20 +18,25 @@ ReverseTrieQueueNode::ReverseTrieQueueNode(ReverseTrieQueueNodeConfig conf, Mode
 
 int64_t ReverseTrieQueueNode::PopulateInterval(double last_val, double curr_val) {
     if (curr_val < last_val*(1+fluctuation_percentage_) && curr_val > last_val * (1 - fluctuation_percentage_)) {
-        return populate_interval_ += 100;
+        return populate_interval_ += 10000;
     }
     else {
-        return populate_interval_ -= 100;
+        if (populate_interval_ > 10000) {
+            return populate_interval_ -= 10000;
+        }
+        else {
+            return populate_interval_;
+        }
     }
 }
 
 int64_t ReverseTrieQueueNode::PythioInterval(double last_val, double curr_val) {
     if (curr_val < last_val*(1+fluctuation_percentage_) && curr_val > last_val * (1 - fluctuation_percentage_)) {
-        return pythio_ratio_ += 1;
+        return pythio_ratio_ += 0.8;
     }
     else {
-        if (pythio_ratio_ > 0) {
-            return pythio_ratio_ -= 1;
+        if (pythio_ratio_ > 0.8) {
+            return pythio_ratio_ -= 0.8;
         }
         else {
             return pythio_ratio_;
@@ -185,6 +190,7 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
                 pythio_counter_++;
                 std::string val = obj.second->populate_pythio();
                 double curr_val = std::strtod(val.data(), NULL);
+                //std::cout << "predict: " << curr_val << std::endl;
                 if (last_predicted_ > -1) {
                     pythio_ratio_ = PythioInterval(last_predicted_, curr_val);
                 }
@@ -194,6 +200,7 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
                 pythio_counter_ = 0;
                 std::string val = obj.second->populate();
                 double curr_val = std::strtod(val.data(), NULL);
+                //std::cout << "measure: " << curr_val << std::endl;
                 if (last_measured_ > -1) {
                     populate_interval_ = PopulateInterval(last_measured_, curr_val);
                 }
