@@ -56,25 +56,29 @@ class queue {
 public:
 	std::shared_ptr<redis_client> redis_;
 	QueueKey key_;
-	std::string lat_pub_id_;
-	std::string lat_sub_id_;
+	std::string lat_pub_id_="1";
+	std::string lat_sub_id_="1";
 	std::vector<d_dict> lat_published_;
 	double_function mon_hook_;
 	Pythio pythio_;
     int window_size = 10;
+    Mode mode_;
 
     std::shared_ptr<rpc::server> rpc;
 
 	queue(queue const &pQueue)=default;
 	queue(QueueConfig config):
                 redis_(std::make_shared<redis_client>(config.url_, config.topic_)), key_(config.key_), lat_pub_id_("1"),
-                lat_sub_id_("_"), mon_hook_(config.hook_), pythio_(Pythio(config.model_, config.weights_)){
-        rpc = std::make_shared<rpc::server>(rpc::server(config.queue_port_));
-        std::function<d_dict()> functionGetLatest(std::bind(&queue::get_latest, this));
-        rpc->bind("get_latest", functionGetLatest);
+                lat_sub_id_("1"), mon_hook_(config.hook_), pythio_(Pythio(config.model_, config.weights_)), mode_(config.mode_){
+
+		if(mode_ == Mode::SERVER) {
+			rpc = std::make_shared<rpc::server>(rpc::server(config.queue_port_));
+			std::function<d_dict()> functionGetLatest(std::bind(&queue::get_latest, this));
+			rpc->bind("get_latest", functionGetLatest);
+		}
 	}
 	queue(QueueKey key, std::string url, std::string topic, Model model, std::string weights):
-	    redis_(std::make_shared<redis_client>(url, topic)), key_(key), lat_pub_id_(""), lat_sub_id_(""),
+	    redis_(std::make_shared<redis_client>(url, topic)), key_(key), lat_pub_id_("1"), lat_sub_id_("1"),
 	    mon_hook_(NULL), pythio_(Pythio(model, weights)){}
 
 	std::string publish(d_dict value);

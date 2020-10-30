@@ -11,8 +11,8 @@ QueueType::QueueType(const QueueType &type) {
 }
 
 QueueType::QueueType(QueueValue v, float intrv) {
-	value = v;
-	interval = intrv;
+    interval = intrv;
+    value = v;
 }
 
 QueueType::QueueType() {

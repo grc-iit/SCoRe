@@ -87,11 +87,17 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
 	std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> child_queue = {};
 	for (QueueConfig i : children) {
         std::unordered_map<QueueKey, std::shared_ptr<queue>> single_child_queue;
+        i.mode_=Mode::CLIENT;
         single_child_queue.insert(make_pair(i.key_, add(i)));
 //		if(i.key_.tier_index_ == this->key.level_ )child_queue.push_back(single_child_queue);
 		child_queue.push_back(single_child_queue);
 	}
 	// infinite loop till kill comes thru
+    if (obj.second->mon_hook_ == NULL) {
+        obj.second->populate(child_queue);
+    } else {
+        obj.second->populate();
+    }
 	while (futureObj.wait_for(std::chrono::microseconds(obj.first.type_.interval)) == std::future_status::timeout) {
 	#ifdef BENCH_TIMER
 			Timer single_loop_timer;

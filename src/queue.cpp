@@ -86,47 +86,80 @@ std::string queue::populate_pythio() {
     return publish(val);
 }
 
+//std::string queue::populate(std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> child_queue_maps) {
+//	// if populate has params, its a knowledge curator
+//	// Takes queues from the vector of child queue maps and populates from there in a breadth first style
+//	// These are generic queues, in s_queues.* you will see queues made to trace the REMCAP, LOAD and AVAIL at
+//	// different tier leveles
+//    #ifdef BENCH_TIMER
+//        Timer pop_timer;
+//        pop_timer.startTime();
+//    #endif
+//	d_dict val;
+//	double second = 0;
+//	auto id = lat_pub_id_;
+//	do {
+//		for (auto i: child_queue_maps) {
+//			for (auto j : i) {
+//				//TODO: Do optional type_ check  HERE
+//                auto k = j.second->redis_->subscribe_next();
+//                if (k) {
+//                    auto l = k->second;
+//                    second += std::stod(l.back().second);
+//
+//                    d_dict val;
+//                    val.push_back({std::to_string(std::time(nullptr)), std::to_string(second)});
+//					#ifdef BENCH_TIMER
+//						Timer pub_timer;
+//						pub_timer.startTime();
+//					#endif
+//					id = publish(val);
+//					#ifdef BENCH_TIMER
+//						pub_timer.endTimeWithPrint("[GenericQueue][Populate(vector)->Publish]");
+//					#endif
+//					lat_pub_id_ = id;
+//				} else {
+//					// what to do if the val is not there?
+//
+//				}
+//			}
+//		}
+//	} while (!is_synced(child_queue_maps));
+//    #ifdef BENCH_TIMER
+//        pop_timer.endTimeWithPrint("[Queue][Populate(vector)]");
+//    #endif
+//	return id;
+//}
+
 std::string queue::populate(std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> child_queue_maps) {
-	// if populate has params, its a knowledge curator
-	// Takes queues from the vector of child queue maps and populates from there in a breadth first style
-	// These are generic queues, in s_queues.* you will see queues made to trace the REMCAP, LOAD and AVAIL at 
-	// different tier leveles
-    #ifdef BENCH_TIMER
-        Timer pop_timer;
+    // if populate has params, its a knowledge curator
+    // Takes queues from the vector of child queue maps and populates from there in a breadth first style
+    // These are generic queues, in s_queues.* you will see queues made to trace the REMCAP, LOAD and AVAIL at
+    // different tier leveles
+#ifdef BENCH_TIMER
+    Timer pop_timer;
         pop_timer.startTime();
-    #endif
-	d_dict val;
-	double second = 0;
-	auto id = lat_pub_id_;
-	do {
-		for (auto i: child_queue_maps) {
-			for (auto j : i) {
-				//TODO: Do optional type_ check  HERE
-                auto k = j.second->redis_->subscribe_next();
-                if (k) {
-                    auto l = k->second;
-                    second += std::stod(l.back().second);
+#endif
+    d_dict val;
+    double second = 0;
+    auto id = lat_pub_id_;
+    for (auto i: child_queue_maps) {
+        for (auto j : i) {
+            //TODO: Do optional type_ check  HERE
+            auto k = j.second->redis_->subscribe_next();
+            if (k) {
+                auto l = k->second;
+                second += std::stod(l.back().second);
 
-                    d_dict val;
-                    val.push_back({std::to_string(std::time(nullptr)), std::to_string(second)});
-					#ifdef BENCH_TIMER
-						Timer pub_timer;
-						pub_timer.startTime();
-					#endif
-					id = publish(val);
-					#ifdef BENCH_TIMER
-						pub_timer.endTimeWithPrint("[GenericQueue][Populate(vector)->Publish]");
-					#endif
-					lat_pub_id_ = id;
-				} else {
-					// what to do if the val is not there?
+                d_dict val;
+                val.push_back({std::to_string(std::time(nullptr)), std::to_string(second)});
+                id = publish(val);
+                lat_pub_id_ = id;
+            } else {
+                // what to do if the val is not there?
 
-				}
-			}
-		}
-	} while (!is_synced(child_queue_maps));
-    #ifdef BENCH_TIMER
-        pop_timer.endTimeWithPrint("[Queue][Populate(vector)]");
-    #endif
-	return id;
+            }
+        }
+    }
+    return id;
 }
