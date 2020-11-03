@@ -22,11 +22,11 @@ int main(int argc, char*argv[]) {
 
     for(int i=0; i < 5; i++) {
         result = insight.get_latest();
-        std::cout << "Current Insight Value:   (" << result.first << "," << result.second << ")" << std::endl;
+//        std::cout << "Current Insight Value:   (" << result.first << "," << result.second << ")" << std::endl;
         result = ssd_capacity.get_latest();
-        std::cout << "Current Memory Capacity: (" << result.first << "," << result.second << ")" << std::endl;
+//        std::cout << "Current Memory Capacity: (" << result.first << "," << result.second << ")" << std::endl;
         result = mem_capacity.get_latest();
-        std::cout << "Current SSD Capacity:    (" << result.first << "," << result.second << ")" << std::endl;
+//        std::cout << "Current SSD Capacity:    (" << result.first << "," << result.second << ")" << std::endl;
         sleep(35);
     }
 

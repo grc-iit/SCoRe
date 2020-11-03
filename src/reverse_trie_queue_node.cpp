@@ -6,6 +6,7 @@
 
 ReverseTrieQueueNode::ReverseTrieQueueNode(ReverseTrieQueueNodeConfig conf, Mode mode) : children() {
 	// Constructor
+    AUTO_TRACER("ReverseTrieQueueNode:Init");
 	this->key = ReverseTrieQueueNodeKey(conf.key_);
 	this->hostname_ = conf.hostname_;
 	this->children = conf.children_;
@@ -17,6 +18,7 @@ ReverseTrieQueueNode::ReverseTrieQueueNode(ReverseTrieQueueNodeConfig conf, Mode
 }
 
 std::shared_ptr<queue> ReverseTrieQueueNode::add(QueueConfig config) {
+    AUTO_TRACER("ReverseTrieQueueNode:SpawnQueue");
 	// add a queue to the RTQN based on the queueconfig
 	std::shared_ptr<queue> t_queue;
 

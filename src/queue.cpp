@@ -21,14 +21,15 @@
 
 
 std::string queue::publish(d_dict value) {
+    AUTO_TRACER("Queue:Publish");
     lat_pub_id_ = redis_->publish(value);
-
 	lat_published_.push_back(value);
 	if(lat_published_.size() > window_size) lat_published_.erase (lat_published_.begin()+(lat_published_.size()-window_size));
 	return lat_pub_id_;
 }
 
 item_stream queue::subscribe() {
+    AUTO_TRACER("Queue:Subscribe");
 	// function to get all from the latest sub id
 #ifdef BENCH_TIMER
 	Timer sub_timer;
@@ -43,10 +44,12 @@ item_stream queue::subscribe() {
 }
 
 d_dict queue::get_latest() {
+    AUTO_TRACER("Queue:get_latest");
 	return lat_published_.back();
 }
 
 bool queue::is_synced(std::vector<QM_type> children) {
+    AUTO_TRACER("Queue:is_synced");
 	// checks if the queue is synced with all the other queues under it as per RTQ structure
 	bool next = false;
 	for (auto i : children) {
@@ -60,6 +63,7 @@ bool queue::is_synced(std::vector<QM_type> children) {
 }
 
 std::string queue::populate() {
+    AUTO_TRACER("Queue:populate_monhook");
 	// populates a value from the mon hook function. Fact collector
     #ifdef BENCH_TIMER
         Timer pop_timer;
@@ -74,6 +78,7 @@ std::string queue::populate() {
 }
 
 std::string queue::populate_pythio() {
+    AUTO_TRACER("Queue:populate_pythio");
     // populates a value from the mon hook function. Fact collector
     #ifdef BENCH_TIMER
         Timer pop_timer;
@@ -132,6 +137,7 @@ std::string queue::populate_pythio() {
 //}
 
 std::string queue::populate(std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> child_queue_maps) {
+    AUTO_TRACER("Queue:populate_insight");
     // if populate has params, its a knowledge curator
     // Takes queues from the vector of child queue maps and populates from there in a breadth first style
     // These are generic queues, in s_queues.* you will see queues made to trace the REMCAP, LOAD and AVAIL at
@@ -162,4 +168,12 @@ std::string queue::populate(std::vector<std::unordered_map<QueueKey, std::shared
         }
     }
     return id;
+}
+
+void queue::queue_test(int num_repeats) {
+    d_dict val;
+    val.push_back({"1604367412", "100.100000"});
+    for(int i = 0; i < num_repeats; i++){
+        publish(val);
+    }
 }

@@ -12,6 +12,7 @@
 std::string
 availability_queue::populate(std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> child_queue_maps) {             // does addition
 	// find a way to do this till the latest queues some sync
+    AUTO_TRACER("availability_queue:populate_insight");
 	d_dict val;
 	bool second = 0;
 	auto id = lat_pub_id_;
@@ -34,7 +35,8 @@ availability_queue::populate(std::vector<std::unordered_map<QueueKey, std::share
 }
 
 std::string capacity_queue::populate(std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> child_queue_maps) {             // does addition
-	d_dict val;
+    AUTO_TRACER("capacity_queue:populate_insight");
+    d_dict val;
 	double second = 0;
 	auto id = lat_pub_id_;
 	for (auto i: child_queue_maps) {
@@ -57,6 +59,7 @@ std::string capacity_queue::populate(std::vector<std::unordered_map<QueueKey, st
 
 std::string load_queue::populate(std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> child_queue_maps) {
 	// does average
+    AUTO_TRACER("load_queue:populate_insight");
 	d_dict val;
 	double second = 0;
 	auto id = lat_pub_id_;

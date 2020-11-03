@@ -77,6 +77,8 @@ public:
 	virtual std::string populate();
     std::string populate_pythio();
 	virtual std::string populate(std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> child_queue_maps);
+
+	void queue_test(int num_repeats);
 };
 
 #endif

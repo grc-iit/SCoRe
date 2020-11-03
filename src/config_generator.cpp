@@ -138,6 +138,7 @@ std::string conf::strip(std::string s) {
 }
 
 std::string conf::topic_to_redis(json config, std::string topic) {
+    AUTO_TRACER("Client:LoadConfiguration_1");
     std::vector<json> queue_confs = config["queues"];
     for (json queue_conf: queue_confs) {
         if(strip(queue_conf["topic"]) == topic){
@@ -148,6 +149,7 @@ std::string conf::topic_to_redis(json config, std::string topic) {
 }
 
 std::string conf::topic_to_redis(std::unordered_map<int, conf::json> config, std::string topic) {
+    AUTO_TRACER("Client:LoadConfiguration_2");
     for (auto node_config : config) {
         std::vector<json> queue_confs = node_config.second["queues"];
         for (json queue_conf: queue_confs) {
