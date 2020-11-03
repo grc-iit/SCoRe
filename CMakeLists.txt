@@ -32,7 +32,9 @@ set(SCORE_COMMON include/reverse_trie_queue_node_config.h src/reverse_trie_queue
         include/config_generator.h src/config_generator.cpp
         include/SCoRe.h src/SCoRe.cpp)
 
-set(DEBUG_COMMON src/debug.cpp src/timer.cpp)
+set(DEBUG_COMMON include/timer.h src/timer.cpp
+        scs_io_common/include/common/debug.h scs_io_common/src/common/debug.cpp
+        scs_io_common/include/tuple_iter.h)
 
 add_executable(SCoRe ${QUEUE_COMMON} ${SCORE_COMMON} main.cpp)
 target_link_libraries(SCoRe ${LIBS})
