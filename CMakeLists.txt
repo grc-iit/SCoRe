@@ -6,7 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 #add_subdirectory(scs_io_common)
 include_directories(scs_io_common/include)
 include_directories(include)
-#set(LIBS -lpthread -lrpc  -lhiredis -lredis++ -lmpi -L${CMAKE_BINARY_DIR}/scs_io_common -lscs_io_common)
+#set(LIBS -lpthread -lrpc  -lhiredis -lredis++ -lmpi -luv -L${CMAKE_BINARY_DIR}/scs_io_common -lscs_io_common)
 set(LIBS -lpthread -lrpc  -lhiredis -lredis++ -lmpi -luv)
 #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D BENCH_TIMER")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCOMMON_DEBUG_MSG")
@@ -34,9 +34,9 @@ set(SCORE_COMMON include/reverse_trie_queue_node_config.h src/reverse_trie_queue
 
 set(DEBUG_COMMON include/timer.h src/timer.cpp
         scs_io_common/include/common/debug.h scs_io_common/src/common/debug.cpp
-        scs_io_common/include/tuple_iter.h)
+        scs_io_common/include/common/tuple_iter.h)
 
-add_executable(SCoRe ${QUEUE_COMMON} ${SCORE_COMMON} main.cpp)
+add_executable(SCoRe ${QUEUE_COMMON} ${SCORE_COMMON} ${DEBUG_COMMON} main.cpp)
 target_link_libraries(SCoRe ${LIBS})
 
 add_executable(client ${QUEUE_COMMON} ${SCORE_COMMON} ${DEBUG_COMMON} client.cpp)
