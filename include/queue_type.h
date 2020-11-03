@@ -14,7 +14,7 @@ class QueueType  {
 public:
 
 	QueueValue value;
-	uint16_t interval;
+	uint64_t interval;
 
 	QueueType(const QueueType  &type);
 	QueueType(QueueValue v, float intrv);

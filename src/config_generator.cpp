@@ -62,20 +62,20 @@ conf::map_to_ReverseTriequeueNodeConfig(int me, std::unordered_map<int, conf::js
 
 ReverseTrieQueueNodeKey conf::json_to_ReverseTriequeueNodeKey(conf::json rtq_key_json) {
 	std::string rtqt = strip(rtq_key_json["type"]);
-	ReverseTriequeueNodeType rtq_type = rtqt.compare("ROOT") ? ReverseTriequeueNodeType::ROOT :
-	                                    rtqt.compare("NODE") ? ReverseTriequeueNodeType::NODE :
-	                                    rtqt.compare("LEAF") ? ReverseTriequeueNodeType::LEAF :
+	ReverseTriequeueNodeType rtq_type = rtqt == "ROOT" ? ReverseTriequeueNodeType::ROOT :
+	                                    rtqt == "NODE" ? ReverseTriequeueNodeType::NODE :
+	                                    rtqt == "LEAF" ? ReverseTriequeueNodeType::LEAF :
 	                                    ReverseTriequeueNodeType::RTQ_UNDEFINED;
-	return ReverseTrieQueueNodeKey(rtq_key_json["node_index"], rtq_key_json["level"], rtq_type);
+ 	return ReverseTrieQueueNodeKey(rtq_key_json["node_index"], rtq_key_json["level"], rtq_type);
 }
 
 QueueConfig conf::json_to_QueueConfig(conf::json queue_config) {
 	std::string hook_ = strip(queue_config["hook"]);
 
-	double_function hook = hook_.compare("CAPACITY") ? mon::cap_hook :
-	                       hook_.compare("LOAD") ? mon::load_hook :
-	                       hook_.compare("AVAILABILITY") ? mon::avail_hook :
-	                       NULL;
+	double_function hook = hook_ == "CAPACITY" ? mon::cap_hook :
+	                       hook_ == "LOAD" ? mon::load_hook :
+	                       hook_ == "AVAILABILITY" ? mon::avail_hook :
+	                       nullptr;
 
 	auto topic = strip(queue_config["topic"]);
 	auto url = strip(queue_config["url"]);
@@ -84,8 +84,8 @@ QueueConfig conf::json_to_QueueConfig(conf::json queue_config) {
 
     json pyhtio_key_json = queue_config["pythio"];
     auto json_model = strip(pyhtio_key_json["model"]);
-    Model model = json_model.compare("LINEAR") ? Model::LINEAR :
-                  json_model.compare("QUAD") ? Model::QUAD :
+    Model model = json_model == "MODEL_LINEAR" ? Model::LINEAR :
+                  json_model == "MODEL_QUAD" ? Model::QUAD :
                   Model::OTHER;
     std::string weights = strip(pyhtio_key_json["weights"]);
 
@@ -93,7 +93,7 @@ QueueConfig conf::json_to_QueueConfig(conf::json queue_config) {
 	QueueKey queue_key = json_to_QueueKey(queue_key_json);
 
 	std::string mode_ = strip(queue_key_json["mode"]);
-	Mode mode = mode_.compare("SERVER") ? Mode::SERVER : Mode::CLIENT;
+	Mode mode = mode_ == "SERVER" ? Mode::SERVER : Mode::CLIENT;
 
 	return QueueConfig(queue_key, url, topic, mode, hook, model, weights, queue_port);
 
@@ -105,7 +105,7 @@ QueueKey conf::json_to_QueueKey(conf::json queue_key_json) {
 	json queue_type_json = queue_key_json["type"];
 	QueueType queue_type = json_to_QueueType(queue_type_json);
 	std::string mode_ = queue_key_json["mode"];
-	Mode mode = mode_.compare("SERVER") ? Mode::SERVER : Mode::CLIENT;
+	Mode mode = mode_ == "SERVER" ? Mode::SERVER : Mode::CLIENT;
 
 	return QueueKey(node_index, tier_index, queue_type, mode);
 }
@@ -114,15 +114,15 @@ QueueType conf::json_to_QueueType(conf::json queue_type_json) {
 	int interval = queue_type_json["interval"];
 	auto value = strip(queue_type_json["value"]);
 	// can be expanded QueueValue for more shyte
-	QueueValue queue_value = value.compare("NODE_CAPACITY") ? QueueValue::NODE_CAPACITY :
-	                         value.compare("NODE_LOAD") ? QueueValue::NODE_LOAD :
-	                         value.compare("NODE_AVAILABILITY") ? QueueValue::NODE_AVAILABILITY :
-	                         value.compare("TIER_CAPACITY") ? QueueValue::TIER_CAPACITY :
-	                         value.compare("TIER_LOAD") ? QueueValue::TIER_LOAD :
-	                         value.compare("TIER_AVAILABILITY") ? QueueValue::TIER_AVAILABILITY :
-	                         value.compare("CLUSTER_CAPACITY") ? QueueValue::CLUSTER_CAPACITY :
-	                         value.compare("CLUSTER_LOAD") ? QueueValue::CLUSTER_LOAD :
-	                         value.compare("CLUSTER_AVAILABILITY") ? QueueValue::CLUSTER_AVAILABILITY :
+	QueueValue queue_value = value == "NODE_CAPACITY" ? QueueValue::NODE_CAPACITY :
+	                         value == "NODE_LOAD" ? QueueValue::NODE_LOAD :
+	                         value == "NODE_AVAILABILITY" ? QueueValue::NODE_AVAILABILITY :
+	                         value == "TIER_CAPACITY" ? QueueValue::TIER_CAPACITY :
+	                         value == "TIER_LOAD" ? QueueValue::TIER_LOAD :
+	                         value == "TIER_AVAILABILITY" ? QueueValue::TIER_AVAILABILITY :
+	                         value == "CLUSTER_CAPACITY" ? QueueValue::CLUSTER_CAPACITY :
+	                         value == "CLUSTER_LOAD" ? QueueValue::CLUSTER_LOAD :
+	                         value == "CLUSTER_AVAILABILITY" ? QueueValue::CLUSTER_AVAILABILITY :
 	                         QueueValue::Q_UNDEFINED;
 
 	auto queue_type_ = QueueType(queue_value, interval);
@@ -136,3 +136,28 @@ std::string conf::strip(std::string s) {
 	);
 	return s;
 }
+
+std::string conf::topic_to_redis(json config, std::string topic) {
+    AUTO_TRACER("Client:LoadConfiguration_1");
+    std::vector<json> queue_confs = config["queues"];
+    for (json queue_conf: queue_confs) {
+        if(strip(queue_conf["topic"]) == topic){
+            return strip(queue_conf["url"]);
+        }
+    }
+    return "";
+}
+
+std::string conf::topic_to_redis(std::unordered_map<int, conf::json> config, std::string topic) {
+    AUTO_TRACER("Client:LoadConfiguration_2");
+    for (auto node_config : config) {
+        std::vector<json> queue_confs = node_config.second["queues"];
+        for (json queue_conf: queue_confs) {
+            if(strip(queue_conf["topic"]) == topic){
+                return strip(queue_conf["url"]);
+            }
+        }
+    }
+    return "";
+}
+

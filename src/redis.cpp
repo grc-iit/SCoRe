@@ -2,10 +2,12 @@
 // Created by neeraj on 4/26/20.
 //
 
+#include <common/debug.h>
 #include "redis.h"
 
 redis_client::redis_client(std::string url, std::string topic) {
 	// constructor
+    AUTO_TRACER("Redis:Init");
 	auto t = new sw::redis::Redis(url);
 	this->topic = topic;
 	this->redis = std::shared_ptr<sw::redis::Redis>(t);
@@ -29,6 +31,7 @@ redis_client &redis_client::operator=(redis_client obj) {
 
 item_stream redis_client::subscribe_all() {
 	// gets everything from the last subscribed id
+    AUTO_TRACER("Redis:subscribe_all_1");
 	item_stream result;
 	this->redis->xrange(topic, this->latest_sub_id, "+", std::back_inserter(result));
 	this->latest_sub_id = result.back().first;
@@ -38,6 +41,7 @@ item_stream redis_client::subscribe_all() {
 
 item_stream redis_client::subscribe_all(std::string ls_id) {
 	// gets everything from ls_id (list id)
+    AUTO_TRACER("Redis:subscribe_all_2");
 	item_stream result;
 	this->redis->xrange(topic, ls_id, "+", std::back_inserter(result));
 	this->latest_sub_id = result.back().first;
@@ -46,6 +50,7 @@ item_stream redis_client::subscribe_all(std::string ls_id) {
 }
 
 std::string redis_client::publish(d_dict val) {
+    AUTO_TRACER("Redis:publish");
 	// publishs val to the queue, the topic is fixed per queue
 	this->latest_entry = val;
 	auto begin = val.begin();
@@ -59,6 +64,7 @@ std::string redis_client::publish(d_dict val) {
 }
 
 std::optional<item> redis_client::subscribe_next() { // << TODO change this to optional so that --- *
+    AUTO_TRACER("Redis:subscribe_next");
 	// gets the next entry in the queue. 
 	std::vector<sw::redis::Optional<std::pair<std::string, item_stream>>> result;
 	auto cur_id = this->latest_sub_id;

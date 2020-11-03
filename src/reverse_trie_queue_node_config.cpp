@@ -9,7 +9,7 @@ ReverseTrieQueueNodeConfig ReverseTrieQueueNode::LoadConfiguration(std::string c
 	 * Load file from json (std::unordered_map<int,ReverseTrieQueueNodeConfig>)
 	 * and build the config (select the correct node_index)
 	 */
-
+    AUTO_TRACER("ReverseTrieQueueNode:LoadConfiguration");
 	// TODO this here
 	auto jason_map = conf::config_mapper(cluster_conf);
 	auto rtq_config = conf::map_to_ReverseTriequeueNodeConfig(node_index, jason_map);

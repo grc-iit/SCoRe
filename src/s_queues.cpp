@@ -12,132 +12,71 @@
 std::string
 availability_queue::populate(std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> child_queue_maps) {             // does addition
 	// find a way to do this till the latest queues some sync
-
-    #ifdef BENCH_TIMER
-        Timer pop_timer;
-        pop_timer.startTime();
-    #endif
+    AUTO_TRACER("availability_queue:populate_insight");
 	d_dict val;
 	bool second = 0;
 	auto id = lat_pub_id_;
-	while (!is_synced(child_queue_maps)) {
-		for (auto i: child_queue_maps) {
-			for (auto j : i) {
-				// << TODO Do optional type_ check  HERE
-				auto k = j.second->redis_->subscribe_next();
-				if (k) {
-					auto l = k->second;
-                    // here the OR operation is done on the data
-                    second |= (bool) std::stoi(l.back().second);
-
-                    d_dict val;
-                    val.push_back({std::to_string(std::time(nullptr)), std::to_string(second)});
-					#ifdef BENCH_TIMER
-						Timer pub_timer;
-						pub_timer.startTime();
-					#endif
-
-					id = publish(val);
-
-					#ifdef BENCH_TIMER
-						pub_timer.endTimeWithPrint("[AvailabilityQueue][Populate(vector)->Publish]");
-					#endif
-
-
-				} else {
-					// what to do if the val is not there?
-
-				}
+	for (auto i: child_queue_maps) {
+		for (auto j : i) {
+			// << TODO Do optional type_ check  HERE
+			auto k = j.second->redis_->subscribe_next();
+			if (k) {
+				auto l = k->second;
+				// here the OR operation is done on the data
+				second |= (bool) std::stoi(l.back().second);
+			} else {
+				// what to do if the val is not there?
 			}
 		}
 	}
-    #ifdef BENCH_TIMER
-        pop_timer.endTimeWithPrint("[AvailabilityQueue][Populate(vector)]");
-    #endif
+	val.push_back({std::to_string(std::time(nullptr)), std::to_string(second)});
+	id = publish(val);
 	return id;
 }
 
 std::string capacity_queue::populate(std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> child_queue_maps) {             // does addition
-    #ifdef BENCH_TIMER
-        Timer pop_timer;
-        pop_timer.startTime();
-    #endif
-	d_dict val;
+    AUTO_TRACER("capacity_queue:populate_insight");
+    d_dict val;
 	double second = 0;
 	auto id = lat_pub_id_;
-	while (!is_synced(child_queue_maps)) {
-		for (auto i: child_queue_maps) {
-			for (auto j : i) {
-				// << TODO Do optional type_ check  HERE
-                auto k = j.second->redis_->subscribe_next();
-                if (k) {
-                    auto l = k->second;
-                    // Summation is done for the cacpacity
-                    second += std::stod(l.back().second);
-
-                    d_dict val;
-                    val.push_back({std::to_string(std::time(nullptr)), std::to_string(second)});
-					#ifdef BENCH_TIMER
-						Timer pub_timer;
-						pub_timer.startTime();
-					#endif
-					id = publish(val);
-					#ifdef BENCH_TIMER
-						pub_timer.endTimeWithPrint("[CapacityQueue][Populate(vector)->Publish]");
-					#endif
-
-
-				} else {
-					// what to do if the val is not there?
-
-				}
+	for (auto i: child_queue_maps) {
+		for (auto j : i) {
+			// << TODO Do optional type_ check  HERE
+			auto k = j.second->redis_->subscribe_next();
+			if (k) {
+				auto l = k->second;
+				// Summation is done for the cacpacity
+				second += std::stod(l.back().second);
+			} else {
+				// what to do if the val is not there?
 			}
 		}
 	}
-    #ifdef BENCH_TIMER
-        pop_timer.endTimeWithPrint("[CapacityQueue][Populate(vector)]");
-    #endif
+	val.push_back({std::to_string(std::time(nullptr)), std::to_string(second)});
+	id = publish(val);
 	return id;
 }
 
 std::string load_queue::populate(std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> child_queue_maps) {
 	// does average
-    #ifdef BENCH_TIMER
-        Timer pop_timer;
-        pop_timer.startTime();
-    #endif
+    AUTO_TRACER("load_queue:populate_insight");
 	d_dict val;
 	double second = 0;
 	auto id = lat_pub_id_;
-	while (!is_synced(child_queue_maps)) {
-		for (auto i: child_queue_maps) {
-			for (auto j : i) {
-				// << TODO Do optional type_ check  HERE
-                auto k = j.second->redis_->subscribe_next();
-                if (k) {
-                    auto l = k->second;
-                    // Summation done here
-                    second += std::stod(l.back().second);
-
-                    d_dict val;
-                    val.push_back({std::to_string(std::time(nullptr)), std::to_string(second)});
-					#ifdef BENCH_TIMER
-						Timer pub_timer;
-						pub_timer.startTime();
-					#endif
-					id = publish(val);
-					#ifdef BENCH_TIMER
-						pub_timer.endTimeWithPrint("[LoadQueue][Populate(vector)->Publish]");
-					#endif
-
-				} else {
-					// what to do if the val is not there?
-				}
+	for (auto i: child_queue_maps) {
+		for (auto j : i) {
+			// << TODO Do optional type_ check  HERE
+			auto k = j.second->redis_->subscribe_next();
+			if (k) {
+				auto l = k->second;
+				// Summation done here
+				second += std::stod(l.back().second);
+			} else {
+				return "0";
 			}
 		}
 	}
-    #ifdef BENCH_TIMER
-        pop_timer.endTimeWithPrint("[LoadQueue][Populate(vector)]");
-    #endif
+	val.push_back({std::to_string(std::time(nullptr)), std::to_string(second)});
+	id = publish(val);
 	return id;
 }

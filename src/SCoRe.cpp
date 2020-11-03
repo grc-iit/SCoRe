@@ -2,23 +2,26 @@
 // Created by neeraj on 4/30/20.
 //
 
+#include <config_generator.h>
 #include "SCoRe.h"
 
-client::SCoRe::SCoRe() {
-	url_ = "127.0.0.1";
-	port_ = 6666;
-	auto client = new rpc::client(this->url_, this->port_);
-	this->client_ = client;
+client::SCoRe::SCoRe(std::string config_path, std::string topic, int node) {
+    AUTO_TRACER("Client:Init_1");
+    auto jason_map = conf::config_mapper(config_path);
+    std::string redis_url = conf::topic_to_redis(jason_map[node], topic);
+    client_ = std::make_shared<redis_client>(redis_url, topic);
 }
 
-client::SCoRe::SCoRe(std::string url, uint16_t port) {
-	url_ = url;
-	port_ = port;
-    client_ = new rpc::client(this->url_, this->port_); //Urk and port of the score server
+client::SCoRe::SCoRe(std::string config_path, std::string topic) {
+    AUTO_TRACER("Client:Init_2");
+    auto jason_map = conf::config_mapper(config_path);
+    std::string redis_url = conf::topic_to_redis(jason_map, topic);
+    client_ = std::make_shared<redis_client>(redis_url, topic);
 }
 
-void client::SCoRe::get_latest() {
-	client_->call("get_latest").as<d_dict>();
+std::pair<std::string, std::string> client::SCoRe::get_latest() {
+    AUTO_TRACER("Client:get_latest");
+	return client_->subscribe_all().back().second.back();
 }
 
 /********************************************************************************************************************/

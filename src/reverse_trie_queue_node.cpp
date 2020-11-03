@@ -6,6 +6,7 @@
 
 ReverseTrieQueueNode::ReverseTrieQueueNode(ReverseTrieQueueNodeConfig conf, Mode mode) : children() {
 	// Constructor
+    AUTO_TRACER("ReverseTrieQueueNode:Init");
 	this->key = ReverseTrieQueueNodeKey(conf.key_);
 	this->hostname_ = conf.hostname_;
 	this->children = conf.children_;
@@ -45,6 +46,7 @@ int64_t ReverseTrieQueueNode::PythioInterval(double last_val, double curr_val) {
 }
 
 std::shared_ptr<queue> ReverseTrieQueueNode::add(QueueConfig config) {
+    AUTO_TRACER("ReverseTrieQueueNode:SpawnQueue");
 	// add a queue to the RTQN based on the queueconfig
 	std::shared_ptr<queue> t_queue;
 
@@ -115,6 +117,7 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
 	std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> child_queue = {};
 	for (QueueConfig i : children) {
         std::unordered_map<QueueKey, std::shared_ptr<queue>> single_child_queue;
+        i.mode_=Mode::CLIENT;
         single_child_queue.insert(make_pair(i.key_, add(i)));
 //		if(i.key_.tier_index_ == this->key.level_ )child_queue.push_back(single_child_queue);
 		child_queue.push_back(single_child_queue);

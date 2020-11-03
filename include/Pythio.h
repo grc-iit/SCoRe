@@ -9,6 +9,7 @@
 #include <string>
 #include "enum.h"
 #include "redis.h"
+#include <common/debug.h>
 
 class Pythio {
     Model model_;
@@ -16,6 +17,7 @@ class Pythio {
 
 public:
     Pythio(Model model, std::string weights):model_(model), weights_(weights){
+        AUTO_TRACER("Pythio:Init");
         //Do Some initialization, aka load the module
     };
     Pythio(const Pythio &obj)=default;

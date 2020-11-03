@@ -8,20 +8,15 @@
 #include <rpc/server.h>
 #include <rpc/client.h>
 #include "redis.h"
-#include "reverse_trie_queue.h"
 
 namespace client {
 	class SCoRe {
-		rpc::client *client_;
-		std::string url_;
-		uint16_t port_;
+		std::shared_ptr<redis_client> client_;
 
 	public:
-		SCoRe();
-
-		SCoRe(std::string url, uint16_t port);
-
-		void get_latest();
+        SCoRe(std::string config_path, std::string topic, int node);
+        SCoRe(std::string config_path, std::string topic);
+        std::pair<std::string, std::string> get_latest();
 	};
 }
 
