@@ -9,6 +9,7 @@
 #include <chrono>
 #include <thread>
 #include <future>
+#include <tuple>
 #include "mon_hooks.h"
 #include "s_queues.h"
 #include "reverse_trie_queue_node_key.h"
