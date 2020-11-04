@@ -182,53 +182,75 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
 	uv_loop_t *loop;
 	loop = uv_default_loop();
 	uv_timer_t timer_req;
+	uv_timer_t timer_req2;
 	uv_timer_init(loop, &timer_req);
-	uv_timer_cb populate_cb = [](uv_timer_t *handle){
-    #ifdef BENCH_TIMER
-        Timer single_loop_timer;
-        single_loop_timer.startTime();
-    #endif
-         auto data = (std::pair<std::pair<QueueKey, std::shared_ptr<queue>>,  std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>>> *)handle->data;
-         auto obj = data->first;
-         auto child_queue = data->second;
-	    if (obj.second->mon_hook_ == NULL) {
-            obj.second->populate(child_queue);
-        }
-	    else {
-	        obj.second->populate();
-	    }
-	    int64_t new_repeat = PopulateInterval();
-	    uv_timer_set_repeat(handle, new_repeat);
-    #ifdef BENCH_TIMER
-        // some ugly formatting here [RTQN][single loop(pair)]2[0.000142] < -- the 2 is off see?
-        std::string prt_str = "[RTQN][single loop(pair)]" + std::to_string(obj.second->mon_hook == NULL? -1 : child_queue.size());
-	    single_loop_timer.endTimeWithPrint(prt_str.c_str());
-    #endif
-	};
-    uv_timer_cb populate_pythio_cb = [](uv_timer_t *handle){
+	uv_timer_init(loop, &timer_req2);
+    uv_timer_cb populate_cb = [](uv_timer_t *handle){
 #ifdef BENCH_TIMER
         Timer single_loop_timer;
         single_loop_timer.startTime();
 #endif
-        auto data = (std::pair<std::pair<QueueKey, std::shared_ptr<queue>>,  std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>>> *)handle->data;
-        auto obj = data->first;
-        auto child_queue = data->second;
-        obj.second->populate_pythio();
-        int64_t new_repeat = PythioInterval();
-        // How much reduce or increase interval to get expected rate?
-        uv_timer_set_repeat(handle, new_repeat);
+        auto data = (std::tuple<ReverseTrieQueueNode *, std::pair<QueueKey, std::shared_ptr<queue>>,  std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>>, uv_timer_t *> *)handle->data;
+        auto rtqn = std::get<0>(*data);
+        auto obj = std::get<1>(*data);
+        auto child_queue = std::get<2>(*data);
+        auto handle2 = std::get<3>(*data);
+        std::string val;
+        if (obj.second->mon_hook_ == NULL) {
+            val = obj.second->populate(child_queue);
+        } else {
+            val = obj.second->populate();
+        }
+        double curr_val = std::strtod(val.data(), NULL);
+        if (rtqn->last_measured_ > -1) {
+            rtqn->populate_interval_ = rtqn->PopulateInterval(rtqn->last_measured_, curr_val);
+            uv_timer_set_repeat(handle, rtqn->populate_interval_ / 1000);
+            uv_timer_set_repeat(handle2, rtqn->populate_interval_ / (1000 * rtqn->pythio_ratio_));
+        }
+        rtqn->last_measured_ = curr_val;
 #ifdef BENCH_TIMER
         // some ugly formatting here [RTQN][single loop(pair)]2[0.000142] < -- the 2 is off see?
         std::string prt_str = "[RTQN][single loop(pair)]" + std::to_string(obj.second->mon_hook == NULL? -1 : child_queue.size());
 	    single_loop_timer.endTimeWithPrint(prt_str.c_str());
 #endif
     };
-    static std::pair<std::pair<QueueKey, std::shared_ptr<queue>>,  std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>>> dat = std::make_pair(obj, child_queue);
+    uv_timer_cb populate_pythio_cb = [](uv_timer_t *handle){
+#ifdef BENCH_TIMER
+        Timer single_loop_timer;
+        single_loop_timer.startTime();
+#endif
+        auto data = (std::tuple<ReverseTrieQueueNode *, std::pair<QueueKey, std::shared_ptr<queue>>> *)handle->data;
+        auto rtqn = std::get<0>(*data);
+        auto obj = std::get<1>(*data);
+        std::string val = obj.second->populate_pythio();
+        double curr_val = std::strtod(val.data(), NULL);
+        rtqn->last_predicted_ = curr_val;
+#ifdef BENCH_TIMER
+        // some ugly formatting here [RTQN][single loop(pair)]2[0.000142] < -- the 2 is off see?
+        std::string prt_str = "[RTQN][single loop(pair)]" + std::to_string(obj.second->mon_hook == NULL? -1 : child_queue.size());
+	    single_loop_timer.endTimeWithPrint(prt_str.c_str());
+#endif
+    };
+    fluctuation_percentage_ = 0.1;
+    last_measured_ = -1;
+    last_predicted_ = -1;
+    pythio_ratio_ = 1;
+    pythio_counter_ = 1;
+    populate_interval_ = std::chrono::microseconds(obj.first.type_.interval).count();
+    if (obj.second->mon_hook_ == NULL) {
+        obj.second->populate(child_queue);
+    } else {
+        obj.second->populate();
+    }
+    std::tuple<ReverseTrieQueueNode *, std::pair<QueueKey, std::shared_ptr<queue>>,
+            std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>>, uv_timer_t *> dat = std::make_tuple(this, obj, child_queue, &timer_req2);
     timer_req.data = &dat;
-    uv_timer_start(&timer_req, populate_cb, 0, std::chrono::milliseconds(obj.first.type_.interval).count());
-    uv_timer_start(&timer_req, populate_pythio_cb, 0, std::chrono::milliseconds(1000).count());
+    std::tuple<ReverseTrieQueueNode *, std::pair<QueueKey, std::shared_ptr<queue>>> dat2 = std::make_tuple(this, obj);
+    timer_req2.data = &dat2;
+    uv_timer_start(&timer_req, populate_cb, MIN_DELAY_TIME / 1000, populate_interval_ / 1000);
+    uv_timer_start(&timer_req2, populate_pythio_cb, MIN_DELAY_TIME / 1000, populate_interval_ / (1000 * pythio_ratio_));
     uv_run(loop, UV_RUN_DEFAULT);
-	*/
+    */
 	/* Single thread idea: Outer loop monitoring, inner loop pythio, monitor time defined as time of n pythios. */
     /*
 	fluctuation_percentage_ = 0.1;
