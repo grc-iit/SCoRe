@@ -14,7 +14,7 @@
           "mode" : "SERVER",
           "type": {
             "value": "TIER_CAPACITY",
-            "interval": 30000000
+            "interval": 1000000
           }
         },
         "url": "tcp://localhost",
@@ -46,7 +46,7 @@
           "mode" : "SERVER",
           "type": {
             "value": "NODE_CAPACITY",
-            "interval": 30000000
+            "interval": 1000000
           }
         },
         "url": "tcp://localhost",
@@ -65,7 +65,7 @@
           "mode" : "SERVER",
           "type": {
             "value": "NODE_CAPACITY",
-            "interval": 30000000
+            "interval": 1000000
           }
         },
         "url": "tcp://localhost",

@@ -23,6 +23,7 @@ set(QUEUE_COMMON src/queue.cpp include/queue.h
         include/queue_config.h src/queue_config.cpp
         include/s_queues.h src/s_queues.cpp
         include/enum.h
+        include/constants.h
         include/Pythio.h src/Pythio.cpp)
 
 set(SCORE_COMMON include/reverse_trie_queue_node_config.h src/reverse_trie_queue_node_config.cpp

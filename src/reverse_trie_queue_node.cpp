@@ -19,11 +19,11 @@ ReverseTrieQueueNode::ReverseTrieQueueNode(ReverseTrieQueueNodeConfig conf, Mode
 
 int64_t ReverseTrieQueueNode::PopulateInterval(double last_val, double curr_val) {
     if (curr_val < last_val*(1+fluctuation_percentage_) && curr_val > last_val * (1 - fluctuation_percentage_)) {
-        return populate_interval_ += 10000;
+        return populate_interval_ += 100000;
     }
     else {
-        if (populate_interval_ > 10000) {
-            return populate_interval_ -= 10000;
+        if (populate_interval_ - 100000 > MIN_DELAY_TIME) {
+            return populate_interval_ -= 100000;
         }
         else {
             return populate_interval_;
@@ -136,25 +136,26 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
         auto rtqn = std::get<0>(*data);
         auto obj = std::get<1>(*data);
         auto child_queue = std::get<2>(*data);
-        if (obj.second->mon_hook_ == NULL) {
-            obj.second->populate(child_queue);
-        } else {
-            if (rtqn->pythio_counter_ < rtqn->pythio_ratio_) {
-                rtqn->pythio_counter_++;
-                std::string val = obj.second->populate_pythio();
-                double curr_val = std::strtod(val.data(), NULL);
-                rtqn->last_predicted_ = curr_val;
+        if (rtqn->pythio_counter_ < rtqn->pythio_ratio_) {
+            rtqn->pythio_counter_++;
+            std::string val = obj.second->populate_pythio();
+            double curr_val = std::strtod(val.data(), NULL);
+            rtqn->last_predicted_ = curr_val;
+        }
+        else {
+            rtqn->pythio_counter_ = 0;
+            std::string val;
+            if (obj.second->mon_hook_ == NULL) {
+                val = obj.second->populate(child_queue);
+            } else {
+                val = obj.second->populate();
             }
-            else {
-                rtqn->pythio_counter_ = 0;
-                std::string val = obj.second->populate();
-                double curr_val = std::strtod(val.data(), NULL);
-                if (rtqn->last_measured_ > -1) {
-                    rtqn->populate_interval_ = rtqn->PopulateInterval(rtqn->last_measured_, curr_val);
-                    uv_timer_set_repeat(handle, rtqn->populate_interval_);
-                }
-                rtqn->last_measured_ = curr_val;
+            double curr_val = std::strtod(val.data(), NULL);
+            if (rtqn->last_measured_ > -1) {
+                rtqn->populate_interval_ = rtqn->PopulateInterval(rtqn->last_measured_, curr_val);
+                uv_timer_set_repeat(handle, rtqn->populate_interval_ / 1000);
             }
+            rtqn->last_measured_ = curr_val;
         }
 #ifdef BENCH_TIMER
         // some ugly formatting here [RTQN][single loop(pair)]2[0.000142] < -- the 2 is off see?
@@ -167,10 +168,15 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
     last_predicted_ = -1;
     pythio_ratio_ = 1;
     pythio_counter_ = 1;
-    populate_interval_ = std::chrono::milliseconds(obj.first.type_.interval).count();
+    populate_interval_ = std::chrono::microseconds(obj.first.type_.interval).count();
+    if (obj.second->mon_hook_ == NULL) {
+        obj.second->populate(child_queue);
+    } else {
+        obj.second->populate();
+    }
     static std::tuple<ReverseTrieQueueNode *, std::pair<QueueKey, std::shared_ptr<queue>>,  std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>>> dat = std::make_tuple(this, obj, child_queue);
     timer_req.data = &dat;
-    uv_timer_start(&timer_req, populate_cb, 0, std::chrono::milliseconds(obj.first.type_.interval).count());
+    uv_timer_start(&timer_req, populate_cb, MIN_DELAY_TIME / 1000, populate_interval_ / 1000);
     uv_run(loop, UV_RUN_DEFAULT);
 	/*
 	uv_loop_t *loop;
