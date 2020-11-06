@@ -28,8 +28,8 @@ template<>
 class std::hash<QueueType> {
 public:
 	int operator()(const QueueType &q) const {
-		size_t hash_val = hash<QueueValue>()(q.value);
-		hash_val ^= hash<float>()(q.interval);
+		size_t hash_val = hash<QueueValue>()(q.value_);
+		hash_val ^= hash<float>()(q.base_interval_);
 		return hash_val;
 	}
 };

@@ -13,13 +13,17 @@
 class QueueType  {
 public:
 
-	QueueValue value;
-	uint64_t interval;
+	QueueValue value_;
+	uint64_t base_interval_;
+	float increase_factor_;
+	uint64_t pythio_interval_;
 
-	QueueType(const QueueType  &type);
-	QueueType(QueueValue v, float intrv);
-	QueueType();
-    QueueType &operator=(const QueueType &other);
+
+	QueueType()=default;
+	QueueType(QueueValue v, int base_interval, float increase_factor, int pythio_interval):value_(v),
+			base_interval_(base_interval), increase_factor_(increase_factor), pythio_interval_(pythio_interval){}
+	QueueType(const QueueType  &type)=default;
+    QueueType &operator=(const QueueType &other)=default;
 	bool operator==(QueueType obj) const;
 };
 

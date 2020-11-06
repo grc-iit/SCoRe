@@ -12,10 +12,12 @@ double mon::load_hook() {
 }
 
 double mon::cap_hook() {
-    AUTO_TRACER("HDF5Client::GetCurrentCapacity");
+    AUTO_TRACER("Hook::GetCurrentCapacity");
     /*auto was_changed = is_changed.Get((std::to_string(HERMES_CONF->MY_SERVER)+"_"+std::to_string(layer.id_)));
     if (!was_changed.first || was_changed.second == 0) {*/
     /* run system command du -s to calculate size of director. */
+    // /mnt/ssd/jcernudagarcia
+    // /mnt/hdd/jcernudagarcia
     std::string cmd = "du -s -B1 /home/ | awk {'print$1'}";
     FILE *fp;
     std::array<char, 128> buffer;
