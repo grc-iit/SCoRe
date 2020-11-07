@@ -18,7 +18,7 @@ double mon::cap_hook() {
     /* run system command du -s to calculate size of director. */
     // /mnt/ssd/jcernudagarcia
     // /mnt/hdd/jcernudagarcia
-    std::string cmd = "du -s -B1 /home/ | awk {'print$1'}";
+    std::string cmd = "df | awk '{if ($6 ~ \"/\") print $4}'";
     FILE *fp;
     std::array<char, 128> buffer;
     std::string result;

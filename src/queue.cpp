@@ -35,7 +35,7 @@ item_stream queue::subscribe() {
 	Timer sub_timer;
 	sub_timer.startTime();
 #endif
-	item_stream result = redis_->subscribe_all(lat_sub_id_);
+	item_stream result = redis_->subscribe_last();
 	lat_sub_id_ = result.back().first;
 #ifdef BENCH_TIMER
 	sub_timer.endTimeWithPrint("[Queue][Subscribe()]");
@@ -170,10 +170,38 @@ std::string queue::populate(std::vector<std::unordered_map<QueueKey, std::shared
     return id;
 }
 
-void queue::queue_test(int num_repeats) {
+std::string gen_random(const int len) {
+    std::string tmp_s;
+    static const char alphanum[] =
+            "0123456789"
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            "abcdefghijklmnopqrstuvwxyz";
+    srand( (unsigned) time(NULL) * getpid());
+    for (int i = 0; i < len; ++i)
+        tmp_s += alphanum[rand() % (sizeof(alphanum) - 1)];
+    return tmp_s;
+}
+
+void queue::queue_publish_test(int num_repeats, int message_size) {
+//[0] = {const char * | 0x56374be88a2a} "XADD"
+//[1] = {const char * | 0x7fb694002f58} "CAPACITY_MEMORY"
+//[2] = {const char * | 0x56374be8842a} "*"
+//[3] = {const char * | 0x7fb68c001150} "1604776392"
+//[4] = {const char * | 0x7fb68c001170} "8141456.000000"
+//[4] = {unsigned long} 14
+//[0] = {unsigned long} 4
+//[1] = {unsigned long} 15
+//[2] = {unsigned long} 1
+//[3] = {unsigned long} 10
     d_dict val;
-    val.push_back({"1604367412", "100.100000"});
+    val.push_back({"1604367412", gen_random(message_size)});
     for(int i = 0; i < num_repeats; i++){
         publish(val);
+    }
+}
+
+void queue::queue_subscribe_test(int num_repeats) {
+    for(int i = 0; i < num_repeats; i++){
+        subscribe();
     }
 }

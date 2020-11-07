@@ -48,7 +48,9 @@
           "mode" : "SERVER",
           "type": {
             "value": "NODE_CAPACITY",
-            "interval": 30000000
+            "base_interval": 3000000,
+            "increase_factor": 0.1,
+            "pythio_interval": 30000000
           }
         },
         "url": "tcp://localhost",
@@ -67,7 +69,9 @@
           "mode" : "SERVER",
           "type": {
             "value": "NODE_CAPACITY",
-            "interval": 30000000
+            "base_interval": 3000000,
+            "increase_factor": 0.1,
+            "pythio_interval": 30000000
           }
         },
         "url": "tcp://localhost",

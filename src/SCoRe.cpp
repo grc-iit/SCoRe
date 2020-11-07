@@ -21,7 +21,7 @@ client::SCoRe::SCoRe(std::string config_path, std::string topic) {
 
 std::pair<std::string, std::string> client::SCoRe::get_latest() {
     AUTO_TRACER("Client:get_latest");
-	return client_->subscribe_all().back().second.back();
+	return client_->subscribe_last().back().second.back();
 }
 
 /********************************************************************************************************************/

@@ -63,13 +63,15 @@ public:
 	Pythio pythio_;
     int window_size = 10;
     Mode mode_;
+    std::string topic_;
 
     std::shared_ptr<rpc::server> rpc;
 
 	queue(queue const &pQueue)=default;
-	queue(QueueConfig config):
-                redis_(std::make_shared<redis_client>(config.url_, config.topic_)), key_(config.key_), lat_pub_id_("1"),
-                lat_sub_id_("1"), mon_hook_(config.hook_), pythio_(Pythio(config.model_, config.weights_)), mode_(config.mode_){}
+	explicit queue(QueueConfig config):
+                redis_(std::make_shared<redis_client>(config.url_, config.topic_)), topic_(config.topic_),
+                key_(config.key_), lat_pub_id_("1"), lat_sub_id_("1"), mon_hook_(config.hook_),
+                pythio_(Pythio(config.model_, config.weights_)), mode_(config.mode_){}
 	std::string publish(d_dict value);
 	item_stream subscribe();
 	d_dict get_latest();
@@ -78,7 +80,8 @@ public:
     std::string populate_pythio();
 	virtual std::string populate(std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> child_queue_maps);
 
-	void queue_test(int num_repeats);
+	void queue_publish_test(int num_repeats, int message_size);
+	void queue_subscribe_test(int num_repeats);
 };
 
 #endif
