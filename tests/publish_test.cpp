@@ -11,7 +11,7 @@
 
 int main(int argc, char*argv[]){
 	auto url = "tcp://127.0.0.1";
-	auto topic1 = "publish_test_";
+	auto topic = "publish_test_1";
     int num_queues = 16;
     int num_messages = 441505;
     int message_size = 441505;
@@ -34,7 +34,7 @@ int main(int argc, char*argv[]){
 
     for(int i = 0; i < num_queues; i++){
         QueueKey key(0, 0, QueueType(QueueValue::NODE_CAPACITY, 0,0,0), Mode::SERVER);
-        QueueConfig config(key, url, topic1+std::to_string(i), Mode::SERVER, mon::cap_hook, Model::LINEAR, "", 3000);
+        QueueConfig config(key, url, topic, Mode::SERVER, mon::cap_hook, Model::LINEAR, "", 3000);
         list_queues.emplace_back(queue(config));
     }
 

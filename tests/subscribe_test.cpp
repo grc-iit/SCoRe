@@ -16,7 +16,7 @@ int main(int argc, char*argv[]){
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
     auto url = "tcp://127.0.0.1";
-    auto topic1 = "subscribe_test_";
+    auto topic1 = "publish_test_";
     int num_queues = 16;
     int num_messages = 441505;
 
