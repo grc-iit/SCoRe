@@ -16,14 +16,14 @@ availability_queue::populate(std::vector<std::unordered_map<QueueKey, std::share
 	d_dict val;
 	bool second = 0;
 	auto id = lat_pub_id_;
-	for (auto i: child_queue_maps) {
-		for (auto j : i) {
-			// << TODO Do optional type_ check  HERE
-			auto k = j.second->redis_->subscribe_next();
-			if (k) {
-				auto l = k->second;
+    for (const auto& queue_map: child_queue_maps) {
+        for (const auto& queue_pair : queue_map) {
+            // << TODO Do optional type_ check  HERE
+            item_stream result = queue_pair.second->subscribe();
+            auto fact = result.back().second.back().second;
+            if (!fact.empty()) {
 				// here the OR operation is done on the data
-				second |= (bool) std::stoi(l.back().second);
+				second |= (bool) std::stoi(fact);
 			} else {
 				// what to do if the val is not there?
 			}
@@ -39,14 +39,13 @@ std::string capacity_queue::populate(std::vector<std::unordered_map<QueueKey, st
     d_dict val;
 	double second = 0;
 	auto id = lat_pub_id_;
-	for (auto i: child_queue_maps) {
-		for (auto j : i) {
+	for (const auto& queue_map: child_queue_maps) {
+		for (const auto& queue_pair : queue_map) {
 			// << TODO Do optional type_ check  HERE
-			auto k = j.second->redis_->subscribe_next();
-			if (k) {
-				auto l = k->second;
-				// Summation is done for the cacpacity
-				second += std::stod(l.back().second);
+			item_stream result = queue_pair.second->subscribe();
+            auto fact = result.back().second.back().second;
+			if (!fact.empty()) {
+			    second += std::stod(fact);
 			} else {
 				// what to do if the val is not there?
 			}
@@ -63,14 +62,14 @@ std::string load_queue::populate(std::vector<std::unordered_map<QueueKey, std::s
 	d_dict val;
 	double second = 0;
 	auto id = lat_pub_id_;
-	for (auto i: child_queue_maps) {
-		for (auto j : i) {
-			// << TODO Do optional type_ check  HERE
-			auto k = j.second->redis_->subscribe_next();
-			if (k) {
-				auto l = k->second;
+    for (const auto& queue_map: child_queue_maps) {
+        for (const auto& queue_pair : queue_map) {
+            // << TODO Do optional type_ check  HERE
+            item_stream result = queue_pair.second->subscribe();
+            auto fact = result.back().second.back().second;
+            if (!fact.empty()) {
 				// Summation done here
-				second += std::stod(l.back().second);
+				second += std::stod(fact);
 			} else {
 				return "0";
 			}

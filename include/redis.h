@@ -29,8 +29,9 @@ public:
 
 	redis_client(std::string url, std::string topic);
 	redis_client &operator=(const redis_client obj);
-	item_stream subscribe_all();
-	item_stream subscribe_all(std::string ls_id);
+//	item_stream subscribe_all();
+	item_stream subscribe_last();
+//	item_stream subscribe_all(std::string ls_id);
 	std::string publish(d_dict val);
 	std::optional<item> subscribe_next();
 };

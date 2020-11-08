@@ -14,7 +14,9 @@
           "mode" : "SERVER",
           "type": {
             "value": "TIER_CAPACITY",
-            "interval": 1000000
+            "base_interval": 3000000,
+            "increase_factor": 0.1,
+            "pythio_interval": 30000000
           }
         },
         "url": "tcp://localhost",
@@ -46,7 +48,9 @@
           "mode" : "SERVER",
           "type": {
             "value": "NODE_CAPACITY",
-            "interval": 1000000
+            "base_interval": 3000000,
+            "increase_factor": 0.1,
+            "pythio_interval": 30000000
           }
         },
         "url": "tcp://localhost",
@@ -65,7 +69,9 @@
           "mode" : "SERVER",
           "type": {
             "value": "NODE_CAPACITY",
-            "interval": 1000000
+            "base_interval": 3000000,
+            "increase_factor": 0.1,
+            "pythio_interval": 30000000
           }
         },
         "url": "tcp://localhost",

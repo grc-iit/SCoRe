@@ -111,7 +111,6 @@ QueueKey conf::json_to_QueueKey(conf::json queue_key_json) {
 }
 
 QueueType conf::json_to_QueueType(conf::json queue_type_json) {
-	int interval = queue_type_json["interval"];
 	auto value = strip(queue_type_json["value"]);
 	// can be expanded QueueValue for more shyte
 	QueueValue queue_value = value == "NODE_CAPACITY" ? QueueValue::NODE_CAPACITY :
@@ -125,7 +124,11 @@ QueueType conf::json_to_QueueType(conf::json queue_type_json) {
 	                         value == "CLUSTER_AVAILABILITY" ? QueueValue::CLUSTER_AVAILABILITY :
 	                         QueueValue::Q_UNDEFINED;
 
-	auto queue_type_ = QueueType(queue_value, interval);
+    int base_interval = queue_type_json["base_interval"];
+    float increase_factor = queue_type_json["increase_factor"];
+    int pythio_interval = queue_type_json["pythio_interval"];
+
+	auto queue_type_ = QueueType(queue_value, base_interval, increase_factor, pythio_interval);
 	return queue_type_;
 }
 

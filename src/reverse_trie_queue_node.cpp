@@ -53,31 +53,31 @@ std::shared_ptr<queue> ReverseTrieQueueNode::add(QueueConfig config) {
 	// add a queue to the RTQN based on the queueconfig
 	std::shared_ptr<queue> t_queue;
 
-	if (config.key_.type_.value == QueueValue::NODE_LOAD) {
+	if (config.key_.type_.value_ == QueueValue::NODE_LOAD) {
 		t_queue = std::make_shared<mon_queue>(config);
 
-	} else if (config.key_.type_.value == QueueValue::NODE_AVAILABILITY) {
+	} else if (config.key_.type_.value_== QueueValue::NODE_AVAILABILITY) {
 		t_queue = std::make_shared<mon_queue>(config);
 
-	} else if (config.key_.type_.value == QueueValue::NODE_CAPACITY) {
+	} else if (config.key_.type_.value_== QueueValue::NODE_CAPACITY) {
 		t_queue = std::make_shared<mon_queue>(config);
 
-	} else if (config.key_.type_.value == QueueValue::TIER_CAPACITY) {
+	} else if (config.key_.type_.value_== QueueValue::TIER_CAPACITY) {
 		t_queue = std::make_shared<capacity_queue>(config);
 
-	} else if (config.key_.type_.value == QueueValue::TIER_AVAILABILITY) {
+	} else if (config.key_.type_.value_== QueueValue::TIER_AVAILABILITY) {
 		t_queue = std::make_shared<availability_queue>(config);
 
-	} else if (config.key_.type_.value == QueueValue::TIER_CAPACITY) {
+	} else if (config.key_.type_.value_== QueueValue::TIER_CAPACITY) {
 		t_queue = std::make_shared<capacity_queue>(config);
 
-	} else if (config.key_.type_.value == QueueValue::CLUSTER_LOAD) {
+	} else if (config.key_.type_.value_== QueueValue::CLUSTER_LOAD) {
 		t_queue = std::make_shared<load_queue>(config);
 
-	} else if (config.key_.type_.value == QueueValue::CLUSTER_AVAILABILITY) {
+	} else if (config.key_.type_.value_== QueueValue::CLUSTER_AVAILABILITY) {
 		t_queue = std::make_shared<availability_queue>(config);
 
-	} else if (config.key_.type_.value == QueueValue::CLUSTER_CAPACITY) {
+	} else if (config.key_.type_.value_== QueueValue::CLUSTER_CAPACITY) {
 		t_queue = std::make_shared<capacity_queue>(config);
 	} else {
 		queue t_queue(config);
@@ -175,7 +175,7 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
     last_predicted_ = -1;
     pythio_ratio_ = 3;
     pythio_counter_ = 3;
-    populate_interval_ = std::chrono::microseconds(obj.first.type_.interval).count();
+    populate_interval_ = std::chrono::microseconds(obj.first.type_.base_interval_).count();
     outfile = new std::ofstream("/home/kbateman/timings-score-one-event.txt");
     if (obj.second->mon_hook_ == NULL) {
         obj.second->populate(child_queue);
@@ -252,7 +252,7 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
     last_predicted_ = -1;
     pythio_ratio_ = 3;
     pythio_counter_ = 3;
-    populate_interval_ = std::chrono::microseconds(obj.first.type_.interval).count() * pythio_ratio_;
+    populate_interval_ = std::chrono::microseconds(obj.first.type_.base_interval_).count() * pythio_ratio_;
     //outfile = new std::ofstream("/home/kbateman/timings-score-two-loop.txt");
     if (obj.second->mon_hook_ == NULL) {
         obj.second->populate(child_queue);
@@ -334,7 +334,7 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
     last_predicted_ = -1;
     pythio_ratio_ = 3;
     pythio_counter_ = 3;
-    populate_interval_ = std::chrono::microseconds(obj.first.type_.interval).count() * pythio_ratio_;
+    populate_interval_ = std::chrono::microseconds(obj.first.type_.base_interval_).count() * pythio_ratio_;
     outfile = new std::ofstream("/home/kbateman/timings-score-two-event.txt");
     if (obj.second->mon_hook_ == NULL) {
         obj.second->populate(child_queue);
@@ -357,7 +357,7 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
 	last_predicted_ = -1;
 	pythio_ratio_ = 3;
 	pythio_counter_ = 3;
-	populate_interval_ = obj.first.type_.interval;
+	populate_interval_ = obj.first.type_.base_interval_;
     while (futureObj.wait_for(std::chrono::microseconds(populate_interval_)) == std::future_status::timeout) {
 #ifdef BENCH_TIMER
         Timer single_loop_timer;

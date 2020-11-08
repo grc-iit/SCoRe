@@ -40,14 +40,14 @@ set(DEBUG_COMMON include/timer.h src/timer.cpp
 add_executable(SCoRe ${QUEUE_COMMON} ${SCORE_COMMON} ${DEBUG_COMMON} main.cpp)
 target_link_libraries(SCoRe ${LIBS})
 
-add_executable(client ${QUEUE_COMMON} ${SCORE_COMMON} ${DEBUG_COMMON} client.cpp)
-target_link_libraries(client ${LIBS})
-
-add_executable(redis_test ${QUEUE_COMMON} tests/redis_test.cpp)
-target_link_libraries(redis_test ${LIBS})
-
-add_executable(queue_test ${QUEUE_COMMON} ${DEBUG_COMMON} tests/queue_test.cpp)
-target_link_libraries(queue_test ${LIBS})
+#add_executable(client ${QUEUE_COMMON} ${SCORE_COMMON} ${DEBUG_COMMON} client.cpp)
+#target_link_libraries(client ${LIBS})
+#
+#add_executable(redis_test ${QUEUE_COMMON} tests/redis_test.cpp)
+#target_link_libraries(redis_test ${LIBS})
+#
+#add_executable(queue_test ${QUEUE_COMMON} ${DEBUG_COMMON} tests/queue_test.cpp)
+#target_link_libraries(queue_test ${LIBS})
 
 add_executable(publish_test ${QUEUE_COMMON} ${DEBUG_COMMON} tests/publish_test.cpp)
 target_link_libraries(publish_test ${LIBS})

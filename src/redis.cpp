@@ -29,25 +29,35 @@ redis_client &redis_client::operator=(redis_client obj) {
 	return *this;
 }
 
-item_stream redis_client::subscribe_all() {
-	// gets everything from the last subscribed id
+//item_stream redis_client::subscribe_all() {
+//	// gets everything from the last subscribed id
+//    AUTO_TRACER("Redis:subscribe_all_1");
+//	item_stream result;
+//	this->redis->xrange(topic, this->latest_sub_id, "+", std::back_inserter(result));
+//	this->latest_sub_id = result.back().first;
+////        sub_sync = latest_published_id.compare(latest_sub_id) ==  0  ? true  : false;
+//	return result;
+//}
+
+item_stream redis_client::subscribe_last() {
+    // gets everything from the last subscribed id
     AUTO_TRACER("Redis:subscribe_all_1");
-	item_stream result;
-	this->redis->xrange(topic, this->latest_sub_id, "+", std::back_inserter(result));
-	this->latest_sub_id = result.back().first;
+    item_stream result;
+    this->redis->xrevrange(topic, "+", "-", 1,std::back_inserter(result));
+    this->latest_sub_id = result.back().first;
 //        sub_sync = latest_published_id.compare(latest_sub_id) ==  0  ? true  : false;
-	return result;
+    return result;
 }
 
-item_stream redis_client::subscribe_all(std::string ls_id) {
-	// gets everything from ls_id (list id)
-    AUTO_TRACER("Redis:subscribe_all_2");
-	item_stream result;
-	this->redis->xrange(topic, ls_id, "+", std::back_inserter(result));
-	this->latest_sub_id = result.back().first;
-//        sub_sync = latest_published_id.compare(latest_sub_id) ==  0  ? true  : false;
-	return result;
-}
+//item_stream redis_client::subscribe_all(std::string ls_id) {
+//	// gets everything from ls_id (list id)
+//    AUTO_TRACER("Redis:subscribe_all_2");
+//	item_stream result;
+//	this->redis->xrange(topic, ls_id, "+", std::back_inserter(result));
+//	this->latest_sub_id = result.back().first;
+////        sub_sync = latest_published_id.compare(latest_sub_id) ==  0  ? true  : false;
+//	return result;
+//}
 
 std::string redis_client::publish(d_dict val) {
     AUTO_TRACER("Redis:publish");
