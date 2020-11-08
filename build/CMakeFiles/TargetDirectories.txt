@@ -1,5 +1,0 @@
-/home/jcernudagarcia/Apollo/build/CMakeFiles/rebuild_cache.dir
-/home/jcernudagarcia/Apollo/build/CMakeFiles/SCoRe.dir
-/home/jcernudagarcia/Apollo/build/CMakeFiles/edit_cache.dir
-/home/jcernudagarcia/Apollo/build/CMakeFiles/subscribe_test.dir
-/home/jcernudagarcia/Apollo/build/CMakeFiles/publish_test.dir
