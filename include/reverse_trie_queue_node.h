@@ -35,6 +35,7 @@ private:
     double fluctuation_percentage_;
     double last_predicted_;
     double last_measured_;
+    //std::ofstream *outfile;
 public:
 	ReverseTrieQueueNodeKey key;
 	QM_type queue_map;
