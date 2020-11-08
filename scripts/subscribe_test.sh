@@ -23,8 +23,8 @@ do
   num_messages=$((data_per_thread / default_message_size))
 
   "${EXEC_PATH}"/build/queue_test 1 "${num_messages}" "${default_message_size}" >> ./results/publish_thread_test_"${thread}"
-  echo "mpirun -n ${thread} -f ${EXEC_PATH}/scripts/test_config/hostfile ${EXEC_PATH}/build/subscribe_test ${url} 40 ${num_messages} >> ./results/subscribe_thread_test_"${thread}""
-  mpirun -n "${thread}" -f "${EXEC_PATH}"/scripts/test_config/hostfile "${EXEC_PATH}"/build/subscribe_test "${url}" 40 "${num_messages}"  >> ./results/subscribe_thread_test_"${thread}"
+  echo "mpirun -n ${thread} -f ${EXEC_PATH}/scripts/test_config/hostfile ${EXEC_PATH}/build/subscribe_test ${url} 40 ${num_messages} >> ./results/subscribe_thread_test"
+  mpirun -n "${thread}" -f "${EXEC_PATH}"/scripts/test_config/hostfile "${EXEC_PATH}"/build/subscribe_test "${url}" 40 "${num_messages}"  >> ./results/subscribe_thread_test
 
   sleep 5
   ${redis_location}/redis-cli flushall
@@ -36,8 +36,8 @@ do
   num_messages=$((data_per_thread / size_message))
 
   "${EXEC_PATH}"/build/queue_test 1 "${num_messages}" "${size_message}" >> ./results/publish_thread_test_"${thread}"
-  echo "mpirun -n ${default_num_threads} -f ${EXEC_PATH}/scripts/test_config/hostfile ${EXEC_PATH}/build/queue_test ${url} 40 ${num_messages} >> ./results/subscribe_size_test_${size_message}"
-  mpirun -n "${default_num_threads}" -f "${EXEC_PATH}"/scripts/test_config/hostfile "${EXEC_PATH}"/build/subscribe_test "${url}" 40 "${num_messages}" >> ./results/subscribe_size_test_"${size_message}"
+  echo "mpirun -n ${default_num_threads} -f ${EXEC_PATH}/scripts/test_config/hostfile ${EXEC_PATH}/build/queue_test ${url} 40 ${num_messages} >> ./results/subscribe_size_test"
+  mpirun -n "${default_num_threads}" -f "${EXEC_PATH}"/scripts/test_config/hostfile "${EXEC_PATH}"/build/subscribe_test "${url}" 40 "${num_messages}" >> ./results/subscribe_size_test
 
   sleep 5
   ${redis_location}/redis-cli flushall
@@ -51,8 +51,8 @@ do
   num_messages=$((data_per_thread / default_message_size))
 
   "${EXEC_PATH}"/build/queue_test 1 "${num_messages}" "${default_message_size}" >> ./results/publish_thread_test_"${thread}"
-  echo "mpirun -n ${default_num_threads} -f ${EXEC_PATH}/scripts/test_config/hostfile ${EXEC_PATH}/build/queue_test  ${url} 40 ${num_messages} >> ./results/subscribe_redis_thread_test_${redis_thread}"
-  mpirun -n "${default_num_threads}" -f "${EXEC_PATH}"/scripts/test_config/hostfile "${EXEC_PATH}"/build/subscribe_test "${url}" 40 ${num_messages} >> ./results/subscribe_redis_thread_test_"${redis_thread}"
+  echo "mpirun -n ${default_num_threads} -f ${EXEC_PATH}/scripts/test_config/hostfile ${EXEC_PATH}/build/queue_test  ${url} 40 ${num_messages} >> ./results/subscribe_redis_thread_test"
+  mpirun -n "${default_num_threads}" -f "${EXEC_PATH}"/scripts/test_config/hostfile "${EXEC_PATH}"/build/subscribe_test "${url}" 40 ${num_messages} >> ./results/subscribe_redis_thread_test
 
   sleep 5
   ${redis_location}/redis-cli flushall
