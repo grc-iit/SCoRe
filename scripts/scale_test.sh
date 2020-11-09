@@ -3,7 +3,7 @@
 JARVIS_PATH='/home/jcernudagarcia/Apollo'
 CONFIG_PATH='/home/jcernudagarcia/Apollo'
 
-experiments=( sd dasd )
+experiments=( localhost_2 )
 
 for experiment in "${experiments[@]}"
 do
