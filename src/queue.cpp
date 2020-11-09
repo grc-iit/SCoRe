@@ -14,6 +14,7 @@
  * */
 
 
+#include <future>
 #include "queue_config.h"
 #include "queue.h"
 
@@ -26,6 +27,11 @@ std::string queue::publish(d_dict value) {
 	lat_published_.push_back(value);
 	if(lat_published_.size() > window_size) lat_published_.erase (lat_published_.begin()+(lat_published_.size()-window_size));
 	return lat_pub_id_;
+}
+
+void queue::subscribe_thread(std::promise<std::pair<std::string, std::string>> && p){
+    item_stream return_value = subscribe();
+    p.set_value(return_value.back().second.back());
 }
 
 item_stream queue::subscribe() {

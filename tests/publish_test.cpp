@@ -33,8 +33,10 @@ int main(int argc, char*argv[]){
     list_queues.reserve(num_queues);
 
     for(int i = 0; i < num_queues; i++){
+        std::string final_topic = topic+std::to_string(i);
+        std::cout << final_topic << std::endl;
         QueueKey key(0, 0, QueueType(QueueValue::NODE_CAPACITY, 0,0,0), Mode::SERVER);
-        QueueConfig config(key, url, topic+std::to_string(i), Mode::SERVER, mon::cap_hook, Model::LINEAR, "", 3000);
+        QueueConfig config(key, url, final_topic, Mode::SERVER, mon::cap_hook, Model::LINEAR, "", 3000);
         list_queues.emplace_back(queue(config));
     }
 

@@ -22,7 +22,7 @@
         "url": "tcp://localhost",
         "queue_port": 3000,
         "hook": "NULL",
-        "topic": "TIER_CAPACITY",
+        "topic": "FINAL_INSIGHT",
         "pythio":{
           "model": "MODEL_LINEAR",
           "weights": "PATH_MODEL_WEIGHTS"
