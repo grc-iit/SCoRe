@@ -5,7 +5,7 @@ EXEC_PATH='/home/jcernudagarcia/Apollo'
 
 default_num_threads=16
 default_message_size=16
-data_per_thread=$(( 16*1024*1024 ))
+data_per_thread=$(( 256*1024 ))
 num_threads=( 1 2 4 8 16 32 40 )
 size_messages=( 32 16 8 4 2 1)
 redis_threads=( 1 2 4 8 16 32 40)

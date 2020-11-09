@@ -1,7 +1,3 @@
-//
-// Created by neeraj on 4/17/20.
-//
-
 #include "s_queues.h"
 #include <iostream>
 #include <unistd.h>
