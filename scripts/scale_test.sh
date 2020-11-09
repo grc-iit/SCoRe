@@ -1,7 +1,7 @@
 #!/bin/bash
 
-JARVIS_PATH='/home/jcernudagarcia/Apollo/jarvis-cd/jarvis.py'
-CONFIG_PATH='/home/jcernudagarcia/Apollo/jarvis-cd/repos/apollo/default.ini'
+JARVIS_PATH='/home/jcernudagarcia/Apollo/jarvis/jarvis.py'
+CONFIG_PATH='/home/jcernudagarcia/Apollo/jarvis/repos/apollo/default.ini'
 
 experiments=( localhost_2 )
 
