@@ -188,7 +188,7 @@ std::string gen_random(const int len) {
     return tmp_s;
 }
 
-void queue::queue_publish_test(int num_repeats, int message_size) {
+void queue::queue_publish_test(uint64_t num_repeats, uint64_t message_size) {
 //[0] = {const char * | 0x56374be88a2a} "XADD"
 //[1] = {const char * | 0x7fb694002f58} "CAPACITY_MEMORY"
 //[2] = {const char * | 0x56374be8842a} "*"
@@ -206,7 +206,7 @@ void queue::queue_publish_test(int num_repeats, int message_size) {
     }
 }
 
-void queue::queue_subscribe_test(int num_repeats) {
+void queue::queue_subscribe_test(uint64_t num_repeats) {
     for(int i = 0; i < num_repeats; i++){
         subscribe();
     }

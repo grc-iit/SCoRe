@@ -14,7 +14,7 @@ int main(int argc, char*argv[]){
     auto url = "tcp://127.0.0.1";
     auto topic1 = "publish_test_0";
     int num_queues = 16;
-    int num_messages = 441505;
+    uint64_t num_messages = 441505;
 
     if (argc < 3){
         std::cout << "Need num_queues and num_messages" << std::endl;

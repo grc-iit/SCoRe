@@ -82,8 +82,8 @@ public:
     std::string populate_pythio();
 	virtual std::string populate(std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> child_queue_maps);
 
-	void queue_publish_test(int num_repeats, int message_size);
-	void queue_subscribe_test(int num_repeats);
+	void queue_publish_test(uint64_t num_repeats, uint64_t message_size);
+	void queue_subscribe_test(uint64_t num_repeats);
 };
 
 #endif
