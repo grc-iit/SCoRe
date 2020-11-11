@@ -23,6 +23,9 @@ class Apollo(Graph):
         self.redis_path = self.config['COMMON']['REDIS_PATH']
         self.hosts = self._convert_pairs_toMap(self.config['COMMON']['APOLLO_CONFIG'] + self.experiment)
         self.redis_hosts = self._make_list_unique(self.hosts.keys())
+        self.pid_path = self.config['COMMON']['PID_PATH']
+        self.result_dir = self.config['COMMON']['RESULT_DIR']
+        self.ld_path = self.config['COMMON']['LD_PATH']
 
     def _DefineClean(self):
         nodes = [SSHNode("clean Redis data", self.redis_hosts,
@@ -35,15 +38,25 @@ class Apollo(Graph):
 
     def _DefineStop(self):
         # TODO: Check the name of the executables for both cases, so that we can kill them.
-        cmds = [
+        redis_cmds = [
             "redis-cli flushall",
-            "killall reddis-server",
-            "killall SCoRe"
+            "killall reddis-server"
         ]
-        nodes = [SSHNode("stop SCoRe", self.redis_hosts, cmds)]
+        nodes = []
+        for client in self.hosts.keys():
+            cmd = []
+            for vertex_id in self.hosts[client]:
+                if vertex_id != -1:
+                    cmd.append(
+                        f"export LD_LIBRARY_PATH={self.ld_path}; echo $LD_LIBRARY_PATH; "
+                        f"kill -9 `cat {self.pid_path}/score_{vertex_id}.pid`; "
+                        f"rm {self.pid_path}/score_{vertex_id}.pid")
+            nodes.append(SSHNode("Start Vertex", client, cmd))
+        nodes.append(SSHNode("stop SCoRe", self.redis_hosts, redis_cmds))
         return nodes
 
     def _DefineStart(self):
+        print(os.environ['LD_LIBRARY_PATH'])
         nodes = []
         # set pvfstab on clients
         for client in self.redis_hosts:
@@ -54,8 +67,12 @@ class Apollo(Graph):
             cmd = []
             for vertex_id in self.hosts[client]:
                 if vertex_id == -1:
-                    cmd.append(f"{self.executable}/client_test >> client_results")
+                    cmd.append(f"mkdir -p {self.result_dir}; "
+                               f"echo {self.experiment} >> {self.result_dir}/client-results"
+                               f"{self.executable}/client_test >> {self.result_dir}/client-results")
                 else:
-                    cmd.append(f"{self.executable}/SCoRe {self.apollo_config} {vertex_id}")
-            nodes.append(SSHNode("Start Vertex", client, cmd))
+                    cmd.append(f"export LD_LIBRARY_PATH={self.ld_path}; echo $LD_LIBRARY_PATH; "
+                               f"{self.executable}/SCoRe {self.apollo_config} {vertex_id} {self.pid_path}/score_{vertex_id}.pid; "
+                               f"sleep 10")
+            nodes.append(SSHNode("Start Vertex", client, cmd, print_output=True))
         return nodes

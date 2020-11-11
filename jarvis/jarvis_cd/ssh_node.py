@@ -23,7 +23,7 @@ class SSHNode(Node):
 
     def _exec_ssh(self, cmd):
         client = ParallelSSHClient(self.hosts)
-        output = client.run_command(cmd, sudo=self.sudo)
+        output = client.run_command(cmd, sudo=self.sudo, shell='bash -c')
         nice_output = dict()
         for host in output:
             nice_output[host]={
