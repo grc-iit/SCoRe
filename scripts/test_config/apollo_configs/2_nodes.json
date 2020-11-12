@@ -1,9 +1,9 @@
 [
   {
-    "hostname": "localhost",
+    "hostname": "ares-comp-02",
     "key" : {
       "node_index": 0,
-      "level": 0,
+      "level": 1,
       "type": "NODE"
     },
     "queues": [
@@ -13,31 +13,31 @@
           "tier_index": 0,
           "mode" : "SERVER",
           "type": {
-            "value": "CLUSTER_LOAD",
-            "base_interval": 3000000,
+            "value": "TIER_CAPACITY",
+            "base_interval": 250,
             "increase_factor": 0.1,
-            "pythio_interval": 30000000
+            "pythio_interval": 250
           }
         },
-        "url": "tcp://localhost",
+        "url": "tcp://ares-comp-02",
         "queue_port": 3000,
         "hook": "NULL",
-        "topic": "FINAL_INSIGHT",
+          "topic": "FINAL_INSIGHT",
         "pythio":{
           "model": "MODEL_LINEAR",
           "weights": "PATH_MODEL_WEIGHTS"
         }
       }
     ],
-    "children": [1, 1],
-    "children_queues": [0, 1],
+    "children": [1, 2],
+    "children_queues": [0, 0],
     "parent": "NULL"
   },
   {
-    "hostname": "localhost",
+    "hostname": "ares-comp-02",
     "key" : {
       "node_index": 1,
-      "level": 1,
+      "level": 0,
       "type": "LEAF"
     },
     "queues": [
@@ -48,36 +48,49 @@
           "mode" : "SERVER",
           "type": {
             "value": "NODE_CAPACITY",
-            "base_interval": 3000000,
+            "base_interval": 250,
             "increase_factor": 0.1,
-            "pythio_interval": 30000000
+            "pythio_interval": 250
           }
         },
-        "url": "tcp://localhost",
+        "url": "tcp://ares-comp-02",
         "queue_port": 3001,
         "hook": "CAPACITY",
-        "topic": "CAPACITY_MEMORY",
+        "topic": "CAPACITY_MEMORY_02",
         "pythio":{
           "model": "MODEL_LINEAR",
           "weights": "PATH_MODEL_WEIGHTS"
         }
-      },
+      }
+    ],
+    "children": [],
+    "children_queues": [],
+    "parent": 0
+  },
+  {
+    "hostname": "ares-comp-03",
+    "key" : {
+      "node_index": 2,
+      "level": 0,
+      "type": "LEAF"
+    },
+    "queues": [
       {
         "key":{
-          "node_index": 1,
-          "tier_index": 1,
+          "node_index": 2,
+          "tier_index": 0,
           "mode" : "SERVER",
           "type": {
             "value": "NODE_CAPACITY",
-            "base_interval": 3000000,
+            "base_interval": 250,
             "increase_factor": 0.1,
-            "pythio_interval": 30000000
+            "pythio_interval": 250
           }
         },
-        "url": "tcp://localhost",
-        "queue_port": 3002,
+        "url": "tcp://ares-comp-03",
+        "queue_port": 3001,
         "hook": "CAPACITY",
-        "topic": "CAPACITY_SSD",
+        "topic": "CAPACITY_MEMORY_03",
         "pythio":{
           "model": "MODEL_LINEAR",
           "weights": "PATH_MODEL_WEIGHTS"

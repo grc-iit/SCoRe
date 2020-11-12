@@ -42,7 +42,7 @@ item_stream queue::subscribe() {
 	sub_timer.startTime();
 #endif
 	item_stream result = redis_->subscribe_last();
-	lat_sub_id_ = result.back().first;
+    if(!result.empty()) lat_sub_id_ = result.back().first;
 #ifdef BENCH_TIMER
 	sub_timer.endTimeWithPrint("[Queue][Subscribe()]");
 #endif

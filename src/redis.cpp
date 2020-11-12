@@ -44,8 +44,7 @@ item_stream redis_client::subscribe_last() {
     AUTO_TRACER("Redis:subscribe_all_1");
     item_stream result;
     this->redis->xrevrange(topic, "+", "-", 1,std::back_inserter(result));
-    this->latest_sub_id = result.back().first;
-//        sub_sync = latest_published_id.compare(latest_sub_id) ==  0  ? true  : false;
+    if(!result.empty()) this->latest_sub_id = result.back().first;
     return result;
 }
 

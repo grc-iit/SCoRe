@@ -23,7 +23,8 @@ availability_queue::populate(std::vector<std::unordered_map<QueueKey, std::share
         for (const auto& queue_pair : queue_map) {
             // << TODO Do optional type_ check  HERE
             item_stream result = queue_pair.second->subscribe();
-            auto fact = result.back().second.back().second;
+            std::string fact;
+            if(!result.empty()) fact = result.back().second.back().second;
             if (!fact.empty()) {
 				// here the OR operation is done on the data
 				second |= (bool) std::stoi(fact);
