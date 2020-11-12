@@ -53,7 +53,7 @@
             "pythio_interval": 250
           }
         },
-        "url": "tcp://localhost",
+        "url": "tcp://ares-comp-02",
         "queue_port": 3001,
         "hook": "CAPACITY",
         "topic": "CAPACITY_MEMORY",

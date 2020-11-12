@@ -68,7 +68,7 @@ class Apollo(Graph):
             cmd = []
             for vertex_id in self.hosts[client]:
                 if vertex_id == "-1":
-                    cmd.append(f"mkdir -p {self.result_dir}; "
+                    cmd.append(f"mkdir -p {self.result_dir}i/; "
                                f"echo {self.experiment} >> {self.result_dir}/client-results"
                                f"{self.executable}/client_test >> {self.result_dir}/client-results")
                 else:
