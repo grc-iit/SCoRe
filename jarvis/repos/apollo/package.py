@@ -12,7 +12,7 @@ from jarvis_cd.ssh_node import SSHNode
 
 
 class Apollo(Graph):
-    _default_config = "repos/apollo/default.ini"
+    _default_config = "/home/jcernudagarcia/Apollo/jarvis/repos/apollo/default.ini"
 
     def __init__(self, config_file=None, experiment=None):
         super().__init__(config_file, self._default_config)
@@ -39,14 +39,14 @@ class Apollo(Graph):
     def _DefineStop(self):
         # TODO: Check the name of the executables for both cases, so that we can kill them.
         redis_cmds = [
-            "redis-cli flushall",
-            "killall reddis-server"
+            f"{self.redis_path}redis-cli flushall",
+            f"killall redis-server"
         ]
         nodes = []
         for client in self.hosts.keys():
             cmd = []
             for vertex_id in self.hosts[client]:
-                if vertex_id != -1:
+                if vertex_id != "-1":
                     cmd.append(
                         f"export LD_LIBRARY_PATH={self.ld_path}; echo $LD_LIBRARY_PATH; "
                         f"kill -9 `cat {self.pid_path}/score_{vertex_id}.pid`; "
@@ -60,13 +60,14 @@ class Apollo(Graph):
         nodes = []
         # set pvfstab on clients
         for client in self.redis_hosts:
-            redis_cmd = f"{self.redis_path}redis-server {self.redis_config}"
-            nodes.append(SSHNode("Start reddis", client, redis_cmd))
+            redis_cmd = f"nohup {self.redis_path}redis-server {self.redis_config}"
+            nodes.append(SSHNode("Start reddis", client, redis_cmd, print_output=True))
+            nodes.append(SSHNode("Start reddis", client, f"sleep 30; {self.redis_path}redis-cli ping; sleep 10", print_output=True))
 
         for client in self.hosts.keys():
             cmd = []
             for vertex_id in self.hosts[client]:
-                if vertex_id == -1:
+                if vertex_id == "-1":
                     cmd.append(f"mkdir -p {self.result_dir}; "
                                f"echo {self.experiment} >> {self.result_dir}/client-results"
                                f"{self.executable}/client_test >> {self.result_dir}/client-results")
