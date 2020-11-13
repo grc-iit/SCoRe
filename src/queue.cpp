@@ -31,7 +31,8 @@ std::string queue::publish(d_dict value) {
 
 void queue::subscribe_thread(std::promise<std::pair<std::string, std::string>> && p){
     item_stream return_value = subscribe();
-    p.set_value(return_value.back().second.back());
+    if(!return_value.empty()) p.set_value(return_value.back().second.back());
+    else p.set_value(std::make_pair(std::string(), std::string()));
 }
 
 item_stream queue::subscribe() {

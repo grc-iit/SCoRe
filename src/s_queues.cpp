@@ -62,9 +62,9 @@ std::string capacity_queue::populate(std::vector<std::unordered_map<QueueKey, st
 
     for(auto & it : return_vector) {
 //    for(auto facts: return_vector){
-        std::string fact_string = it.get().second;
-        if (!fact_string.empty()) {
-            second += std::stod(fact_string);
+        auto fact = it.get().second;
+        if (!fact.empty()) {
+            second += std::stod(fact);
         }
     }
     uint64_t now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
