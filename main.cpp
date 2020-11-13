@@ -21,6 +21,7 @@ int main(int argc, char*argv[]) {
 
 	std::cout<<"CONF: "<<conf_name<<", NODE INDEX: "<<node_index<<std::endl;
     auto daemon_i=Singleton<Daemon<ReverseTrieQueueNode>>::GetInstance(argc,argv, true, pid_file);
+//    auto daemon_i=Singleton<Daemon<ReverseTrieQueueNode>>::GetInstance(argc,argv);
 
     std::cout << "Hello there";
 

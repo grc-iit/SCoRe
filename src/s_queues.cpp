@@ -33,7 +33,8 @@ availability_queue::populate(std::vector<std::unordered_map<QueueKey, std::share
 			}
 		}
 	}
-	val.push_back({std::to_string(std::time(nullptr)), std::to_string(second)});
+    uint64_t now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    val.push_back({std::to_string(now), std::to_string(second)});
 	id = publish(val);
 	return id;
 }
@@ -66,7 +67,8 @@ std::string capacity_queue::populate(std::vector<std::unordered_map<QueueKey, st
             second += std::stod(fact_string);
         }
     }
-	val.push_back({std::to_string(std::time(nullptr)), std::to_string(second)});
+    uint64_t now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+	val.push_back({std::to_string(now), std::to_string(second)});
 	return publish(val);
 }
 
@@ -90,7 +92,8 @@ std::string load_queue::populate(std::vector<std::unordered_map<QueueKey, std::s
 			}
 		}
 	}
-	val.push_back({std::to_string(std::time(nullptr)), std::to_string(second)});
+    uint64_t now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    val.push_back({std::to_string(now), std::to_string(second)});
 	id = publish(val);
 	return id;
 }

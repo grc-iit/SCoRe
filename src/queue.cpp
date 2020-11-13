@@ -76,7 +76,8 @@ std::string queue::populate() {
         pop_timer.startTime();
     #endif
         d_dict val;
-        val.push_back({std::to_string(std::time(nullptr)), std::to_string(mon_hook_())});
+    uint64_t now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    val.push_back({std::to_string(now), std::to_string(mon_hook_())});
     #ifdef BENCH_TIMER
         pop_timer.endTimeWithPrint("[Queue][Populate()->mon_hook]");
     #endif
