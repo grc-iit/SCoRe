@@ -12,6 +12,7 @@
 #include <string>
 #include <unordered_map>
 #include <rpc/server.h>
+#include <future>
 
 #ifdef BENCH_TIMER
 #include "timer.h"
@@ -73,6 +74,7 @@ public:
                 key_(config.key_), lat_pub_id_("1"), lat_sub_id_("1"), mon_hook_(config.hook_),
                 pythio_(Pythio(config.model_, config.weights_)), mode_(config.mode_){}
 	std::string publish(d_dict value);
+    void subscribe_thread(std::promise<std::pair<std::string, std::string>> && p);
 	item_stream subscribe();
 	d_dict get_latest();
 	bool is_synced(std::vector<QM_type> children);
@@ -80,8 +82,8 @@ public:
     std::string populate_pythio();
 	virtual std::string populate(std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> child_queue_maps);
 
-	void queue_publish_test(int num_repeats, int message_size);
-	void queue_subscribe_test(int num_repeats);
+	void queue_publish_test(uint64_t num_repeats, uint64_t message_size);
+	void queue_subscribe_test(uint64_t num_repeats);
 };
 
 #endif

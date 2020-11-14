@@ -23,6 +23,82 @@
 
 void finalize();
 
+static void daemonize(const char *pid_file_name){
+    pid_t pid = 0;
+    int fd;
+
+    /* Fork off the parent process */
+    pid = fork();
+
+    /* An error occurred */
+    if (pid < 0) {
+        exit(EXIT_FAILURE);
+    }
+
+    /* Success: Let the parent terminate */
+    if (pid > 0) {
+        exit(EXIT_SUCCESS);
+    }
+
+    /* On success: The child process becomes session leader */
+    if (setsid() < 0) {
+        exit(EXIT_FAILURE);
+    }
+
+    /* Ignore signal sent from child to parent process */
+    signal(SIGCHLD, SIG_IGN);
+
+    /* Fork off for the second time*/
+    pid = fork();
+
+    /* An error occurred */
+    if (pid < 0) {
+        exit(EXIT_FAILURE);
+    }
+
+    /* Success: Let the parent terminate */
+    if (pid > 0) {
+        exit(EXIT_SUCCESS);
+    }
+
+    /* Set new file permissions */
+    umask(0);
+
+    /* Change the working directory to the root directory */
+    /* or another appropriated directory */
+    chdir("/");
+
+    /* Close all open file descriptors */
+    for (fd = sysconf(_SC_OPEN_MAX); fd > 0; fd--) {
+        close(fd);
+    }
+
+    /* Reopen stdin (fd = 0), stdout (fd = 1), stderr (fd = 2) */
+    stdin = fopen("/dev/null", "r");
+    stdout = fopen("/dev/null", "w+");
+    stderr = fopen("/dev/null", "w+");
+
+    /* Try to write PID of daemon to lockfile */
+    if (pid_file_name != nullptr)
+    {
+        char str[256];
+        int pid_fd;
+        pid_fd = open(pid_file_name, O_RDWR|O_CREAT, 0640);
+        if (pid_fd < 0) {
+            /* Can't open lockfile */
+            exit(EXIT_FAILURE);
+        }
+//        if (lockf(pid_fd, F_TLOCK, 0) < 0) {
+//            /* Can't lock file */
+//            exit(EXIT_FAILURE);
+//        }
+        /* Get current PID */
+        sprintf(str, "%d\n", getpid());
+        /* Write PID to lockfile */
+        write(pid_fd, str, strlen(str));
+    }
+}
+
 static void log_message(char *filename, char *message) {
 	FILE *logfile;
 	logfile = fopen(filename, "a");
@@ -56,13 +132,22 @@ public:
 
 	Daemon() {}
 
-	Daemon(int argc, char *argv[]) {
+	Daemon(int argc, char *argv[], bool fork=false, std::string char_file="/tmp/daemon.pid") {
 		arg = new ArgHolder();
 		arg->argc = argc;
 		arg->argv = argv;
-		worker = std::thread(&Daemon::RunInternal, this);
-		catchSignals();
-		while (true) sleep(1);
+        pid_t pid = 0;
+        if(fork){
+            daemonize(char_file.c_str());
+            catchSignals();
+            Daemon::RunInternal();
+            exit(0);
+        }
+        else {
+            worker = std::thread(&Daemon::RunInternal, this);
+            catchSignals();
+            while (true) sleep(1);
+        }
 	}
 
 	~Daemon() {}

@@ -65,8 +65,8 @@ std::shared_ptr<queue> ReverseTrieQueueNode::add(QueueConfig config) {
 	} else if (config.key_.type_.value_== QueueValue::TIER_AVAILABILITY) {
 		t_queue = std::make_shared<availability_queue>(config);
 
-	} else if (config.key_.type_.value_== QueueValue::TIER_CAPACITY) {
-		t_queue = std::make_shared<capacity_queue>(config);
+	} else if (config.key_.type_.value_== QueueValue::TIER_LOAD) {
+		t_queue = std::make_shared<load_queue>(config);
 
 	} else if (config.key_.type_.value_== QueueValue::CLUSTER_LOAD) {
 		t_queue = std::make_shared<load_queue>(config);

@@ -14,6 +14,7 @@
  * */
 
 
+#include <future>
 #include "queue_config.h"
 #include "queue.h"
 
@@ -28,6 +29,12 @@ std::string queue::publish(d_dict value) {
 	return lat_pub_id_;
 }
 
+void queue::subscribe_thread(std::promise<std::pair<std::string, std::string>> && p){
+    item_stream return_value = subscribe();
+    if(!return_value.empty()) p.set_value(return_value.back().second.back());
+    else p.set_value(std::make_pair(std::string(), std::string()));
+}
+
 item_stream queue::subscribe() {
     AUTO_TRACER("Queue:Subscribe");
 	// function to get all from the latest sub id
@@ -36,7 +43,7 @@ item_stream queue::subscribe() {
 	sub_timer.startTime();
 #endif
 	item_stream result = redis_->subscribe_last();
-	lat_sub_id_ = result.back().first;
+    if(!result.empty()) lat_sub_id_ = result.back().first;
 #ifdef BENCH_TIMER
 	sub_timer.endTimeWithPrint("[Queue][Subscribe()]");
 #endif
@@ -70,7 +77,8 @@ std::string queue::populate() {
         pop_timer.startTime();
     #endif
         d_dict val;
-        val.push_back({std::to_string(std::time(nullptr)), std::to_string(mon_hook_())});
+    uint64_t now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
+    val.push_back({std::to_string(now), std::to_string(mon_hook_())});
     #ifdef BENCH_TIMER
         pop_timer.endTimeWithPrint("[Queue][Populate()->mon_hook]");
     #endif
@@ -182,7 +190,7 @@ std::string gen_random(const int len) {
     return tmp_s;
 }
 
-void queue::queue_publish_test(int num_repeats, int message_size) {
+void queue::queue_publish_test(uint64_t num_repeats, uint64_t message_size) {
 //[0] = {const char * | 0x56374be88a2a} "XADD"
 //[1] = {const char * | 0x7fb694002f58} "CAPACITY_MEMORY"
 //[2] = {const char * | 0x56374be8842a} "*"
@@ -200,7 +208,7 @@ void queue::queue_publish_test(int num_repeats, int message_size) {
     }
 }
 
-void queue::queue_subscribe_test(int num_repeats) {
+void queue::queue_subscribe_test(uint64_t num_repeats) {
     for(int i = 0; i < num_repeats; i++){
         subscribe();
     }

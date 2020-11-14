@@ -101,7 +101,7 @@ QueueConfig conf::json_to_QueueConfig(conf::json queue_config) {
 
 QueueKey conf::json_to_QueueKey(conf::json queue_key_json) {
 	int node_index = queue_key_json["node_index"];
-	auto tier_index = queue_key_json["tier_index"];
+	int tier_index = queue_key_json["tier_index"];
 	json queue_type_json = queue_key_json["type"];
 	QueueType queue_type = json_to_QueueType(queue_type_json);
 	std::string mode_ = queue_key_json["mode"];

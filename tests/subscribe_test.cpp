@@ -1,7 +1,3 @@
-//
-// Created by neeraj on 4/17/20.
-//
-
 #include "s_queues.h"
 #include <iostream>
 #include <unistd.h>
@@ -16,9 +12,9 @@ int main(int argc, char*argv[]){
     MPI_Comm_rank(MPI_COMM_WORLD, &world_rank);
 
     auto url = "tcp://127.0.0.1";
-    auto topic1 = "publish_test_1";
+    auto topic1 = "publish_test_0";
     int num_queues = 16;
-    int num_messages = 441505;
+    uint64_t num_messages = 441505;
 
     if (argc < 3){
         std::cout << "Need num_queues and num_messages" << std::endl;

@@ -1,0 +1,70 @@
+[
+  {
+    "hostname": "localhost",
+    "key" : {
+      "node_index": 0,
+      "level": 0,
+      "type": "NODE"
+    },
+    "queues": [
+      {
+        "key":{
+          "node_index": 0,
+          "tier_index": 0,
+          "mode" : "SERVER",
+          "type": {
+            "value": "TIER_CAPACITY",
+            "base_interval": 30000,
+            "increase_factor": 0.1,
+            "pythio_interval": 250
+          }
+        },
+        "url": "tcp://localhost",
+        "queue_port": 3000,
+        "hook": "NULL",
+        "topic": "FINAL_INSIGHT",
+        "pythio":{
+          "model": "MODEL_LINEAR",
+          "weights": "PATH_MODEL_WEIGHTS"
+        }
+      }
+    ],
+    "children": [1],
+    "children_queues": [0],
+    "parent": "NULL"
+  },
+  {
+    "hostname": "localhost",
+    "key" : {
+      "node_index": 1,
+      "level": 1,
+      "type": "LEAF"
+    },
+    "queues": [
+      {
+        "key":{
+          "node_index": 1,
+          "tier_index": 0,
+          "mode" : "SERVER",
+          "type": {
+            "value": "NODE_CAPACITY",
+            "base_interval": 30000,
+            "increase_factor": 0.1,
+            "pythio_interval": 250
+          }
+        },
+        "url": "tcp://localhost",
+        "queue_port": 3001,
+        "hook": "CAPACITY",
+        "topic": "CAPACITY_MEMORY",
+        "pythio":{
+          "model": "MODEL_LINEAR",
+          "weights": "PATH_MODEL_WEIGHTS"
+        }
+      }
+    ],
+    "children": [],
+    "children_queues": [],
+    "parent": 0
+  }
+]

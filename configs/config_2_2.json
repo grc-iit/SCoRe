@@ -13,7 +13,7 @@
           "tier_index": 0,
           "mode" : "SERVER",
           "type": {
-            "value": "TIER_CAPACITY",
+            "value": "CLUSTER_LOAD",
             "base_interval": 3000000,
             "increase_factor": 0.1,
             "pythio_interval": 30000000
