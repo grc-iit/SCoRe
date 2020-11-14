@@ -5,10 +5,13 @@
 #include <common/debug.h>
 #include <memory>
 #include "mon_hooks.h"
+#include <constants.h>
+#include <cmath>
 
 double mon::load_hook() {
     AUTO_TRACER("Hooks:load_hook");
-	return 50.0;
+    return 100; //100 * (std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count() - SCORE_START_TIME);
+	//return 50.0;
 }
 
 double mon::cap_hook() {
@@ -37,4 +40,70 @@ double mon::cap_hook() {
 double mon::avail_hook() {
     AUTO_TRACER("Hooks:avail_hook");
     return 1.00;
+}
+
+void mon::InitSimHook(std::string tracefile, std::string feature) {
+    AUTO_TRACER("Hooks::simulation_hook_init");
+    if (tracefile == "") {
+        return;
+    }
+    std::ifstream tracestream(tracefile.data(), std::ifstream::in);
+    const int bufsize = 1000;
+    char buf[bufsize];
+    tracestream.getline(buf, bufsize);
+    // first line is an indexing line, it will start with # and tell us what features the dataset contains, one of which must be "timestamp"
+    if (buf[0] != '#') {
+        std::cerr << "Improper trace file, does not conform to specification";
+        return;
+    }
+    std::vector<std::string> features;
+    char featurebuf[bufsize];
+    std::istringstream featurestream(buf+2);
+    int tsindex;
+    int ftindex;
+    while (featurestream.getline(featurebuf, bufsize, ';')) {
+        features.emplace_back(std::string(featurebuf));
+        if (std::string(featurebuf) == "timestamp") {
+            tsindex = features.size() - 1;
+        }
+        if (std::string(featurebuf) == feature) {
+            ftindex = features.size() - 1;
+        }
+    }
+    long start_timestamp = -1;
+    while (tracestream.getline(buf, bufsize)) {
+        featurestream.str(buf);
+        featurestream.clear();
+        std::string timestamp;
+        std::string featureval;
+        for (int i = 0; featurestream.getline(featurebuf, bufsize, ';'); i++) {
+            if (i == tsindex) {
+                timestamp = std::string(featurebuf);
+            }
+            if (i == ftindex) {
+                featureval = std::string(featurebuf);
+            }
+        }
+        std::tm ts{};
+        std::istringstream timestream(timestamp);
+        timestream >> std::get_time(&ts, ":%Y-%m-%d %H::%M::%S UTC:");
+        std::time_t unix_timestamp = std::mktime(&ts);
+        if (start_timestamp == -1) {
+            start_timestamp = (long)unix_timestamp;
+        }
+        trace_sim_end_time = (long)unix_timestamp - start_timestamp;
+        trace_simulation_map[(long)unix_timestamp - start_timestamp] = std::strtod(featureval.data(), NULL);
+    }
+    //tracestream.close();
+}
+
+double mon::CallSimHook() {
+    AUTO_TRACER("Hooks::simulation_hook");
+    long index = ((std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count() - SCORE_START_TIME) % (trace_sim_end_time + 1));
+    for (auto i = trace_simulation_map.begin(); i != trace_simulation_map.end(); i++) {
+        if (i->first >= index) {
+            return i->second;
+        }
+    }
+    return -1;
 }

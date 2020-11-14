@@ -12,8 +12,8 @@ enum struct QueueValue {
 	TIER_CAPACITY,
 	CLUSTER_AVAILABILITY,
 	CLUSTER_LOAD,
-	CLUSTER_CAPACITY
-
+	CLUSTER_CAPACITY,
+    SIM
 };
 
 enum struct ReverseTriequeueNodeType {
