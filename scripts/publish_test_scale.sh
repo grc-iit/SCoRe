@@ -49,4 +49,9 @@ do
   ${redis_location}/redis-cli flushall
 done
 
+for node in "${server_list[@]}"
+do
+ssh ${node} /bin/bash << EOF
 killall redis-server
+EOF
+done
