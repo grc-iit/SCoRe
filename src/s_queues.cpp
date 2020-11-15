@@ -4,6 +4,7 @@
 
 #include <thread>
 #include <future>
+#include <timer.h>
 #include "s_queues.h"
 
 // Here the whole procedure is similar to the queues.* populate methods
@@ -60,6 +61,10 @@ std::string capacity_queue::populate(std::vector<std::unordered_map<QueueKey, st
         thread.join();
     }
 
+    #ifdef COMMON_DEBUG_TIMER
+        Timer pop_timer;
+        pop_timer.startTime();
+    #endif
     for(auto & it : return_vector) {
 //    for(auto facts: return_vector){
         auto fact = it.get().second;
@@ -67,9 +72,13 @@ std::string capacity_queue::populate(std::vector<std::unordered_map<QueueKey, st
             second += std::stod(fact);
         }
     }
+
+    #ifdef COMMON_DEBUG_TIMER
+    pop_timer.endTimeWithPrint("Insight Calculations: ");
+    #endif
     uint64_t now = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-	val.push_back({std::to_string(now), std::to_string(second)});
-	return publish(val);
+    val.push_back({std::to_string(now), std::to_string(second)});
+    return publish(val);
 }
 
 //second += std::stod(fact);
