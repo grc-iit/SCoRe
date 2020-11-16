@@ -1,7 +1,7 @@
 from jarvis_cd.echo_node import EchoNode
 from jarvis_cd.exception import Error, ErrorCode
 from jarvis_cd.exec_node import ExecNode
-from repos.orangefs import package
+# from repos.orangefs import package
 from jarvis_cd.graph import Graph
 import os
 import socket
@@ -24,7 +24,7 @@ class Apollo(Graph):
         self.redis_config = self.config['COMMON']['REDIS_CONFIG']
         self.redis_path = self.config['COMMON']['REDIS_PATH']
 
-        self.orangefs = Orangefs("/home/jcernudagarcia/Apollo/jarvis/repos/orangefs/default.ini")
+        # self.orangefs = Orangefs("/home/jcernudagarcia/Apollo/jarvis/repos/orangefs/default.ini")
 
         self.fact_hosts = self._convert_pairs_toMap(
             self.config['COMMON']['APOLLO_CONFIG'] + self.experiment + "/fact")
@@ -57,7 +57,7 @@ class Apollo(Graph):
         redis_cmd = f"{self.redis_path}redis-cli flushall; {self.redis_path}redis-cli -p 6380 flushall; killall redis-server"
         nodes = []
         nodes += self.clean_vertex(self.insight_hosts)
-        nodes += self.orangefs.Stop()
+        # nodes += self.orangefs.Stop()
         nodes += self.clean_vertex(self.fact_hosts)
         nodes.append(SSHNode("Stopping  Redis", self.redis_hosts, redis_cmd))
 
@@ -66,7 +66,7 @@ class Apollo(Graph):
     def _DefineStart(self):
         nodes = []
         nodes += self.spawn_redis(self.redis_hosts)
-        nodes += self.orangefs.Start()
+        # nodes += self.orangefs.Start()
         nodes += self.spawn_tempfs(list(self.client_host.keys()))
         nodes += self.spawn_vertex(self.fact_hosts)
         nodes += self.spawn_vertex(self.insight_hosts)
