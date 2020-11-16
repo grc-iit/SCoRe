@@ -13,6 +13,7 @@ from jarvis_cd.ssh_node import SSHNode
 
 class Orangefs(Graph):
     _default_config = "/home/jcernudagarcia/Apollo/jarvis/repos/orangefs/default.ini"
+
     def __init__(self, config_file = None):
         super().__init__(config_file,self._default_config)
         self.server_data_hosts = self._convert_hostfile_tolist(self.config['SERVER']['SERVER_DATA_HOST_FILE'])

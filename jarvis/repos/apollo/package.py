@@ -1,6 +1,7 @@
 from jarvis_cd.echo_node import EchoNode
 from jarvis_cd.exception import Error, ErrorCode
 from jarvis_cd.exec_node import ExecNode
+from repos.orangefs import package
 from jarvis_cd.graph import Graph
 import os
 import socket
@@ -9,6 +10,7 @@ import time
 from jarvis_cd.scp_node import SCPNode
 from jarvis_cd.sleep_node import SleepNode
 from jarvis_cd.ssh_node import SSHNode
+from repos.orangefs.package import Orangefs
 
 
 class Apollo(Graph):
@@ -39,7 +41,7 @@ class Apollo(Graph):
         self.ld_path_comp = self.config['COMMON']['LD_PATH_COMP']
         self.ld_path_stor = self.config['COMMON']['LD_PATH_STOR']
 
-        self.ldms = False
+        self.ldms = True
 
     def _DefineClean(self):
         nodes = [SSHNode("clean Redis data", self.redis_hosts, "redis-cli flushall")]
@@ -109,7 +111,6 @@ class Apollo(Graph):
                    f"{self.redis_path}redis-cli -p 6380 ping"
         for client in redis_hosts.keys():
             if redis_hosts[client] == 1:
-                self.ldms = True
                 redis_nodes.append(SSHNode("Start Client", client, ldms_cmd, print_output=True))
             else:
                 redis_nodes.append(SSHNode("Start Client", client, redis_cmd, print_output=True))
@@ -121,13 +122,13 @@ class Apollo(Graph):
                          f"mkdir -p {self.result_dir}/; " \
                          f"echo {self.experiment} >> {self.result_dir}/client-results; " \
                          f"echo {self.experiment}; " \
-                         f"{self.executable}/real_client_test ares-comp-13 >> {self.result_dir}/client-results "
+                         f"{self.executable}/client_test >> {self.result_dir}/client-results "
         else:
             client_cmd = f"export LD_LIBRARY_PATH={self.ld_path_comp}; echo $LD_LIBRARY_PATH; " \
                          f"mkdir -p {self.result_dir}/; " \
                          f"echo {self.experiment} >> {self.result_dir}/client-results; " \
                          f"echo {self.experiment}; " \
-                         f"{self.executable}/client_test ares-comp-13 >> {self.result_dir}/client-results "
+                         f"{self.executable}/client_test >> {self.result_dir}/client-results "
         client_nodes = []
         SSHNode("Start Client", client_hosts, client_cmd, print_output=True)
         return client_nodes
