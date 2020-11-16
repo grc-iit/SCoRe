@@ -38,3 +38,57 @@ double mon::avail_hook() {
     AUTO_TRACER("Hooks:avail_hook");
     return 1.00;
 }
+
+double mon::memory_hook() {
+    AUTO_TRACER("Hook::GetCurrentCapacity");
+    std::string cmd = "du -sb /tmp/jaime_apollo/ | awk '{print $1}'";
+    FILE *fp;
+    std::array<char, 128> buffer;
+    std::string result;
+    std::shared_ptr<FILE> pipe(popen(cmd.c_str(), "r"), pclose);
+    if (!pipe) throw std::runtime_error("popen() failed!");
+    while (!feof(pipe.get())) {
+        if (fgets(buffer.data(), 128, pipe.get()) != nullptr)
+            result += buffer.data();
+    }
+    auto val = std::stoll(result);
+    /* is_changed.Put((std::to_string(HERMES_CONF->MY_SERVER)+"_"+std::to_string(layer.id_)), val);*/
+    return val;
+    /* } else return was_changed.second;*/
+}
+
+double mon::nvme_hook() {
+    AUTO_TRACER("Hook::GetCurrentCapacity");
+    std::string cmd = "du -sb /mnt/nvme/jcernudagarcia/apollo_nvme/ | awk '{print $1}'";
+    FILE *fp;
+    std::array<char, 128> buffer;
+    std::string result;
+    std::shared_ptr<FILE> pipe(popen(cmd.c_str(), "r"), pclose);
+    if (!pipe) throw std::runtime_error("popen() failed!");
+    while (!feof(pipe.get())) {
+        if (fgets(buffer.data(), 128, pipe.get()) != nullptr)
+            result += buffer.data();
+    }
+    auto val = std::stoll(result);
+    /* is_changed.Put((std::to_string(HERMES_CONF->MY_SERVER)+"_"+std::to_string(layer.id_)), val);*/
+    return val;
+    /* } else return was_changed.second;*/
+}
+
+double mon::ssd_hook() {
+    AUTO_TRACER("Hook::GetCurrentCapacity");
+     std::string cmd = "du -sb /mnt/ssd/jcernudagarcia/pvfs2-storage/ | awk '{print $1}'";
+    FILE *fp;
+    std::array<char, 128> buffer;
+    std::string result;
+    std::shared_ptr<FILE> pipe(popen(cmd.c_str(), "r"), pclose);
+    if (!pipe) throw std::runtime_error("popen() failed!");
+    while (!feof(pipe.get())) {
+        if (fgets(buffer.data(), 128, pipe.get()) != nullptr)
+            result += buffer.data();
+    }
+    auto val = std::stoll(result);
+    /* is_changed.Put((std::to_string(HERMES_CONF->MY_SERVER)+"_"+std::to_string(layer.id_)), val);*/
+    return val;
+    /* } else return was_changed.second;*/
+}

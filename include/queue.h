@@ -56,6 +56,7 @@ using QM_type = std::unordered_map<QueueKey, std::shared_ptr<queue>>;
 class queue {
 public:
 	std::shared_ptr<redis_client> redis_;
+	std::shared_ptr<redis_client> ldms;
 	QueueKey key_;
 	std::string lat_pub_id_="1";
 	std::string lat_sub_id_="1";
@@ -72,7 +73,14 @@ public:
 	explicit queue(QueueConfig config):
                 redis_(std::make_shared<redis_client>(config.url_, config.topic_)), topic_(config.topic_),
                 key_(config.key_), lat_pub_id_("1"), lat_sub_id_("1"), mon_hook_(config.hook_),
-                pythio_(Pythio(config.model_, config.weights_)), mode_(config.mode_){}
+                pythio_(Pythio(config.model_, config.weights_)), mode_(config.mode_){
+	    if(config.ldms_ != "NONE"){
+	        ldms = std::make_shared<redis_client>(config.ldms_, config.topic_+"_LDMS");
+	    }
+	    else{
+	        ldms = nullptr;
+	    }
+	}
 	std::string publish(d_dict value);
     void subscribe_thread(std::promise<std::pair<std::string, std::string>> && p);
 	item_stream subscribe();

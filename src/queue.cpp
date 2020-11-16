@@ -24,6 +24,7 @@
 std::string queue::publish(d_dict value) {
     AUTO_TRACER("Queue:Publish");
     lat_pub_id_ = redis_->publish(value);
+    if(ldms != nullptr) ldms->publish(value);
 	lat_published_.push_back(value);
 	if(lat_published_.size() > window_size) lat_published_.erase (lat_published_.begin()+(lat_published_.size()-window_size));
 	return lat_pub_id_;

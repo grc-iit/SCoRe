@@ -9,5 +9,8 @@ namespace mon {
 	double load_hook();
 	double avail_hook();
 	double cap_hook();
+	double memory_hook();
+	double nvme_hook();
+	double ssd_hook();
 }
 #endif //SCORE_MON_HOOKS_H

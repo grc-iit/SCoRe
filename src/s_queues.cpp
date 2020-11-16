@@ -62,8 +62,8 @@ std::string capacity_queue::populate(std::vector<std::unordered_map<QueueKey, st
     }
 
     #ifdef COMMON_DEBUG_TIMER
-        Timer pop_timer;
-        pop_timer.startTime();
+    Timer pop_timer;
+    pop_timer.startTime();
     #endif
     for(auto & it : return_vector) {
 //    for(auto facts: return_vector){

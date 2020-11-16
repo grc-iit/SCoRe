@@ -7,13 +7,13 @@ set(CMAKE_CXX_STANDARD 17)
 include_directories(scs_io_common/include)
 include_directories(include)
 #set(LIBS -lpthread -lrpc  -lhiredis -lredis++ -lmpi -L${CMAKE_BINARY_DIR}/scs_io_common -lscs_io_common)
-set(LIBS -lpthread -lrpc  -lhiredis -lredis++ -lmpi)
+set(LIBS -lpthread -lrpc  -lhiredis -lredis++)
 #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D BENCH_TIMER")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCOMMON_DEBUG_MSG")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCOMMON_DEBUG_TIMER")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCOMMON_DEBUG_TIMER")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DENABLE_AUTO_TRACER")
 #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCOMMON_DEBUG_TRACE")
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCOMMON_DEBUG_TRACE")
 
 set(QUEUE_COMMON src/queue.cpp include/queue.h
         src/queue_key.cpp include/queue_key.h
@@ -50,16 +50,22 @@ target_link_libraries(SCoRe ${LIBS})
 #target_link_libraries(queue_test ${LIBS})
 
 add_executable(publish_test ${QUEUE_COMMON} ${DEBUG_COMMON} tests/publish_test.cpp)
-target_link_libraries(publish_test ${LIBS})
+target_link_libraries(publish_test ${LIBS} -lmpi)
 
 add_executable(subscribe_test ${QUEUE_COMMON} ${DEBUG_COMMON} tests/subscribe_test.cpp)
-target_link_libraries(subscribe_test ${LIBS})
+target_link_libraries(subscribe_test ${LIBS} -lmpi)
 
 add_executable(subscribe_test_2 ${QUEUE_COMMON} ${DEBUG_COMMON} tests/subscribe_test_2.cpp)
-target_link_libraries(subscribe_test_2 ${LIBS})
+target_link_libraries(subscribe_test_2 ${LIBS} -lmpi)
 
 add_executable(client_test ${QUEUE_COMMON} ${DEBUG_COMMON} ${SCORE_COMMON} tests/client_test.cpp)
-target_link_libraries(client_test ${LIBS})
+target_link_libraries(client_test ${LIBS} -lmpi)
+
+add_executable(real_client_test ${QUEUE_COMMON} ${DEBUG_COMMON} ${SCORE_COMMON} tests/real_client.cpp)
+target_link_libraries(real_client_test ${LIBS} -lmpi)
+
+add_executable(ldms_client_test ${QUEUE_COMMON} ${DEBUG_COMMON} ${SCORE_COMMON} tests/ldms_client.cpp)
+target_link_libraries(ldms_client_test ${LIBS} -lmpi)
 
 #add_executable(rtqn_test ${QUEUE_COMMON} ${DEBUG_COMMON} ${SCORE_COMMON} tests/reverse_triequeue_node_test.cpp)
 #target_link_libraries(rtqn_test ${LIBS})

@@ -75,10 +75,14 @@ QueueConfig conf::json_to_QueueConfig(conf::json queue_config) {
 	double_function hook = hook_ == "CAPACITY" ? mon::cap_hook :
 	                       hook_ == "LOAD" ? mon::load_hook :
 	                       hook_ == "AVAILABILITY" ? mon::avail_hook :
+                           hook_ == "MEMORY" ? mon::memory_hook :
+                           hook_ == "NVME" ? mon::nvme_hook :
+                           hook_ == "SSD" ? mon::ssd_hook :
 	                       nullptr;
 
 	auto topic = strip(queue_config["topic"]);
 	auto url = strip(queue_config["url"]);
+	auto ldms = strip(queue_config["ldsm"]);
 
 	int queue_port = queue_config["queue_port"];
 
@@ -95,7 +99,7 @@ QueueConfig conf::json_to_QueueConfig(conf::json queue_config) {
 	std::string mode_ = strip(queue_key_json["mode"]);
 	Mode mode = mode_ == "SERVER" ? Mode::SERVER : Mode::CLIENT;
 
-	return QueueConfig(queue_key, url, topic, mode, hook, model, weights, queue_port);
+	return QueueConfig(queue_key, url, ldms, topic, mode, hook, model, weights, queue_port);
 
 }
 
