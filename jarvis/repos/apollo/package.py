@@ -53,20 +53,20 @@ class Apollo(Graph):
         return nodes
 
     def _DefineStop(self):
-        self.orangefs.Stop()
         # TODO: Check the name of the executables for both cases, so that we can kill them.
         redis_cmd = f"{self.redis_path}redis-cli flushall; {self.redis_path}redis-cli -p 6380 flushall; killall redis-server"
         nodes = []
         nodes += self.clean_vertex(self.insight_hosts)
+        nodes += self.orangefs.Stop()
         nodes += self.clean_vertex(self.fact_hosts)
         nodes.append(SSHNode("Stopping  Redis", self.redis_hosts, redis_cmd))
 
         return nodes
 
     def _DefineStart(self):
-        self.orangefs.Start()
         nodes = []
         nodes += self.spawn_redis(self.redis_hosts)
+        nodes += self.orangefs.Start()
         nodes += self.spawn_tempfs(list(self.client_host.keys()))
         nodes += self.spawn_vertex(self.fact_hosts)
         nodes += self.spawn_vertex(self.insight_hosts)
