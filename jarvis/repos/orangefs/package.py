@@ -108,6 +108,8 @@ class Orangefs(Graph):
         ## create tmp dir
         tmp_dir_node = SSHNode("make tmp dir in clients",self.client_hosts,"mkdir -p {}".format(self.temp_dir))
         nodes.append(tmp_dir_node)
+        tmp_dir_node = SSHNode("make tmp dir in server", self.server_data_hosts, "mkdir -p {}".format(self.temp_dir))
+        nodes.append(tmp_dir_node)
         ## copy pfs conf
         copy_node = SCPNode("cp conf file",self.server_data_hosts,pfs_conf,pfs_conf)
         nodes.append(copy_node)
