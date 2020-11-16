@@ -110,10 +110,11 @@ class Apollo(Graph):
         ldms_cmd = f"nohup {self.redis_path}redis-server {self.redis_config}/ldms.conf; sleep 30; " \
                    f"{self.redis_path}redis-cli -p 6380 ping"
         for client in redis_hosts.keys():
-            if redis_hosts[client] == "1":
-                redis_nodes.append(SSHNode("Start Client", client, ldms_cmd, print_output=True))
-            else:
-                redis_nodes.append(SSHNode("Start Client", client, redis_cmd, print_output=True))
+            for node in redis_hosts[client]:
+                if node == "1":
+                    redis_nodes.append(SSHNode("Start Client", client, ldms_cmd, print_output=True))
+                else:
+                    redis_nodes.append(SSHNode("Start Client", client, redis_cmd, print_output=True))
         return redis_nodes
 
     def spawn_clients(self, client_hosts):
