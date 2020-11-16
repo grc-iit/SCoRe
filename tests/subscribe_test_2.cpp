@@ -16,7 +16,7 @@ int main(int argc, char*argv[]){
     int num_queues = 1;
     auto url = "tcp://127.0.0.1";
     auto topic1 = "publish_test_0";
-    int num_queues = 16;
+//    int num_queues = 16;
     uint64_t num_messages = 441505;
 
     if (argc < 3){
