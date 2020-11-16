@@ -36,7 +36,7 @@ int main(int argc, char*argv[]){
         std::string final_topic = topic+std::to_string(i);
         std::cout << final_topic << std::endl;
         QueueKey key(0, 0, QueueType(QueueValue::NODE_CAPACITY, 0,0,0), Mode::SERVER);
-        QueueConfig config(key, url, final_topic, Mode::SERVER, mon::cap_hook, Model::LINEAR, "", 3000);
+        QueueConfig config(key, url, "", final_topic, Mode::SERVER, mon::cap_hook, Model::LINEAR, "", 3000);
         list_queues.emplace_back(queue(config));
     }
 

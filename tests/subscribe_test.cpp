@@ -33,7 +33,7 @@ int main(int argc, char*argv[]){
 
     for(int i = 0; i < num_queues; i++){
         QueueKey key(0, 0, QueueType(QueueValue::NODE_CAPACITY, 0,0,0), Mode::SERVER);
-        QueueConfig config(key, url, topic1, Mode::SERVER, mon::cap_hook, Model::LINEAR, "", 3000);
+        QueueConfig config(key, url, "", topic1, Mode::SERVER, mon::cap_hook, Model::LINEAR, "", 3000);
         list_queues.emplace_back(queue(config));
     }
 
