@@ -38,7 +38,7 @@ set(DEBUG_COMMON include/timer.h src/timer.cpp
 
 add_executable(SCoRe ${QUEUE_COMMON} ${SCORE_COMMON} ${DEBUG_COMMON} main.cpp)
 #add_dependencies(SCoRe scs_io_common)
-target_link_libraries(SCoRe ${LIBS} mpi)
+target_link_libraries(SCoRe ${LIBS})
 
 #add_executable(client ${QUEUE_COMMON} ${SCORE_COMMON} ${DEBUG_COMMON} client.cpp)
 #target_link_libraries(client ${LIBS})

@@ -39,9 +39,9 @@ int main(int argc, char*argv[]){
     redis_nvme = std::make_shared<redis_client>(remote_host, "NVME_"+ id +"_LDMS");
     pfs_redis = std::make_shared<redis_client>(remote_host, "PFS_CAP_LDMS");
 
-    int file_memory = open("/tmp/jaime_apollo/test", O_RDWR | O_CREAT, 0644);
-    int file_nvme = open("/mnt/nvme/jcernudagarcia/apollo_nvme/test", O_RDWR | O_CREAT, 0644);
-    int file_ssd = open("/mnt/nvme/jcernudagarcia/pvfs2-mount/test", O_RDWR | O_CREAT, 0644);
+    int file_memory = open("/mnt/nvme/jcernudagarcia/tempfs/test_mem", O_RDWR | O_CREAT, 0644);
+    int file_nvme = open("/mnt/nvme/jcernudagarcia/apollo_nvme/test_nvme", O_RDWR | O_CREAT, 0644);
+    int file_ssd = open("/mnt/nvme/jcernudagarcia/pvfs2-mount/test_ssd", O_RDWR | O_CREAT, 0644);
 
     Timer pop_timer;
     pop_timer.startTime();
