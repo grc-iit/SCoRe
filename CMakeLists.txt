@@ -10,10 +10,10 @@ include_directories(include)
 set(LIBS -lpthread -lrpc  -lhiredis -lredis++)
 #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D BENCH_TIMER")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCOMMON_DEBUG_MSG")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCOMMON_DEBUG_TIMER")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCOMMON_DEBUG_TIMER")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DENABLE_AUTO_TRACER")
 #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCOMMON_DEBUG_TRACE")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCOMMON_DEBUG_TRACE")
 
 set(QUEUE_COMMON src/queue.cpp include/queue.h
         src/queue_key.cpp include/queue_key.h
@@ -38,7 +38,7 @@ set(DEBUG_COMMON include/timer.h src/timer.cpp
 
 add_executable(SCoRe ${QUEUE_COMMON} ${SCORE_COMMON} ${DEBUG_COMMON} main.cpp)
 #add_dependencies(SCoRe scs_io_common)
-target_link_libraries(SCoRe ${LIBS})
+target_link_libraries(SCoRe ${LIBS} mpi)
 
 #add_executable(client ${QUEUE_COMMON} ${SCORE_COMMON} ${DEBUG_COMMON} client.cpp)
 #target_link_libraries(client ${LIBS})

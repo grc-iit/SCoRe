@@ -41,7 +41,7 @@ double mon::avail_hook() {
 
 double mon::memory_hook() {
     AUTO_TRACER("Hook::GetCurrentCapacity");
-    std::string cmd = "du -sb /tmp/jaime_apollo/ | awk '{print $1}'";
+    std::string cmd = "du -sb /mnt/nvme/jcernudagarcia/tempfs/ | awk '{print $1}'";
     FILE *fp;
     std::array<char, 128> buffer;
     std::string result;
@@ -59,7 +59,7 @@ double mon::memory_hook() {
 
 double mon::nvme_hook() {
     AUTO_TRACER("Hook::GetCurrentCapacity");
-    std::string cmd = "du -sb /mnt/nvme/jcernudagarcia/apollo_nvme/ | awk '{print $1}'";
+    std::string cmd = "du -sb /mnt/nvme/jcernudagarcia/pvfs2-mount/ | awk '{print $1}'";
     FILE *fp;
     std::array<char, 128> buffer;
     std::string result;
@@ -77,7 +77,7 @@ double mon::nvme_hook() {
 
 double mon::ssd_hook() {
     AUTO_TRACER("Hook::GetCurrentCapacity");
-     std::string cmd = "du -sb /mnt/ssd/jcernudagarcia/pvfs2-storage/ | awk '{print $1}'";
+    std::string cmd = "du -sb /mnt/ssd/jcernudagarcia/pvfs2-storage/data/ | awk '{print $1}'";
     FILE *fp;
     std::array<char, 128> buffer;
     std::string result;

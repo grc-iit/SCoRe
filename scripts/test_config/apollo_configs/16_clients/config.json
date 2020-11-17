@@ -20,10 +20,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-13:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "MEMORY",
-                "topic": "MEMORY",
+                "topic": "MEMORY_0",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -42,10 +42,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-13:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "NVME",
-                "topic": "NVME",
+                "topic": "NVME_0",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -77,10 +77,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-14:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "MEMORY",
-                "topic": "MEMORY",
+                "topic": "MEMORY_1",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -99,10 +99,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-14:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "NVME",
-                "topic": "NVME",
+                "topic": "NVME_1",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -134,10 +134,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-15:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "MEMORY",
-                "topic": "MEMORY",
+                "topic": "MEMORY_2",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -156,10 +156,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-15:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "NVME",
-                "topic": "NVME",
+                "topic": "NVME_2",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -191,10 +191,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-16:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "MEMORY",
-                "topic": "MEMORY",
+                "topic": "MEMORY_3",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -213,10 +213,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-16:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "NVME",
-                "topic": "NVME",
+                "topic": "NVME_3",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -248,10 +248,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-17:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "MEMORY",
-                "topic": "MEMORY",
+                "topic": "MEMORY_4",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -270,10 +270,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-17:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "NVME",
-                "topic": "NVME",
+                "topic": "NVME_4",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -305,10 +305,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-18:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "MEMORY",
-                "topic": "MEMORY",
+                "topic": "MEMORY_5",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -327,10 +327,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-18:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "NVME",
-                "topic": "NVME",
+                "topic": "NVME_5",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -362,10 +362,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-19:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "MEMORY",
-                "topic": "MEMORY",
+                "topic": "MEMORY_6",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -384,10 +384,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-19:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "NVME",
-                "topic": "NVME",
+                "topic": "NVME_6",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -419,10 +419,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-20:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "MEMORY",
-                "topic": "MEMORY",
+                "topic": "MEMORY_7",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -441,10 +441,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-20:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "NVME",
-                "topic": "NVME",
+                "topic": "NVME_7",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -476,10 +476,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-21:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "MEMORY",
-                "topic": "MEMORY",
+                "topic": "MEMORY_8",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -498,10 +498,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-21:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "NVME",
-                "topic": "NVME",
+                "topic": "NVME_8",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -533,10 +533,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-22:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "MEMORY",
-                "topic": "MEMORY",
+                "topic": "MEMORY_9",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -555,10 +555,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-22:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "NVME",
-                "topic": "NVME",
+                "topic": "NVME_9",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -590,10 +590,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-23:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "MEMORY",
-                "topic": "MEMORY",
+                "topic": "MEMORY_10",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -612,10 +612,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-23:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "NVME",
-                "topic": "NVME",
+                "topic": "NVME_10",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -647,10 +647,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-24:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "MEMORY",
-                "topic": "MEMORY",
+                "topic": "MEMORY_11",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -669,10 +669,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-24:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "NVME",
-                "topic": "NVME",
+                "topic": "NVME_11",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -704,10 +704,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-25:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "MEMORY",
-                "topic": "MEMORY",
+                "topic": "MEMORY_12",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -726,10 +726,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-25:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "NVME",
-                "topic": "NVME",
+                "topic": "NVME_12",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -761,10 +761,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-26:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "MEMORY",
-                "topic": "MEMORY",
+                "topic": "MEMORY_13",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -783,10 +783,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-26:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "NVME",
-                "topic": "NVME",
+                "topic": "NVME_13",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -818,10 +818,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-27:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "MEMORY",
-                "topic": "MEMORY",
+                "topic": "MEMORY_14",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -840,10 +840,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-27:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "NVME",
-                "topic": "NVME",
+                "topic": "NVME_14",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -875,10 +875,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-28:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "MEMORY",
-                "topic": "MEMORY",
+                "topic": "MEMORY_15",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -897,10 +897,10 @@
                     }
                 },
                 "url": "tcp://ares-comp-28:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "NVME",
-                "topic": "NVME",
+                "topic": "NVME_15",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -932,7 +932,7 @@
                     }
                 },
                 "url": "tcp://ares-stor-01:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "SSD",
                 "topic": "SSD",
@@ -967,7 +967,7 @@
                     }
                 },
                 "url": "tcp://ares-stor-02:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "SSD",
                 "topic": "SSD",
@@ -1002,7 +1002,7 @@
                     }
                 },
                 "url": "tcp://ares-stor-03:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "SSD",
                 "topic": "SSD",
@@ -1037,7 +1037,7 @@
                     }
                 },
                 "url": "tcp://ares-stor-04:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "SSD",
                 "topic": "SSD",
@@ -1072,7 +1072,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-13:6379",
-                "ldsm": "tcp://ares-comp-28:6380",
+                "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "NULL",
                 "topic": "PFS_CAP",

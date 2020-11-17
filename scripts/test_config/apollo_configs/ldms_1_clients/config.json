@@ -20,7 +20,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-13:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "MEMORY",
                 "topic": "MEMORY_0",
@@ -42,7 +42,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-13:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "NVME",
                 "topic": "NVME_0",
@@ -77,7 +77,7 @@
                     }
                 },
                 "url": "tcp://ares-stor-01:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "SSD",
                 "topic": "SSD",
@@ -112,7 +112,7 @@
                     }
                 },
                 "url": "tcp://ares-stor-02:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "SSD",
                 "topic": "SSD",
@@ -147,7 +147,7 @@
                     }
                 },
                 "url": "tcp://ares-stor-03:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "SSD",
                 "topic": "SSD",
@@ -182,7 +182,7 @@
                     }
                 },
                 "url": "tcp://ares-stor-04:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "SSD",
                 "topic": "SSD",
@@ -217,7 +217,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-13:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "NULL",
                 "topic": "PFS_CAP",

@@ -21,7 +21,7 @@
         },
         "url": "tcp://localhost",
         "queue_port": 3000,
-        "ldms": "NONE",
+        "ldsm": "NONE",
         "hook": "NULL",
         "topic": "FINAL_INSIGHT",
         "pythio":{
@@ -55,7 +55,7 @@
           }
         },
         "url": "tcp://localhost",
-        "ldms": "NONE",
+        "ldsm": "NONE",
         "queue_port": 3001,
         "hook": "CAPACITY",
         "topic": "CAPACITY_MEMORY",

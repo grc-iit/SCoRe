@@ -20,7 +20,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-13:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "MEMORY",
                 "topic": "MEMORY_0",
@@ -42,7 +42,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-13:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "NVME",
                 "topic": "NVME_0",
@@ -77,7 +77,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-14:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "MEMORY",
                 "topic": "MEMORY_1",
@@ -99,7 +99,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-14:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "NVME",
                 "topic": "NVME_1",
@@ -134,7 +134,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-15:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "MEMORY",
                 "topic": "MEMORY_2",
@@ -156,7 +156,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-15:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "NVME",
                 "topic": "NVME_2",
@@ -191,7 +191,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-16:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "MEMORY",
                 "topic": "MEMORY_3",
@@ -213,7 +213,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-16:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "NVME",
                 "topic": "NVME_3",
@@ -248,7 +248,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-17:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "MEMORY",
                 "topic": "MEMORY_4",
@@ -270,7 +270,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-17:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "NVME",
                 "topic": "NVME_4",
@@ -305,7 +305,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-18:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "MEMORY",
                 "topic": "MEMORY_5",
@@ -327,7 +327,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-18:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "NVME",
                 "topic": "NVME_5",
@@ -362,7 +362,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-19:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "MEMORY",
                 "topic": "MEMORY_6",
@@ -384,7 +384,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-19:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "NVME",
                 "topic": "NVME_6",
@@ -419,7 +419,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-20:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "MEMORY",
                 "topic": "MEMORY_7",
@@ -441,7 +441,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-20:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "NVME",
                 "topic": "NVME_7",
@@ -456,7 +456,7 @@
         "parent": 0
     },
     {
-        "hostname": "ares-stor-01",
+        "hostname": "ares-comp-21",
         "key": {
             "node_index":8, 
             "level":0, 
@@ -475,11 +475,33 @@
                         "pythio_interval": 250
                     }
                 },
-                "url": "tcp://ares-stor-01:6379",
-                "ldsm": "NONE",
+                "url": "tcp://ares-comp-21:6379",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
-                "hook": "SSD",
-                "topic": "SSD",
+                "hook": "MEMORY",
+                "topic": "MEMORY_8",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":8, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "NODE_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-21:6379",
+                "ldsm": "tcp://ares-comp-13:6380",
+                "queue_port":3000, 
+                "hook": "NVME",
+                "topic": "NVME_8",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -491,7 +513,7 @@
         "parent": 0
     },
     {
-        "hostname": "ares-stor-02",
+        "hostname": "ares-comp-22",
         "key": {
             "node_index":9, 
             "level":0, 
@@ -510,11 +532,33 @@
                         "pythio_interval": 250
                     }
                 },
-                "url": "tcp://ares-stor-02:6379",
-                "ldsm": "NONE",
+                "url": "tcp://ares-comp-22:6379",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
-                "hook": "SSD",
-                "topic": "SSD",
+                "hook": "MEMORY",
+                "topic": "MEMORY_9",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":9, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "NODE_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-22:6379",
+                "ldsm": "tcp://ares-comp-13:6380",
+                "queue_port":3000, 
+                "hook": "NVME",
+                "topic": "NVME_9",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -526,7 +570,7 @@
         "parent": 0
     },
     {
-        "hostname": "ares-stor-03",
+        "hostname": "ares-comp-23",
         "key": {
             "node_index":10, 
             "level":0, 
@@ -545,11 +589,33 @@
                         "pythio_interval": 250
                     }
                 },
-                "url": "tcp://ares-stor-03:6379",
-                "ldsm": "NONE",
+                "url": "tcp://ares-comp-23:6379",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
-                "hook": "SSD",
-                "topic": "SSD",
+                "hook": "MEMORY",
+                "topic": "MEMORY_10",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":10, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "NODE_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-23:6379",
+                "ldsm": "tcp://ares-comp-13:6380",
+                "queue_port":3000, 
+                "hook": "NVME",
+                "topic": "NVME_10",
                 "pythio": {
                     "model": "MODEL_LINEAR",
                     "weights": "PATH_MODEL_WEIGHTS"
@@ -561,7 +627,7 @@
         "parent": 0
     },
     {
-        "hostname": "ares-stor-04",
+        "hostname": "ares-comp-24",
         "key": {
             "node_index":11, 
             "level":0, 
@@ -580,8 +646,398 @@
                         "pythio_interval": 250
                     }
                 },
+                "url": "tcp://ares-comp-24:6379",
+                "ldsm": "tcp://ares-comp-13:6380",
+                "queue_port":3000, 
+                "hook": "MEMORY",
+                "topic": "MEMORY_11",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":11, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "NODE_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-24:6379",
+                "ldsm": "tcp://ares-comp-13:6380",
+                "queue_port":3000, 
+                "hook": "NVME",
+                "topic": "NVME_11",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-comp-25",
+        "key": {
+            "node_index":12, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":12, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "NODE_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-25:6379",
+                "ldsm": "tcp://ares-comp-13:6380",
+                "queue_port":3000, 
+                "hook": "MEMORY",
+                "topic": "MEMORY_12",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":12, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "NODE_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-25:6379",
+                "ldsm": "tcp://ares-comp-13:6380",
+                "queue_port":3000, 
+                "hook": "NVME",
+                "topic": "NVME_12",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-comp-26",
+        "key": {
+            "node_index":13, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":13, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "NODE_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-26:6379",
+                "ldsm": "tcp://ares-comp-13:6380",
+                "queue_port":3000, 
+                "hook": "MEMORY",
+                "topic": "MEMORY_13",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":13, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "NODE_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-26:6379",
+                "ldsm": "tcp://ares-comp-13:6380",
+                "queue_port":3000, 
+                "hook": "NVME",
+                "topic": "NVME_13",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-comp-27",
+        "key": {
+            "node_index":14, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":14, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "NODE_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-27:6379",
+                "ldsm": "tcp://ares-comp-13:6380",
+                "queue_port":3000, 
+                "hook": "MEMORY",
+                "topic": "MEMORY_14",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":14, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "NODE_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-27:6379",
+                "ldsm": "tcp://ares-comp-13:6380",
+                "queue_port":3000, 
+                "hook": "NVME",
+                "topic": "NVME_14",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-comp-28",
+        "key": {
+            "node_index":15, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":15, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "NODE_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-28:6379",
+                "ldsm": "tcp://ares-comp-13:6380",
+                "queue_port":3000, 
+                "hook": "MEMORY",
+                "topic": "MEMORY_15",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":15, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "NODE_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-28:6379",
+                "ldsm": "tcp://ares-comp-13:6380",
+                "queue_port":3000, 
+                "hook": "NVME",
+                "topic": "NVME_15",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-stor-01",
+        "key": {
+            "node_index":16, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":16, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "NODE_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-stor-01:6379",
+                "ldsm": "tcp://ares-comp-13:6380",
+                "queue_port":3000, 
+                "hook": "SSD",
+                "topic": "SSD",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-stor-02",
+        "key": {
+            "node_index":17, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":17, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "NODE_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-stor-02:6379",
+                "ldsm": "tcp://ares-comp-13:6380",
+                "queue_port":3000, 
+                "hook": "SSD",
+                "topic": "SSD",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-stor-03",
+        "key": {
+            "node_index":18, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":18, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "NODE_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-stor-03:6379",
+                "ldsm": "tcp://ares-comp-13:6380",
+                "queue_port":3000, 
+                "hook": "SSD",
+                "topic": "SSD",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-stor-04",
+        "key": {
+            "node_index":19, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":19, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "NODE_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
                 "url": "tcp://ares-stor-04:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "SSD",
                 "topic": "SSD",
@@ -598,14 +1054,14 @@
     {
         "hostname": "ares-comp-13",
         "key": {
-            "node_index":12, 
+            "node_index":20, 
             "level":0, 
             "type": "NODE"
         },
         "queues": [
             {
                 "key": {
-                    "node_index":12, 
+                    "node_index":20, 
                     "tier_index":0, 
                     "mode": "SERVER",
                     "type": {
@@ -616,7 +1072,7 @@
                     }
                 },
                 "url": "tcp://ares-comp-13:6379",
-                "ldsm": "NONE",
+                "ldsm": "tcp://ares-comp-13:6380",
                 "queue_port":3000, 
                 "hook": "NULL",
                 "topic": "PFS_CAP",
@@ -626,8 +1082,8 @@
                 }
             }
         ],
-        "children": [8, 9, 10, 
-            11
+        "children": [16, 17, 18, 
+            19
         ],
         "children_queues": [0, 0, 0, 
             0
