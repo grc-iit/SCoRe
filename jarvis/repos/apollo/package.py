@@ -41,7 +41,7 @@ class Apollo(Graph):
         self.ld_path_comp = self.config['COMMON']['LD_PATH_COMP']
         self.ld_path_stor = self.config['COMMON']['LD_PATH_STOR']
 
-        self.ldms = True
+        self.ldms = False
 
     def _DefineClean(self):
         nodes = [SSHNode("clean Redis data", self.redis_hosts, "redis-cli flushall")]
@@ -113,6 +113,7 @@ class Apollo(Graph):
             for node in redis_hosts[client]:
                 if node == "1":
                     redis_nodes.append(SSHNode("Start Redis", client, ldms_cmd, print_output=True))
+                    self.ldms = True
                 else:
                     redis_nodes.append(SSHNode("Start Redis", client, redis_cmd, print_output=True))
         return redis_nodes
@@ -125,7 +126,7 @@ class Apollo(Graph):
                              f"mkdir -p {self.result_dir}/; mkdir -p /mnt/nvme/jcernudagarcia/apollo_nvme/; " \
                              f"echo {self.experiment} >> {self.result_dir}/client-results; " \
                              f"echo {self.experiment}; " \
-                             f"{self.executable}/ldms_client_test tcp://ares-comp-14:6380 {len(list(self.client_host.keys()))} {id[0]} >> {self.result_dir}/ldms_client-results "
+                             f"{self.executable}/ldms_client_test tcp://ares-comp-13:6380 {len(list(self.client_host.keys()))} {id[0]} >> {self.result_dir}/ldms_client-results "
             else:
                 client_cmd = f"export LD_LIBRARY_PATH={self.ld_path_comp}; echo $LD_LIBRARY_PATH; " \
                              f"mkdir -p {self.result_dir}/; mkdir -p /mnt/nvme/jcernudagarcia/apollo_nvme/; " \
