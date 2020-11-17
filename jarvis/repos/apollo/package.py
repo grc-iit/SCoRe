@@ -54,12 +54,12 @@ class Apollo(Graph):
 
     def _DefineStop(self):
         # TODO: Check the name of the executables for both cases, so that we can kill them.
-        redis_cmd = f"{self.redis_path}redis-cli flushall; {self.redis_path}redis-cli -p 6380 flushall; killall redis-server"
+        redis_cmd = f"killall redis-server"
         nodes = []
         nodes += self.clean_vertex(self.insight_hosts)
-        # nodes += self.orangefs.Stop()
         nodes += self.clean_vertex(self.fact_hosts)
-        nodes.append(SSHNode("Stopping  Redis", self.redis_hosts, redis_cmd))
+        nodes += self.clean_clients(list(self.client_host))
+        nodes.append(SSHNode("Stopping  Redis", list(self.redis_hosts.keys()), redis_cmd))
 
         return nodes
 
@@ -70,7 +70,7 @@ class Apollo(Graph):
         nodes += self.spawn_tempfs(list(self.client_host.keys()))
         nodes += self.spawn_vertex(self.fact_hosts)
         nodes += self.spawn_vertex(self.insight_hosts)
-        nodes += self.spawn_clients(list(self.client_host.keys()))
+        nodes += self.spawn_clients(self.client_host)
         return nodes
 
     def clean_vertex(self, host, out=True):
@@ -83,7 +83,7 @@ class Apollo(Graph):
                     f"export LD_LIBRARY_PATH={client_path}; echo $LD_LIBRARY_PATH; "
                     f"kill -9 `cat {self.pid_path}/score_{vertex_id}.pid`; "
                     f"rm {self.pid_path}/score_{vertex_id}.pid")
-            clean_nodes.append(SSHNode("Stopping Fact Vertex", client, cmd, print_output=out))
+            clean_nodes.append(SSHNode("Stopping Vertex", client, cmd, print_output=out))
         return clean_nodes
 
     def spawn_vertex(self, host, out=True, insight=False):
@@ -112,33 +112,34 @@ class Apollo(Graph):
         for client in redis_hosts.keys():
             for node in redis_hosts[client]:
                 if node == "1":
-                    redis_nodes.append(SSHNode("Start Client", client, ldms_cmd, print_output=True))
+                    redis_nodes.append(SSHNode("Start Redis", client, ldms_cmd, print_output=True))
                 else:
-                    redis_nodes.append(SSHNode("Start Client", client, redis_cmd, print_output=True))
+                    redis_nodes.append(SSHNode("Start Redis", client, redis_cmd, print_output=True))
         return redis_nodes
 
     def spawn_clients(self, client_hosts):
-        if self.ldms:
-            client_cmd = f"export LD_LIBRARY_PATH={self.ld_path_comp}; echo $LD_LIBRARY_PATH; " \
-                         f"mkdir -p {self.result_dir}/; " \
-                         f"echo {self.experiment} >> {self.result_dir}/client-results; " \
-                         f"echo {self.experiment}; " \
-                         f"{self.executable}/client_test >> {self.result_dir}/client-results "
-        else:
-            client_cmd = f"export LD_LIBRARY_PATH={self.ld_path_comp}; echo $LD_LIBRARY_PATH; " \
-                         f"mkdir -p {self.result_dir}/; " \
-                         f"echo {self.experiment} >> {self.result_dir}/client-results; " \
-                         f"echo {self.experiment}; " \
-                         f"{self.executable}/client_test >> {self.result_dir}/client-results "
         client_nodes = []
-        SSHNode("Start Client", client_hosts, client_cmd, print_output=True)
+        for host, id in client_hosts.items():
+            if self.ldms:
+                client_cmd = f"export LD_LIBRARY_PATH={self.ld_path_comp}; echo $LD_LIBRARY_PATH; " \
+                             f"mkdir -p {self.result_dir}/; mkdir -p /mnt/nvme/jcernudagarcia/apollo_nvme/; " \
+                             f"echo {self.experiment} >> {self.result_dir}/client-results; " \
+                             f"echo {self.experiment}; " \
+                             f"{self.executable}/ldms_client_test tcp://ares-comp-14:6380 {len(list(self.client_host.keys()))} {id[0]} >> {self.result_dir}/ldms_client-results "
+            else:
+                client_cmd = f"export LD_LIBRARY_PATH={self.ld_path_comp}; echo $LD_LIBRARY_PATH; " \
+                             f"mkdir -p {self.result_dir}/; mkdir -p /mnt/nvme/jcernudagarcia/apollo_nvme/; " \
+                             f"echo {self.experiment} >> {self.result_dir}/client-results; " \
+                             f"echo {self.experiment}; " \
+                             f"{self.executable}/real_client_test tcp://ares-comp-13:6379 {len(list(self.client_host.keys()))} {id[0]} >> {self.result_dir}/real_client-results "
+            client_nodes.append(SSHNode("Start Client", host, client_cmd, print_output=True))
         return client_nodes
 
     def spawn_tempfs(self, tempfs_hosts):
-        redis_nodes = []
-        tempfs_cmd = "mkdir /tmp/jaime_apollo; sudo mount -t tmpfs -o size=2G tmpfs /tmp/jaime_apollo/"
-        SSHNode("Start Client", tempfs_hosts, tempfs_cmd, print_output=True)
-        return redis_nodes
+        tempfs_nodes = []
+        tempfs_cmd = "mkdir -p /mnt/nvme/jcernudagarcia/tempfs; sudo mount -t tmpfs -o size=3G tmpfs /mnt/nvme/jcernudagarcia/tempfs"
+        tempfs_nodes.append(SSHNode("Spawn Tempfs", tempfs_hosts, tempfs_cmd, print_output=True))
+        return tempfs_nodes
 
     def ld_path(self, client):
         if "comp" in client:
@@ -148,3 +149,15 @@ class Apollo(Graph):
         else:
             raise Exception("Wrong host")
         return ld_path
+
+    def clean_clients(self, client_hosts):
+        client_clean = []
+        for client in client_hosts:
+            if "stor" in client:
+                pass
+            elif "comp" in client:
+                cmd = "rm -rf /mnt/nvme/jcernudagarcia/tempfs/*; rm -rf /mnt/nvme/jcernudagarcia/pvfs2-mount/*; rm -rf /mnt/nvme/jcernudagarcia/apollo_nvme/* "
+                client_clean.append(SSHNode("Clean Clients", client, cmd))
+            else:
+                raise Exception("Wrong host")
+        return client_clean
