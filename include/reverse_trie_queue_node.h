@@ -10,6 +10,7 @@
 #include <thread>
 #include <future>
 #include <tuple>
+#include <queue>
 #include "mon_hooks.h"
 #include "s_queues.h"
 #include "reverse_trie_queue_node_key.h"
@@ -35,7 +36,9 @@ private:
     double fluctuation_percentage_;
     double last_predicted_;
     double last_measured_;
-    std::ofstream *outfile;
+    std::queue<double> differences_;
+    double differences_sum_;
+    // std::ofstream *outfile;
 public:
 	ReverseTrieQueueNodeKey key;
 	QM_type queue_map;
