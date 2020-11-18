@@ -136,8 +136,8 @@ class Apollo(Graph):
             mpi_cmd = f"export PATH={self.path}; export LD_LIBRARY_PATH={self.ld_path_comp}:$LD_LIBRARY_PATH; " \
                       f"mpirun -n {num_clients} -f {self.apollo_path}client_hostfile {self.executable}/real_client_test tcp://ares-comp-13:6379 >> {self.result_dir}/real_client-results"
 
-        client_nodes = [SSHNode("Start Client", hosts[0], f"echo {self.experiment} >> {self.result_dir}/real_client_test", print_output=True),
-                        SSHNode("Start mpi", hosts[0], mpi_cmd, print_output=True)]
+        client_nodes = [SSHNode("Start Client", hosts[0], f"echo {self.experiment} >> {self.result_dir}/real_client_test"),
+                        SSHNode("Start mpi", hosts[0], mpi_cmd)]
         return client_nodes
 
     def spawn_tempfs(self, tempfs_hosts):
