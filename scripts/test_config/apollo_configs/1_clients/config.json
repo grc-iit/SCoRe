@@ -32,7 +32,7 @@
             {
                 "key": {
                     "node_index":0, 
-                    "tier_index":0, 
+                    "tier_index":1, 
                     "mode": "SERVER",
                     "type": {
                         "value": "NODE_CAPACITY",
