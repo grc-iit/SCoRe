@@ -51,16 +51,21 @@ int main(int argc, char*argv[]){
     while(std::stod(redis_memory->subscribe_last().back().second.back().second) - start_memory < limit){
         write(file_memory, buffer.c_str(), buffer.length());
     }
+    std::cout << "Done Memory" << std::endl;
+
     auto start_nvme = std::stod(redis_nvme->subscribe_last().back().second.back().second);
     std::cout << "NVMe (" + std::to_string(start_nvme) + ")" << std::endl;
     while(std::stod(redis_nvme->subscribe_last().back().second.back().second) - start_nvme < limit){
         write(file_nvme, buffer.c_str(), buffer.length());
     }
+    std::cout << "Done NVME" << std::endl;
+
     auto start_ssd = std::stod(pfs_redis->subscribe_last().back().second.back().second);
     std::cout << "SSD (" + std::to_string(start_ssd) + " , " + std::to_string(comm_size * limit) + ")"<< std::endl;
     while(std::stod(pfs_redis->subscribe_last().back().second.back().second) - start_ssd < comm_size * limit){
         write(file_ssd, buffer.c_str(), buffer.length());
     }
+    std::cout << "Done SSD" << std::endl;
 
     pop_timer.endTimeWithPrint("Real Test ");
 
