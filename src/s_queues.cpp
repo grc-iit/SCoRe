@@ -14,6 +14,30 @@
 // data specifically for each qeueue type
 //second |= (bool) std::stoi(fact);
 std::string
+sim_queue::populate(std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> child_queue_maps) {
+    AUTO_TRACER("simulation_queue:populate_insight");
+    d_dict val;
+    bool second = 0;
+    auto id = lat_pub_id_;
+    for (const auto& queue_map: child_queue_maps) {
+        for (const auto& queue_pair : queue_map) {
+            // << TODO Do optional type_ check  HERE
+            item_stream result = queue_pair.second->subscribe();
+            auto fact = result.back().second.back().second;
+            if (!fact.empty()) {
+                // here the OR operation is done on the data
+                second |= (bool) std::stoi(fact);
+            } else {
+                // what to do if the val is not there?
+            }
+        }
+    }
+    val.push_back({std::to_string(std::time(nullptr)), std::to_string(second)});
+    id = publish(val);
+    return id;
+}
+
+std::string
 availability_queue::populate(std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> child_queue_maps) {             // does addition
 	// find a way to do this till the latest queues some sync
     AUTO_TRACER("availability_queue:populate_insight");

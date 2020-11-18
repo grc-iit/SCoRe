@@ -78,6 +78,7 @@ QueueConfig conf::json_to_QueueConfig(conf::json queue_config) {
                            hook_ == "MEMORY" ? mon::memory_hook :
                            hook_ == "NVME" ? mon::nvme_hook :
                            hook_ == "SSD" ? mon::ssd_hook :
+                           hook_ == "SIM" ? mon::CallSimHook :
 	                       nullptr;
 
 	auto topic = strip(queue_config["topic"]);
@@ -126,13 +127,17 @@ QueueType conf::json_to_QueueType(conf::json queue_type_json) {
 	                         value == "CLUSTER_CAPACITY" ? QueueValue::CLUSTER_CAPACITY :
 	                         value == "CLUSTER_LOAD" ? QueueValue::CLUSTER_LOAD :
 	                         value == "CLUSTER_AVAILABILITY" ? QueueValue::CLUSTER_AVAILABILITY :
+	                         value == "SIM" ? QueueValue::SIM :
 	                         QueueValue::Q_UNDEFINED;
 
     int base_interval = queue_type_json["base_interval"];
     float increase_factor = queue_type_json["increase_factor"];
     int pythio_interval = queue_type_json["pythio_interval"];
-
-	auto queue_type_ = QueueType(queue_value, base_interval, increase_factor, pythio_interval);
+    //TODO: Change config
+    std::string tracefile = queue_type_json["tracefile"];
+    std::string tracevar = queue_type_json["tracevar"];
+    mon::InitSimHook(tracefile, tracevar);
+	auto queue_type_ = QueueType(queue_value, base_interval, increase_factor, pythio_interval, tracefile, tracevar);
 	return queue_type_;
 }
 

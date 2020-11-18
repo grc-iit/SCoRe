@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 17)
 #add_subdirectory(scs_io_common)
 include_directories(scs_io_common/include)
 include_directories(include)
-#set(LIBS -lpthread -lrpc  -lhiredis -lredis++ -lmpi -L${CMAKE_BINARY_DIR}/scs_io_common -lscs_io_common)
-set(LIBS -lpthread  -lhiredis -lredis++)
+#set(LIBS -lpthread -lrpc  -lhiredis -lredis++ -lmpi -luv -L${CMAKE_BINARY_DIR}/scs_io_common -lscs_io_common)
+set(LIBS -lpthread  -lhiredis -lredis++ -luv)
 #set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -D BENCH_TIMER")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCOMMON_DEBUG_MSG")
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCOMMON_DEBUG_TIMER")
@@ -23,6 +23,7 @@ set(QUEUE_COMMON src/queue.cpp include/queue.h
         include/queue_config.h src/queue_config.cpp
         include/s_queues.h src/s_queues.cpp
         include/enum.h
+        include/constants.h
         include/Pythio.h src/Pythio.cpp)
 
 set(SCORE_COMMON include/reverse_trie_queue_node_config.h src/reverse_trie_queue_node_config.cpp
