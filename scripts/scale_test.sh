@@ -16,6 +16,7 @@ for i in "${!experiments[@]}"
 do
   echo "${experiments[i]}"
   python3 "${JARVIS_PATH}" apollo start "${CONFIG_PATH}" "${experiments[i]}" --log-path ${LOG_PATH}
-  mpirun -n "${num_clients[i]}" -f "${APOLLO_PATH}"/client_hostfile "${EXECUTABLE_PATH}"/real_client_test tcp://ares-comp-13:6379 >> "${RESULT_DIR}"/real_client-results
+  echo "  mpirun -n ${num_clients[i]} -f ${APOLLO_PATH}/client_hostfile ${EXECUTABLE_PATH}/real_client_test tcp://ares-comp-13:6379 >> ${RESULT_DIR}/real_client_test"
+  mpirun -n "${num_clients[i]}" -f "${APOLLO_PATH}"/client_hostfile "${EXECUTABLE_PATH}"/real_client_test tcp://ares-comp-13:6379 >> "${RESULT_DIR}"/real_client_test
   python3 "${JARVIS_PATH}" apollo stop "${CONFIG_PATH}" "${experiments[i]}" --log-path ${LOG_PATH}
 done
