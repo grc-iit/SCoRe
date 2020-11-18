@@ -42,6 +42,8 @@ class Apollo(Graph):
         self.ld_path_comp = self.config['COMMON']['LD_PATH_COMP']
         self.ld_path_stor = self.config['COMMON']['LD_PATH_STOR']
 
+        self.path="/opt/ohpc/pub/software/hdevarajan/spack3/v0.15.4.scs/var/spack/environments/apollo/.spack-env/view/bin:/opt/ohpc/pub/software/hdevarajan/spack3/v0.15.4.scs/bin:/home/jcernudagarcia/software/install/python/bin:/opt/xcat/bin:/opt/xcat/sbin:/opt/xcat/share/xcat/tools:/opt/lenovo/onecli:/usr/lib/heimdal/bin:/opt/confluent/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin:/opt/ibutils/bin:opt/ohpc/pub/utils/cmake/3.10.2/bin:/home/jcernudagarcia/software/install/bin:/home/jcernudagarcia/software/install/sbin:/opt/ohpc/pub/orangefs/sbin:/opt/ohpc/pub/orangefs/bin:/usr/pgsql-10/bin:/usr/lib/apache-maven-3.5.4/bin:/opt/ohpc/pub/mpi/openmpi3-gnu7/3.0.0/bin:/opt/ohpc/pub/compiler/gcc/7.3.0/bin:/opt/ohpc/pub/utils/prun/1.2:/opt/ohpc/pub/bin"
+
         self.ldms = False
 
     def _DefineClean(self):
@@ -127,11 +129,11 @@ class Apollo(Graph):
             hostfile.write('\n'.join(hosts))
         if self.ldms:
             # client_cmd = f"echo Client; export LD_LIBRARY_PATH={self.ld_path_comp}:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; "
-            mpi_cmd = f"export LD_LIBRARY_PATH={self.ld_path_comp}:$LD_LIBRARY_PATH; " \
+            mpi_cmd = f"export PATH={self.path}; export LD_LIBRARY_PATH={self.ld_path_comp}:$LD_LIBRARY_PATH; " \
                       f"mpirun -n {num_clients} -f {self.apollo_path}client_hostfile {self.executable}/ldms_client_test tcp://ares-comp-13:6379 >> {self.result_dir}/real_client-results"
         else:
             # client_cmd = f"echo Client; export LD_LIBRARY_PATH={self.ld_path_comp}:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; "
-            mpi_cmd = f"export LD_LIBRARY_PATH={self.ld_path_comp}:$LD_LIBRARY_PATH; " \
+            mpi_cmd = f"export PATH={self.path}; export LD_LIBRARY_PATH={self.ld_path_comp}:$LD_LIBRARY_PATH; " \
                       f"mpirun -n {num_clients} -f {self.apollo_path}client_hostfile {self.executable}/real_client_test tcp://ares-comp-13:6379 >> {self.result_dir}/real_client-results"
 
         client_nodes = [SSHNode("Start Client", hosts[0], f"echo {self.experiment} >> {self.result_dir}/real_client_test", print_output=True),
