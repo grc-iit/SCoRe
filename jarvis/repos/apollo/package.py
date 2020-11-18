@@ -20,6 +20,7 @@ class Apollo(Graph):
         super().__init__(config_file, self._default_config)
         self.experiment = experiment
         self.executable = self.config['COMMON']['EXECUTABLE']
+        self.apollo_path = self.config['COMMON']['APOLLO_CONFIG']
         self.apollo_config = self.config['COMMON']['APOLLO_CONFIG'] + self.experiment + "/config.json"
         self.redis_config = self.config['COMMON']['REDIS_CONFIG']
         self.redis_path = self.config['COMMON']['REDIS_PATH']
@@ -119,26 +120,30 @@ class Apollo(Graph):
         return redis_nodes
 
     def spawn_clients(self, client_hosts):
-        client_nodes = []
-        for host, id in client_hosts.items():
-            if self.ldms:
-                client_cmd = f"export LD_LIBRARY_PATH={self.ld_path_comp}; echo $LD_LIBRARY_PATH; " \
-                             f"mkdir -p {self.result_dir}/; mkdir -p /mnt/nvme/jcernudagarcia/apollo_nvme/; " \
-                             f"echo {self.experiment} >> {self.result_dir}/client-results; " \
-                             f"echo {self.experiment}; " \
-                             f"{self.executable}/ldms_client_test tcp://ares-comp-13:6380 {len(list(self.client_host.keys()))} {id[0]} >> {self.result_dir}/ldms_client-results "
-            else:
-                client_cmd = f"export LD_LIBRARY_PATH={self.ld_path_comp}; echo $LD_LIBRARY_PATH; " \
-                             f"mkdir -p {self.result_dir}/; mkdir -p /mnt/nvme/jcernudagarcia/apollo_nvme/; " \
-                             f"echo {self.experiment} >> {self.result_dir}/client-results; " \
-                             f"echo {self.experiment}; " \
-                             f"{self.executable}/real_client_test tcp://ares-comp-13:6379 {len(list(self.client_host.keys()))} {id[0]} >> {self.result_dir}/real_client-results "
-            client_nodes.append(SSHNode("Start Client", host, client_cmd, print_output=True))
+        hosts = list(self.client_host.keys())
+        num_clients = len(hosts)
+        with open(f"{self.apollo_path}client_hostfile", mode='wt', encoding='utf-8') as hostfile:
+            hostfile.write('\n'.join(hosts))
+
+        if self.ldms:
+            client_cmd = f"export LD_LIBRARY_PATH={self.ld_path_comp}; echo $LD_LIBRARY_PATH; " \
+                         f"mkdir -p {self.result_dir}/; " \
+                         f"echo {self.experiment} >> {self.result_dir}/client-results; " \
+                         f"echo {self.experiment}; " \
+                         f"mpirun -n {num_clients} -f {self.apollo_path}client_hostfile {self.executable}/ldms_client_test tcp://ares-comp-13:6380 >> {self.result_dir}/ldms_client-results"
+        else:
+            client_cmd = f"export LD_LIBRARY_PATH={self.ld_path_comp}; echo $LD_LIBRARY_PATH; " \
+                         f"mkdir -p {self.result_dir}/; " \
+                         f"echo {self.experiment} >> {self.result_dir}/client-results; " \
+                         f"echo {self.experiment}; " \
+                         f"mpirun -n {num_clients} -f {self.apollo_path}client_hostfile {self.executable}/real_client_test tcp://ares-comp-13:6379 >> {self.result_dir}/real_client-results"
+        client_nodes = [ExecNode("Start Client", client_cmd, print_output=True)]
         return client_nodes
 
     def spawn_tempfs(self, tempfs_hosts):
         tempfs_nodes = []
-        tempfs_cmd = "mkdir -p /mnt/nvme/jcernudagarcia/tempfs; sudo mount -t tmpfs -o size=3G tmpfs /mnt/nvme/jcernudagarcia/tempfs"
+        tempfs_cmd = "mkdir -p /mnt/nvme/jcernudagarcia/apollo_nvme/; mkdir -p /mnt/nvme/jcernudagarcia/tempfs; " \
+                     "sudo mount -t tmpfs -o size=3G tmpfs /mnt/nvme/jcernudagarcia/tempfs"
         tempfs_nodes.append(SSHNode("Spawn Tempfs", tempfs_hosts, tempfs_cmd, print_output=True))
         return tempfs_nodes
 
