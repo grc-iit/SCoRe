@@ -4,6 +4,7 @@
 #include <thread>
 #include <redis.h>
 #include <fcntl.h>
+#include <mpi.h>
 
 std::string client_gen_random(const int len) {
     std::string tmp_s;
@@ -18,16 +19,17 @@ std::string client_gen_random(const int len) {
 }
 
 int main(int argc, char*argv[]){
+    MPI_Init(&argc, &argv);
+    int comm_size, id;
+    MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
+    MPI_Comm_rank(MPI_COMM_WORLD, &id);
+
     std::string buffer = client_gen_random(16*1024*1024);
     uint64_t limit = (uint64_t)2*1024*1024*1024;
 
     std::string remote_host;
-    std::string id;
-    int comm_size;
-    if(argc == 4) {
+    if(argc == 2) {
         remote_host = argv[1];
-        comm_size = atoi(argv[2]);
-        id = argv[3];
     }
     else exit(1);
 
@@ -35,8 +37,8 @@ int main(int argc, char*argv[]){
     std::shared_ptr<redis_client> redis_memory, redis_nvme, pfs_redis;
 
     //    config.topic_+"_LDMS"
-    redis_memory = std::make_shared<redis_client>("tcp://localhost", "MEMORY_"+ id);
-    redis_nvme = std::make_shared<redis_client>("tcp://localhost", "NVME_"+ id);
+    redis_memory = std::make_shared<redis_client>("tcp://localhost", "MEMORY_"+ std::to_string(id));
+    redis_nvme = std::make_shared<redis_client>("tcp://localhost", "NVME_"+ std::to_string(id));
     pfs_redis = std::make_shared<redis_client>(remote_host, "PFS_CAP");
 
     int file_memory = open("/mnt/nvme/jcernudagarcia/tempfs/test_mem", O_RDWR | O_CREAT, 0644);
@@ -69,6 +71,7 @@ int main(int argc, char*argv[]){
 
     pop_timer.endTimeWithPrint("Real Test ");
 
+    MPI_Finalize();
     return 0;
 }
 
