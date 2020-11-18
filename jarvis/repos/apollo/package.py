@@ -138,7 +138,7 @@ class Apollo(Graph):
                          f"echo {self.experiment} >> {self.result_dir}/client-results; " \
                          f"echo {self.experiment}; " \
                          f"mpirun -n {num_clients} -f {self.apollo_path}client_hostfile {self.executable}/real_client_test tcp://ares-comp-13:6379 >> {self.result_dir}/real_client-results"
-        client_nodes = [ExecNode("Start Client", client_cmd, print_output=True)]
+        client_nodes = [SSHNode("Start Client", "localhost", client_cmd, print_output=True)]
         return client_nodes
 
     def spawn_tempfs(self, tempfs_hosts):
