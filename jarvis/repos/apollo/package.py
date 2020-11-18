@@ -54,7 +54,7 @@ class Apollo(Graph):
 
     def _DefineStop(self):
         # TODO: Check the name of the executables for both cases, so that we can kill them.
-        redis_cmd = f"killall redis-server"
+        redis_cmd = f"{self.redis_path}redis-cli -p 6379 flushall; {self.redis_path}redis-cli -p 6380 flushall; killall redis-server"
         nodes = []
         nodes += self.clean_vertex(self.insight_hosts)
         nodes += self.clean_vertex(self.fact_hosts)
