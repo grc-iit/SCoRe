@@ -125,20 +125,17 @@ class Apollo(Graph):
         num_clients = len(hosts)
         with open(f"{self.apollo_path}client_hostfile", mode='wt', encoding='utf-8') as hostfile:
             hostfile.write('\n'.join(hosts))
-
         if self.ldms:
-            client_cmd = f"echo Client; export LD_LIBRARY_PATH={self.ld_path_comp}:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; " \
-                         f"mkdir -p {self.result_dir}/; " \
-                         f"echo {self.experiment} >> {self.result_dir}/client-results; " \
-                         f"echo {self.experiment}; " \
-                         f"mpirun -n {num_clients} -f {self.apollo_path}client_hostfile {self.executable}/ldms_client_test tcp://ares-comp-13:6380 >> {self.result_dir}/ldms_client-results"
+            # client_cmd = f"echo Client; export LD_LIBRARY_PATH={self.ld_path_comp}:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; "
+            mpi_cmd = f"export LD_LIBRARY_PATH={self.ld_path_comp}:$LD_LIBRARY_PATH; " \
+                      f"mpirun -n {num_clients} -f {self.apollo_path}client_hostfile {self.executable}/ldms_client_test tcp://ares-comp-13:6379 >> {self.result_dir}/real_client-results"
         else:
-            client_cmd = f"echo Client; export LD_LIBRARY_PATH={self.ld_path_comp}:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; " \
-                         f"mkdir -p {self.result_dir}/; " \
-                         f"echo {self.experiment} >> {self.result_dir}/client-results; " \
-                         f"echo {self.experiment}; " \
-                         f"mpirun -n {num_clients} -f {self.apollo_path}client_hostfile {self.executable}/real_client_test tcp://ares-comp-13:6379 >> {self.result_dir}/real_client-results"
-        client_nodes = [SSHNode("Start Client", "localhost", client_cmd, print_output=True)]
+            # client_cmd = f"echo Client; export LD_LIBRARY_PATH={self.ld_path_comp}:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; "
+            mpi_cmd = f"export LD_LIBRARY_PATH={self.ld_path_comp}:$LD_LIBRARY_PATH; " \
+                      f"mpirun -n {num_clients} -f {self.apollo_path}client_hostfile {self.executable}/real_client_test tcp://ares-comp-13:6379 >> {self.result_dir}/real_client-results"
+
+        client_nodes = [SSHNode("Start Client", hosts[0], f"echo {self.experiment} >> {self.result_dir}/real_client_test", print_output=True),
+                        SSHNode("Start mpi", hosts[0], mpi_cmd, print_output=True)]
         return client_nodes
 
     def spawn_tempfs(self, tempfs_hosts):
