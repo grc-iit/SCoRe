@@ -58,6 +58,7 @@ class Apollo(Graph):
         redis_cmd = f"{self.redis_path}redis-cli -p 6379 flushall; {self.redis_path}redis-cli -p 6380 flushall; killall redis-server"
         nodes = []
         nodes += self.clean_vertex(self.insight_hosts)
+        nodes += self.clean_vertex(self.insight_hosts)
         nodes += self.clean_vertex(self.fact_hosts)
         nodes += self.clean_clients(list(self.client_host))
         nodes.append(SSHNode("Stopping  Redis", list(self.redis_hosts.keys()), redis_cmd))
@@ -81,7 +82,7 @@ class Apollo(Graph):
             client_path = self.ld_path(client)
             for vertex_id in host[client]:
                 cmd.append(
-                    f"export LD_LIBRARY_PATH={client_path}; echo $LD_LIBRARY_PATH; "
+                    f"export LD_LIBRARY_PATH={client_path}:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; "
                     f"kill -9 `cat {self.pid_path}/score_{vertex_id}.pid`; "
                     f"rm {self.pid_path}/score_{vertex_id}.pid")
             clean_nodes.append(SSHNode("Stopping Vertex", client, cmd, print_output=out))
@@ -94,11 +95,11 @@ class Apollo(Graph):
             client_path = self.ld_path(client)
             for vertex_id in host[client]:
                 if insight:
-                    cmd.append(f"sleep 30; export LD_LIBRARY_PATH={client_path}; echo $LD_LIBRARY_PATH; "
+                    cmd.append(f"sleep 30; export LD_LIBRARY_PATH={client_path}:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; "
                                f"{self.executable}/SCoRe {self.apollo_config} {vertex_id} {self.pid_path}/score_{vertex_id}.pid; "
                                f"sleep 10")
                 else:
-                    cmd.append(f"export LD_LIBRARY_PATH={client_path}; echo $LD_LIBRARY_PATH; "
+                    cmd.append(f"export LD_LIBRARY_PATH={client_path}:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; "
                                f"{self.executable}/SCoRe {self.apollo_config} {vertex_id} {self.pid_path}/score_{vertex_id}.pid; "
                                f"sleep 10")
             spawn_nodes.append(SSHNode("Start Vertex", client, cmd, print_output=out))
@@ -126,13 +127,13 @@ class Apollo(Graph):
             hostfile.write('\n'.join(hosts))
 
         if self.ldms:
-            client_cmd = f"export LD_LIBRARY_PATH={self.ld_path_comp}; echo $LD_LIBRARY_PATH; " \
+            client_cmd = f"echo Client; export LD_LIBRARY_PATH={self.ld_path_comp}:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; " \
                          f"mkdir -p {self.result_dir}/; " \
                          f"echo {self.experiment} >> {self.result_dir}/client-results; " \
                          f"echo {self.experiment}; " \
                          f"mpirun -n {num_clients} -f {self.apollo_path}client_hostfile {self.executable}/ldms_client_test tcp://ares-comp-13:6380 >> {self.result_dir}/ldms_client-results"
         else:
-            client_cmd = f"export LD_LIBRARY_PATH={self.ld_path_comp}; echo $LD_LIBRARY_PATH; " \
+            client_cmd = f"echo Client; export LD_LIBRARY_PATH={self.ld_path_comp}:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; " \
                          f"mkdir -p {self.result_dir}/; " \
                          f"echo {self.experiment} >> {self.result_dir}/client-results; " \
                          f"echo {self.experiment}; " \
