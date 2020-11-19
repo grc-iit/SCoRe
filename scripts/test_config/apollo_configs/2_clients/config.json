@@ -16,7 +16,9 @@
                         "value": "NODE_CAPACITY",
                         "base_interval":250, 
                         "increase_factor": 0.1,
-                        "pythio_interval": 250
+                        "pythio_interval":250, 
+                        "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
+                        "tracevar": "tps_"
                     }
                 },
                 "url": "tcp://ares-comp-13:6379",
@@ -38,7 +40,9 @@
                         "value": "NODE_CAPACITY",
                         "base_interval":250, 
                         "increase_factor": 0.1,
-                        "pythio_interval": 250
+                        "pythio_interval":250, 
+                        "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
+                        "tracevar": "tps_"
                     }
                 },
                 "url": "tcp://ares-comp-13:6379",
@@ -73,7 +77,9 @@
                         "value": "NODE_CAPACITY",
                         "base_interval":250, 
                         "increase_factor": 0.1,
-                        "pythio_interval": 250
+                        "pythio_interval":250, 
+                        "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
+                        "tracevar": "tps_"
                     }
                 },
                 "url": "tcp://ares-comp-14:6379",
@@ -95,7 +101,9 @@
                         "value": "NODE_CAPACITY",
                         "base_interval":250, 
                         "increase_factor": 0.1,
-                        "pythio_interval": 250
+                        "pythio_interval":250, 
+                        "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
+                        "tracevar": "tps_"
                     }
                 },
                 "url": "tcp://ares-comp-14:6379",
@@ -130,7 +138,9 @@
                         "value": "NODE_CAPACITY",
                         "base_interval":250, 
                         "increase_factor": 0.1,
-                        "pythio_interval": 250
+                        "pythio_interval":250, 
+                        "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
+                        "tracevar": "tps_"
                     }
                 },
                 "url": "tcp://ares-stor-01:6379",
@@ -165,7 +175,9 @@
                         "value": "NODE_CAPACITY",
                         "base_interval":250, 
                         "increase_factor": 0.1,
-                        "pythio_interval": 250
+                        "pythio_interval":250, 
+                        "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
+                        "tracevar": "tps_"
                     }
                 },
                 "url": "tcp://ares-stor-02:6379",
@@ -200,7 +212,9 @@
                         "value": "NODE_CAPACITY",
                         "base_interval":250, 
                         "increase_factor": 0.1,
-                        "pythio_interval": 250
+                        "pythio_interval":250, 
+                        "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
+                        "tracevar": "tps_"
                     }
                 },
                 "url": "tcp://ares-stor-03:6379",
@@ -235,7 +249,9 @@
                         "value": "NODE_CAPACITY",
                         "base_interval":250, 
                         "increase_factor": 0.1,
-                        "pythio_interval": 250
+                        "pythio_interval":250, 
+                        "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
+                        "tracevar": "tps_"
                     }
                 },
                 "url": "tcp://ares-stor-04:6379",
@@ -270,7 +286,9 @@
                         "value": "TIER_CAPACITY",
                         "base_interval":250, 
                         "increase_factor": 0.1,
-                        "pythio_interval": 250
+                        "pythio_interval":250, 
+                        "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
+                        "tracevar": "tps_"
                     }
                 },
                 "url": "tcp://ares-comp-13:6379",
