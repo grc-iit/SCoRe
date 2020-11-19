@@ -39,6 +39,8 @@ private:
     std::queue<double> differences_;
     double differences_sum_;
     // std::ofstream *outfile;
+    bool use_pythio_p_;
+    bool use_adaptivity_p_;
 public:
 	ReverseTrieQueueNodeKey key;
 	QM_type queue_map;

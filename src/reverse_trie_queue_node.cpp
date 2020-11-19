@@ -135,14 +135,25 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
 		child_queue.push_back(single_child_queue);
 	}
 	// infinite loop till kill comes thru
+	use_pythio_p_ = true;
+	use_adaptivity_p_ = true;
+    if (obj.first.type_.pythio_interval_ == -1) {
+        use_pythio_p_ = false;
+    }
+    if (obj.first.type_.increase_factor_ == -1) {
+        use_adaptivity_p_ = false;
+    }
+
     uv_loop_t *loop_measure = (uv_loop_t *)malloc(sizeof(uv_loop_t));
-    uv_loop_t *loop_predict = (uv_loop_t *)malloc(sizeof(uv_loop_t));
     uv_loop_init(loop_measure);
-    uv_loop_init(loop_predict);
     uv_timer_t timer_req_measure;
-    uv_timer_t timer_req_predict;
     uv_timer_init(loop_measure, &timer_req_measure);
+
+    uv_loop_t *loop_predict = (uv_loop_t *)malloc(sizeof(uv_loop_t));
+    uv_loop_init(loop_predict);
+    uv_timer_t timer_req_predict;
     uv_timer_init(loop_predict, &timer_req_predict);
+
     uv_timer_cb populate_cb = [](uv_timer_t *handle){
 #ifdef BENCH_TIMER
         Timer single_loop_timer;
@@ -168,13 +179,17 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
         double curr_val = std::strtod(real_val.data(), NULL); // std::strtod(val.data(), NULL);
         if (rtqn->last_measured_ > -1) {
             // auto time_start = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
-            rtqn->populate_interval_ = rtqn->PopulateInterval(rtqn->last_measured_, curr_val);
+            if (rtqn->use_adaptivity_p_) {
+                rtqn->populate_interval_ = rtqn->PopulateInterval(rtqn->last_measured_, curr_val);
+            }
             // auto time_end = std::chrono::duration_cast<std::chrono::nanoseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
             // auto coutbuf = std::cout.rdbuf(rtqn->outfile->rdbuf());
             // std::cout << time_end - time_start << std::endl;
             // std::cout.rdbuf(coutbuf);
             uv_timer_set_repeat(handle, rtqn->populate_interval_ / 1000);
-            uv_timer_set_repeat(handle2, rtqn->populate_interval_ / (1000 * rtqn->pythio_ratio_));
+            if (rtqn->use_pythio_p_) {
+                uv_timer_set_repeat(handle2, rtqn->populate_interval_ / (1000 * rtqn->pythio_ratio_));
+            }
         }
         rtqn->last_measured_ = curr_val;
 #ifdef BENCH_TIMER
@@ -206,11 +221,7 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
     fluctuation_percentage_ = obj.first.type_.increase_factor_;
     last_measured_ = -1;
     last_predicted_ = -1;
-    bool use_pythio_p = true;
-    if (obj.first.type_.pythio_interval_ == 0) {
-        use_pythio_p = false;
-    }
-    else {
+    if (use_pythio_p_) {
         pythio_ratio_ = obj.first.type_.base_interval_ / obj.first.type_.pythio_interval_;
         pythio_counter_ = pythio_ratio_;
     }
@@ -227,12 +238,12 @@ void ReverseTrieQueueNode::single_loop(std::pair<QueueKey, std::shared_ptr<queue
             std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>>, uv_timer_t *> dat = std::make_tuple(this, obj, child_queue, &timer_req_predict);
     timer_req_measure.data = &dat;
     std::tuple<ReverseTrieQueueNode *, std::pair<QueueKey, std::shared_ptr<queue>>> dat2 = std::make_tuple(this, obj);
-    timer_req_predict.data = &dat2;
-    uv_timer_start(&timer_req_measure, populate_cb, MIN_DELAY_TIME / 1000, populate_interval_ / 1000);
-    if (use_pythio_p) {
-        uv_timer_start(&timer_req_predict, populate_pythio_cb, MIN_DELAY_TIME / 1000, populate_interval_ / (pythio_ratio_ * 1000));
+    if (use_pythio_p_) {
+        timer_req_predict.data = &dat2;
     }
-    if (use_pythio_p) {
+    uv_timer_start(&timer_req_measure, populate_cb, MIN_DELAY_TIME / 1000, populate_interval_ / 1000);
+    if (use_pythio_p_) {
+        uv_timer_start(&timer_req_predict, populate_pythio_cb, MIN_DELAY_TIME / 1000, populate_interval_ / (pythio_ratio_ * 1000));
         while (true) {
             uv_run(loop_measure, UV_RUN_NOWAIT);
             uv_run(loop_predict, UV_RUN_NOWAIT);
