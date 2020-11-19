@@ -141,7 +141,7 @@ class Apollo(Graph):
         # client_nodes = [SSHNode("Start Client", hosts[0], f"echo {self.experiment} >> {self.result_dir}/real_client_test"),
         #                 SSHNode("Start mpi", hosts[0], mpi_cmd)]
 
-        client_nodes = [ExecNode("Start Client", hosts[0], f"echo {self.experiment} >> {self.result_dir}/real_client_test")]
+        client_nodes = [ExecNode("Start Client", f"echo {self.experiment} >> {self.result_dir}/real_client_test")]
 
         return client_nodes
 
