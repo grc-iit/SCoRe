@@ -1,6 +1,6 @@
 [
     {
-        "hostname": "ares-comp-13",
+        "hostname": "ares-comp-13-40g",
         "key": {
             "node_index":0, 
             "level":0, 
@@ -21,7 +21,7 @@
                         "tracevar": "tps_"
                     }
                 },
-                "url": "tcp://ares-comp-13:6379",
+                "url": "tcp://ares-comp-13-40g:6379",
                 "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "MEMORY",
@@ -45,7 +45,7 @@
                         "tracevar": "tps_"
                     }
                 },
-                "url": "tcp://ares-comp-13:6379",
+                "url": "tcp://ares-comp-13-40g:6379",
                 "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "NVME",
@@ -61,7 +61,7 @@
         "parent": 0
     },
     {
-        "hostname": "ares-stor-01",
+        "hostname": "ares-stor-01-40g",
         "key": {
             "node_index":1, 
             "level":0, 
@@ -82,7 +82,7 @@
                         "tracevar": "tps_"
                     }
                 },
-                "url": "tcp://ares-stor-01:6379",
+                "url": "tcp://ares-stor-01-40g:6379",
                 "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "SSD",
@@ -98,7 +98,7 @@
         "parent": 0
     },
     {
-        "hostname": "ares-stor-02",
+        "hostname": "ares-stor-02-40g",
         "key": {
             "node_index":2, 
             "level":0, 
@@ -119,7 +119,7 @@
                         "tracevar": "tps_"
                     }
                 },
-                "url": "tcp://ares-stor-02:6379",
+                "url": "tcp://ares-stor-02-40g:6379",
                 "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "SSD",
@@ -135,7 +135,7 @@
         "parent": 0
     },
     {
-        "hostname": "ares-stor-03",
+        "hostname": "ares-stor-03-40g",
         "key": {
             "node_index":3, 
             "level":0, 
@@ -156,7 +156,7 @@
                         "tracevar": "tps_"
                     }
                 },
-                "url": "tcp://ares-stor-03:6379",
+                "url": "tcp://ares-stor-03-40g:6379",
                 "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "SSD",
@@ -172,7 +172,7 @@
         "parent": 0
     },
     {
-        "hostname": "ares-stor-04",
+        "hostname": "ares-stor-04-40g",
         "key": {
             "node_index":4, 
             "level":0, 
@@ -193,7 +193,7 @@
                         "tracevar": "tps_"
                     }
                 },
-                "url": "tcp://ares-stor-04:6379",
+                "url": "tcp://ares-stor-04-40g:6379",
                 "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "SSD",
@@ -209,7 +209,7 @@
         "parent": 0
     },
     {
-        "hostname": "ares-comp-13",
+        "hostname": "tcp://ares-comp-13-40g:6380",
         "key": {
             "node_index":5, 
             "level":0, 
@@ -230,7 +230,7 @@
                         "tracevar": "tps_"
                     }
                 },
-                "url": "tcp://ares-comp-13:6379",
+                "url": "tcp://ares-comp-13-40g:6380",
                 "ldsm": "NONE",
                 "queue_port":3000, 
                 "hook": "NULL",
