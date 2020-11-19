@@ -38,7 +38,6 @@ set(DEBUG_COMMON include/timer.h src/timer.cpp
         scs_io_common/include/common/tuple_iter.h)
 
 add_executable(SCoRe ${QUEUE_COMMON} ${SCORE_COMMON} ${DEBUG_COMMON} main.cpp)
-#add_dependencies(SCoRe scs_io_common)
 target_link_libraries(SCoRe ${LIBS})
 
 #add_executable(client ${QUEUE_COMMON} ${SCORE_COMMON} ${DEBUG_COMMON} client.cpp)
@@ -50,14 +49,11 @@ target_link_libraries(SCoRe ${LIBS})
 #add_executable(queue_test ${QUEUE_COMMON} ${DEBUG_COMMON} tests/queue_test.cpp)
 #target_link_libraries(queue_test ${LIBS})
 
-add_executable(publish_test ${QUEUE_COMMON} ${DEBUG_COMMON} tests/publish_test.cpp)
-target_link_libraries(publish_test ${LIBS} -lmpi)
+#add_executable(publish_test ${QUEUE_COMMON} ${DEBUG_COMMON} tests/publish_test.cpp)
+#target_link_libraries(publish_test ${LIBS} -lmpi)
 
-add_executable(subscribe_test ${QUEUE_COMMON} ${DEBUG_COMMON} tests/subscribe_test.cpp)
-target_link_libraries(subscribe_test ${LIBS} -lmpi)
-
-add_executable(subscribe_test_2 ${QUEUE_COMMON} ${DEBUG_COMMON} tests/subscribe_test_2.cpp)
-target_link_libraries(subscribe_test_2 ${LIBS} -lmpi)
+#add_executable(subscribe_test_2 ${QUEUE_COMMON} ${DEBUG_COMMON} tests/subscribe_test_2.cpp)
+#target_link_libraries(subscribe_test_2 ${LIBS} -lmpi)
 
 add_executable(client_test ${QUEUE_COMMON} ${DEBUG_COMMON} ${SCORE_COMMON} tests/client_test.cpp)
 target_link_libraries(client_test ${LIBS} -lmpi)

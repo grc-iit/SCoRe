@@ -13,7 +13,7 @@
           "tier_index": 0,
           "mode" : "SERVER",
           "type": {
-            "value": "SIM",
+            "value": "NODE_LOAD",
             "base_interval": 1000000,
             "increase_factor": 0.1,
             "pythio_interval": 1000000,
@@ -23,8 +23,8 @@
         },
         "url": "tcp://localhost",
         "queue_port": 3000,
-        "hook": "SIM",
-        "topic": "SIM",
+        "hook": "LOAD",
+        "topic": "LOAD",
         "pythio":{
           "model": "MODEL_LINEAR",
           "weights": "PATH_MODEL_WEIGHTS"
