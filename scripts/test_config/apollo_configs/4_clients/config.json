@@ -14,7 +14,7 @@
                     "mode": "SERVER",
                     "type": {
                         "value": "NODE_CAPACITY",
-                        "base_interval":1000000, 
+                        "base_interval":500000, 
                         "increase_factor": 0.1,
                         "pythio_interval": -1,
                         "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
@@ -38,7 +38,7 @@
                     "mode": "SERVER",
                     "type": {
                         "value": "NODE_CAPACITY",
-                        "base_interval":1000000, 
+                        "base_interval":500000, 
                         "increase_factor": 0.1,
                         "pythio_interval": -1,
                         "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
@@ -75,7 +75,7 @@
                     "mode": "SERVER",
                     "type": {
                         "value": "NODE_CAPACITY",
-                        "base_interval":1000000, 
+                        "base_interval":500000, 
                         "increase_factor": 0.1,
                         "pythio_interval": -1,
                         "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
@@ -99,7 +99,7 @@
                     "mode": "SERVER",
                     "type": {
                         "value": "NODE_CAPACITY",
-                        "base_interval":1000000, 
+                        "base_interval":500000, 
                         "increase_factor": 0.1,
                         "pythio_interval": -1,
                         "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
@@ -136,7 +136,7 @@
                     "mode": "SERVER",
                     "type": {
                         "value": "NODE_CAPACITY",
-                        "base_interval":1000000, 
+                        "base_interval":500000, 
                         "increase_factor": 0.1,
                         "pythio_interval": -1,
                         "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
@@ -160,7 +160,7 @@
                     "mode": "SERVER",
                     "type": {
                         "value": "NODE_CAPACITY",
-                        "base_interval":1000000, 
+                        "base_interval":500000, 
                         "increase_factor": 0.1,
                         "pythio_interval": -1,
                         "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
@@ -197,7 +197,7 @@
                     "mode": "SERVER",
                     "type": {
                         "value": "NODE_CAPACITY",
-                        "base_interval":1000000, 
+                        "base_interval":500000, 
                         "increase_factor": 0.1,
                         "pythio_interval": -1,
                         "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
@@ -221,7 +221,7 @@
                     "mode": "SERVER",
                     "type": {
                         "value": "NODE_CAPACITY",
-                        "base_interval":1000000, 
+                        "base_interval":500000, 
                         "increase_factor": 0.1,
                         "pythio_interval": -1,
                         "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
@@ -258,7 +258,7 @@
                     "mode": "SERVER",
                     "type": {
                         "value": "NODE_CAPACITY",
-                        "base_interval":1000000, 
+                        "base_interval":500000, 
                         "increase_factor": 0.1,
                         "pythio_interval": -1,
                         "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
@@ -295,7 +295,7 @@
                     "mode": "SERVER",
                     "type": {
                         "value": "NODE_CAPACITY",
-                        "base_interval":1000000, 
+                        "base_interval":500000, 
                         "increase_factor": 0.1,
                         "pythio_interval": -1,
                         "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
@@ -332,7 +332,7 @@
                     "mode": "SERVER",
                     "type": {
                         "value": "NODE_CAPACITY",
-                        "base_interval":1000000, 
+                        "base_interval":500000, 
                         "increase_factor": 0.1,
                         "pythio_interval": -1,
                         "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
@@ -369,7 +369,7 @@
                     "mode": "SERVER",
                     "type": {
                         "value": "NODE_CAPACITY",
-                        "base_interval":1000000, 
+                        "base_interval":500000, 
                         "increase_factor": 0.1,
                         "pythio_interval": -1,
                         "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
@@ -406,7 +406,7 @@
                     "mode": "SERVER",
                     "type": {
                         "value": "TIER_CAPACITY",
-                        "base_interval":1000000, 
+                        "base_interval":500000, 
                         "increase_factor": 0.1,
                         "pythio_interval": -1,
                         "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
