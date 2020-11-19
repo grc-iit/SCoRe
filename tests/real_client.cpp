@@ -51,14 +51,14 @@ int main(int argc, char*argv[]){
 
     auto start_memory = std::stod(redis_memory->subscribe_last().back().second.back().second);
 //    std::cout << "Memory (" + std::to_string(start_memory) + ")" << std::endl;
-    while(std::stod(redis_memory->subscribe_last().back().second.back().second) - start_memory < 4 * limit){
+    while(std::stod(redis_memory->subscribe_last().back().second.back().second) - start_memory < limit){
         write(file_memory, buffer.c_str(), buffer.length());
     }
 //    std::cout << "Done Memory" << std::endl;
 
     auto start_nvme = std::stod(redis_nvme->subscribe_last().back().second.back().second);
 //    std::cout << "NVMe (" + std::to_string(start_nvme) + ")" << std::endl;
-    while(std::stod(redis_nvme->subscribe_last().back().second.back().second) - start_nvme < limit){
+    while(std::stod(redis_nvme->subscribe_last().back().second.back().second) - start_nvme < 4 * limit){
         write(file_nvme, buffer.c_str(), buffer.length());
     }
 //    std::cout << "Done NVME" << std::endl;
