@@ -51,7 +51,7 @@ int main(int argc, char*argv[]){
 
     auto start_memory = std::stod(redis_memory->subscribe_last().back().second.back().second);
 //    std::cout << "Memory (" + std::to_string(start_memory) + ")" << std::endl;
-    while(std::stod(redis_memory->subscribe_last().back().second.back().second) - start_memory < limit){
+    while(std::stod(redis_memory->subscribe_last().back().second.back().second) - start_memory < 4 * limit){
         write(file_memory, buffer.c_str(), buffer.length());
     }
 //    std::cout << "Done Memory" << std::endl;
@@ -65,7 +65,7 @@ int main(int argc, char*argv[]){
 
     auto start_ssd = std::stod(pfs_redis->subscribe_last().back().second.back().second);
 //    std::cout << "SSD (" + std::to_string(start_ssd) + " , " + std::to_string(comm_size * limit) + ")"<< std::endl;
-    while(std::stod(pfs_redis->subscribe_last().back().second.back().second) - start_ssd < comm_size * limit){
+    while(std::stod(pfs_redis->subscribe_last().back().second.back().second) - start_ssd < 8 * comm_size * limit){
         write(file_ssd, buffer.c_str(), buffer.length());
     }
 //    std::cout << "Done SSD" << std::endl;
