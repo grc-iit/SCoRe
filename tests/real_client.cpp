@@ -41,9 +41,10 @@ int main(int argc, char*argv[]){
     redis_nvme = std::make_shared<redis_client>("tcp://localhost", "NVME_"+ std::to_string(id));
     pfs_redis = std::make_shared<redis_client>(remote_host, "PFS_CAP");
 
+    std::string ssd_path = "/mnt/nvme/jcernudagarcia/pvfs2-mount/test_ssd_" + std::to_string(id);
     int file_memory = open("/mnt/nvme/jcernudagarcia/tempfs/test_mem", O_RDWR | O_CREAT, 0644);
     int file_nvme = open("/mnt/nvme/jcernudagarcia/apollo_nvme/test_nvme", O_RDWR | O_CREAT, 0644);
-    int file_ssd = open("/mnt/nvme/jcernudagarcia/pvfs2-mount/test_ssd", O_RDWR | O_CREAT, 0644);
+    int file_ssd = open(ssd_path.c_str(), O_RDWR | O_CREAT, 0644);
 
     Timer pop_timer;
     pop_timer.startTime();
