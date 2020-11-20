@@ -94,7 +94,7 @@ int main(int argc, char*argv[]){
     list_threads.reserve(num_threads);
     ssd_threads.reserve(num_threads);
 
-    MPI_Barrier(MPI_COMM_WORLD);
+//    MPI_Barrier(MPI_COMM_WORLD);
 
     Timer pop_timer;
     pop_timer.startTime();
