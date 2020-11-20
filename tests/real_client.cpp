@@ -20,21 +20,21 @@ std::string client_gen_random(const int len) {
 
 void do_io(const std::shared_ptr<redis_client>& redis_memory, const std::shared_ptr<redis_client>& redis_nvme,
            const std::shared_ptr<redis_client>& pfs_redis, std::string buffer,
-           int process_id, int thread_id, int comm_size){
-    uint64_t limit = (uint64_t)1*1024*1024*1024;
+           int process_id, int thread_id, int comm_size, uint64_t start_memory, uint64_t start_nvme){
+    uint64_t gig = (uint64_t)1*1024*1024*1024;
+    uint64_t memroy_limit = 20 * gig;
+    uint64_t nvme_limit = 40 * gig;
 
     std::string memory_path = "/mnt/nvme/jcernudagarcia/tempfs/test_mem_" + std::to_string(thread_id);
     std::string nvme_path = "/mnt/nvme/jcernudagarcia/apollo_nvme/test_nvme_" + std::to_string(thread_id);
     int file_memory = open(memory_path.c_str(), O_RDWR | O_CREAT, 0644);
     int file_nvme = open(nvme_path.c_str(), O_RDWR | O_CREAT, 0644);
 
-    auto start_memory = std::stod(redis_memory->subscribe_last().back().second.back().second);
-    while(std::stod(redis_memory->subscribe_last().back().second.back().second) - start_memory < 20*limit){
+    while(std::stod(redis_memory->subscribe_last().back().second.back().second) - start_memory < memroy_limit){
         write(file_memory, buffer.c_str(), buffer.length());
     }
 
-    auto start_nvme = std::stod(redis_nvme->subscribe_last().back().second.back().second);
-    while(std::stod(redis_nvme->subscribe_last().back().second.back().second) - start_nvme < 40 * limit){
+    while(std::stod(redis_nvme->subscribe_last().back().second.back().second) - start_nvme < nvme_limit){
         write(file_nvme, buffer.c_str(), buffer.length());
     }
 //    std::cout << "done NVMe" << std::endl;
@@ -43,7 +43,8 @@ void do_io(const std::shared_ptr<redis_client>& redis_memory, const std::shared_
 void do_ssd(const std::shared_ptr<redis_client>& redis_memory, const std::shared_ptr<redis_client>& redis_nvme,
            const std::shared_ptr<redis_client>& pfs_redis, std::string buffer,
            int process_id, int thread_id, int comm_size, uint64_t start_ssd){
-    uint64_t limit = (uint64_t)1*1024*1024*1024;
+    uint64_t gig = (uint64_t)1*1024*1024*1024;
+    uint64_t limit = 80 * comm_size * gig;
 
     Timer ssd_timer;
 
@@ -54,7 +55,7 @@ void do_ssd(const std::shared_ptr<redis_client>& redis_memory, const std::shared
 //    MPI_Barrier(MPI_COMM_WORLD);
 
 //    std::cout << "SSD (" + std::to_string(start_ssd) + " , " + std::to_string(comm_size * limit) + ")"<< std::endl;
-    while(std::stod(pfs_redis->subscribe_last().back().second.back().second) - start_ssd < 80 * comm_size * limit){
+    while(std::stod(pfs_redis->subscribe_last().back().second.back().second) - start_ssd < limit){
         write(file_ssd, buffer.c_str(), buffer.length());
     }
 
@@ -96,29 +97,27 @@ int main(int argc, char*argv[]){
     ssd_threads.reserve(num_threads);
 
 //    MPI_Barrier(MPI_COMM_WORLD);
+    uint64_t start_ssd;
+    auto start_memory = std::stoull(redis_memory->subscribe_last().back().second.back().second);
+    auto start_nvme = std::stoull(redis_nvme->subscribe_last().back().second.back().second);
+    if(comm_size == 1 || id == 0){
+        start_ssd = std::stoull(pfs_redis->subscribe_last().back().second.back().second);
+        std::cout << std::to_string(start_ssd) + "-" + std::to_string(start_ssd+(80 * comm_size * limit)) << std::endl;
+    }
 
     Timer pop_timer;
     pop_timer.startTime();
 
     for(int i = 0; i < num_threads; i++){
         list_threads.emplace_back(std::thread(&do_io, redis_memory, redis_nvme, pfs_redis,
-                                              buffer, id, i, comm_size));
+                                              buffer, id, i, comm_size, start_memory, start_nvme));
     }
 
     for(std::thread &thread: list_threads){
         thread.join();
     }
 
-    uint64_t start_ssd;
-    if(comm_size == 1){
-//        std::cout << "Comm 1" << std::endl;
-        start_ssd = std::stoull(pfs_redis->subscribe_last().back().second.back().second);
-    }
-    else{
-        if(id == 0) {
-            start_ssd = std::stoull(pfs_redis->subscribe_last().back().second.back().second);
-            std::cout << std::to_string(start_ssd) + "-" + std::to_string(start_ssd+(80 * comm_size * limit)) << std::endl;
-        }
+    if(comm_size != 1){
         MPI_Bcast(&start_ssd, 1, MPI_INT64_T, 0, MPI_COMM_WORLD);
     }
 
