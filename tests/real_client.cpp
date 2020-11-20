@@ -19,8 +19,7 @@ std::string client_gen_random(const int len) {
 }
 
 void do_io(const std::shared_ptr<redis_client>& redis_memory, const std::shared_ptr<redis_client>& redis_nvme,
-           const std::shared_ptr<redis_client>& pfs_redis, std::string buffer,
-           int process_id, int thread_id, int comm_size, uint64_t start_memory, uint64_t start_nvme){
+           const std::string& buffer, int thread_id, uint64_t start_memory, uint64_t start_nvme){
     uint64_t gig = (uint64_t)1*1024*1024*1024;
     uint64_t memroy_limit = 20 * gig;
     uint64_t nvme_limit = 40 * gig;
@@ -40,27 +39,17 @@ void do_io(const std::shared_ptr<redis_client>& redis_memory, const std::shared_
 //    std::cout << "done NVMe" << std::endl;
 }
 
-void do_ssd(const std::shared_ptr<redis_client>& redis_memory, const std::shared_ptr<redis_client>& redis_nvme,
-           const std::shared_ptr<redis_client>& pfs_redis, std::string buffer,
+void do_ssd(const std::shared_ptr<redis_client>& pfs_redis, const std::string& buffer,
            int process_id, int thread_id, int comm_size, uint64_t start_ssd){
     uint64_t gig = (uint64_t)1*1024*1024*1024;
     uint64_t limit = 70 * comm_size * gig;
 
-    Timer ssd_timer;
-
     std::string ssd_path = "/mnt/nvme/jcernudagarcia/pvfs2-mount/test_ssd_" + std::to_string(process_id) + "_"+ std::to_string(thread_id);
     int file_ssd = open(ssd_path.c_str(), O_RDWR | O_CREAT, 0644);
 
-    ssd_timer.startTime();
-//    MPI_Barrier(MPI_COMM_WORLD);
-
-//    std::cout << "SSD (" + std::to_string(start_ssd) + " , " + std::to_string(comm_size * limit) + ")"<< std::endl;
     while(std::stod(pfs_redis->subscribe_last().back().second.back().second) - start_ssd < limit){
         write(file_ssd, buffer.c_str(), buffer.length());
     }
-
-    ssd_timer.endTimeWithPrint("Id " + std::to_string(process_id) + "_" + std::to_string(thread_id) +
-                               " " + std::to_string(start_ssd) + "-" + std::to_string(start_ssd+(80 * comm_size * limit)) + ": ");
 }
 
 
@@ -102,15 +91,14 @@ int main(int argc, char*argv[]){
     auto start_nvme = std::stoull(redis_nvme->subscribe_last().back().second.back().second);
     if(comm_size == 1 || id == 0){
         start_ssd = std::stoull(pfs_redis->subscribe_last().back().second.back().second);
-        std::cout << std::to_string(start_ssd) + "-" + std::to_string(start_ssd+(80 * comm_size * limit)) << std::endl;
+        std::cout << std::to_string(start_ssd) + "-" + std::to_string(start_ssd+(70 * comm_size * limit)) << std::endl;
     }
 
     Timer pop_timer;
     pop_timer.startTime();
 
     for(int i = 0; i < num_threads; i++){
-        list_threads.emplace_back(std::thread(&do_io, redis_memory, redis_nvme, pfs_redis,
-                                              buffer, id, i, comm_size, start_memory, start_nvme));
+        list_threads.emplace_back(std::thread(&do_io, redis_memory, redis_nvme, buffer, i, start_memory, start_nvme));
     }
 
     for(std::thread &thread: list_threads){
@@ -118,12 +106,13 @@ int main(int argc, char*argv[]){
     }
 
     if(comm_size != 1){
+        std::cout << id << " Entry" << std::endl;
         MPI_Bcast(&start_ssd, 1, MPI_INT64_T, 0, MPI_COMM_WORLD);
+        std::cout << id << " Exit" << std::endl;
     }
 
     for(int i = 0; i < num_threads; i++){
-        ssd_threads.emplace_back(std::thread(&do_ssd, redis_memory, redis_nvme, pfs_redis,
-                                              buffer, id, i, comm_size, start_ssd));
+        ssd_threads.emplace_back(std::thread(&do_ssd, pfs_redis, buffer, id, i, comm_size, start_ssd));
     }
 
     for(std::thread &thread: ssd_threads){
