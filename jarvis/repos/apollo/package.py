@@ -148,7 +148,7 @@ class Apollo(Graph):
     def spawn_tempfs(self, tempfs_hosts):
         tempfs_nodes = []
         tempfs_cmd = "mkdir -p /mnt/nvme/jcernudagarcia/apollo_nvme/; mkdir -p /mnt/nvme/jcernudagarcia/tempfs; " \
-                     "sudo mount -t tmpfs -o size=3G tmpfs /mnt/nvme/jcernudagarcia/tempfs"
+                     "sudo mount -t tmpfs -o size=30G tmpfs /mnt/nvme/jcernudagarcia/tempfs"
         tempfs_nodes.append(SSHNode("Spawn Tempfs", tempfs_hosts, tempfs_cmd, print_output=True))
         return tempfs_nodes
 
