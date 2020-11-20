@@ -39,8 +39,7 @@ void do_io(const std::shared_ptr<redis_client>& redis_memory, const std::shared_
     }
 //    std::cout << "Done Memory" << std::endl;
     nvme_timer.startTime();
-    MPI_Barrier(MPI_COMM_WORLD);
-    nvme_timer.endTimeWithPrint("Id " + std::to_string(process_id) + "_" + std::to_string(thread_id) + ": ");
+//    MPI_Barrier(MPI_COMM_WORLD);
 
     auto start_nvme = std::stod(redis_nvme->subscribe_last().back().second.back().second);
 //    std::cout << "NVMe (" + std::to_string(start_nvme) + ")" << std::endl;
@@ -48,20 +47,23 @@ void do_io(const std::shared_ptr<redis_client>& redis_memory, const std::shared_
         write(file_nvme, buffer.c_str(), buffer.length());
     }
 
+    nvme_timer.endTimeWithPrint("Id " + std::to_string(process_id) + "_" + std::to_string(thread_id) + ": ");
+
     ssd_timer.startTime();
-    MPI_Barrier(MPI_COMM_WORLD);
-    ssd_timer.endTimeWithPrint("Id " + std::to_string(process_id) + "_" + std::to_string(thread_id) + ": ");
+//    MPI_Barrier(MPI_COMM_WORLD);
 
     auto start_ssd = std::stod(pfs_redis->subscribe_last().back().second.back().second);
 //    std::cout << "SSD (" + std::to_string(start_ssd) + " , " + std::to_string(comm_size * limit) + ")"<< std::endl;
     while(std::stod(pfs_redis->subscribe_last().back().second.back().second) - start_ssd < 80 * comm_size * limit){
         write(file_ssd, buffer.c_str(), buffer.length());
     }
+    ssd_timer.endTimeWithPrint("Id " + std::to_string(process_id) + "_" + std::to_string(thread_id) + ": ");
 }
 
 int main(int argc, char*argv[]){
     int provided;
-    MPI_Init_thread(&argc, &argv, MPI_THREAD_MULTIPLE, &provided);
+//    MPI_Init_thread(&argc, &argv, MPI_THREAD_MULTIPLE, &provided);
+    MPI_Init(&argc, &argv);
     int comm_size, id;
     MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &id);
@@ -76,7 +78,7 @@ int main(int argc, char*argv[]){
     }
     else exit(1);
 
-    std::cout << remote_host << " " << comm_size << " " << id << " " << provided << std::endl;
+    std::cout << remote_host << " " << comm_size << " " << id << std::endl;
     std::shared_ptr<redis_client> redis_memory, redis_nvme, pfs_redis;
 
     //    config.topic_+"_LDMS"
