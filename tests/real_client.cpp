@@ -37,7 +37,7 @@ void do_io(const std::shared_ptr<redis_client>& redis_memory, const std::shared_
     while(std::stod(redis_nvme->subscribe_last().back().second.back().second) - start_nvme < 40 * limit){
         write(file_nvme, buffer.c_str(), buffer.length());
     }
-    std::cout << "done NVMe" << std::endl;
+//    std::cout << "done NVMe" << std::endl;
 }
 
 void do_ssd(const std::shared_ptr<redis_client>& redis_memory, const std::shared_ptr<redis_client>& redis_nvme,
@@ -110,7 +110,7 @@ int main(int argc, char*argv[]){
 
     uint64_t start_ssd;
     if(comm_size == 1){
-        std::cout << "Comm 1" << std::endl;
+//        std::cout << "Comm 1" << std::endl;
         start_ssd = std::stoull(pfs_redis->subscribe_last().back().second.back().second);
     }
     else{
