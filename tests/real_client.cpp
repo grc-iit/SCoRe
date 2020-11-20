@@ -44,7 +44,7 @@ void do_ssd(const std::shared_ptr<redis_client>& redis_memory, const std::shared
            const std::shared_ptr<redis_client>& pfs_redis, std::string buffer,
            int process_id, int thread_id, int comm_size, uint64_t start_ssd){
     uint64_t gig = (uint64_t)1*1024*1024*1024;
-    uint64_t limit = 80 * comm_size * gig;
+    uint64_t limit = 70 * comm_size * gig;
 
     Timer ssd_timer;
 
