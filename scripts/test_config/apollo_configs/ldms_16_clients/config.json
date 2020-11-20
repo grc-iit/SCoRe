@@ -1124,16 +1124,164 @@
         "parent": 0
     },
     {
-        "hostname": "tcp://ares-comp-13-40g:6380",
+        "hostname": "ares-stor-05-40g",
         "key": {
             "node_index":20, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":20, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "NODE_CAPACITY",
+                        "base_interval":500000, 
+                        "increase_factor": -1,
+                        "pythio_interval": -1,
+                        "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
+                        "tracevar": "tps_"
+                    }
+                },
+                "url": "tcp://ares-stor-05-40g:6379",
+                "ldsm": "tcp://ares-comp-13-40g:6380",
+                "queue_port":3000, 
+                "hook": "SSD",
+                "topic": "SSD",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-stor-06-40g",
+        "key": {
+            "node_index":21, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":21, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "NODE_CAPACITY",
+                        "base_interval":500000, 
+                        "increase_factor": -1,
+                        "pythio_interval": -1,
+                        "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
+                        "tracevar": "tps_"
+                    }
+                },
+                "url": "tcp://ares-stor-06-40g:6379",
+                "ldsm": "tcp://ares-comp-13-40g:6380",
+                "queue_port":3000, 
+                "hook": "SSD",
+                "topic": "SSD",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-stor-07-40g",
+        "key": {
+            "node_index":22, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":22, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "NODE_CAPACITY",
+                        "base_interval":500000, 
+                        "increase_factor": -1,
+                        "pythio_interval": -1,
+                        "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
+                        "tracevar": "tps_"
+                    }
+                },
+                "url": "tcp://ares-stor-07-40g:6379",
+                "ldsm": "tcp://ares-comp-13-40g:6380",
+                "queue_port":3000, 
+                "hook": "SSD",
+                "topic": "SSD",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-stor-08-40g",
+        "key": {
+            "node_index":23, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":23, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "NODE_CAPACITY",
+                        "base_interval":500000, 
+                        "increase_factor": -1,
+                        "pythio_interval": -1,
+                        "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
+                        "tracevar": "tps_"
+                    }
+                },
+                "url": "tcp://ares-stor-08-40g:6379",
+                "ldsm": "tcp://ares-comp-13-40g:6380",
+                "queue_port":3000, 
+                "hook": "SSD",
+                "topic": "SSD",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "tcp://ares-comp-13-40g:6380",
+        "key": {
+            "node_index":24, 
             "level":0, 
             "type": "NODE"
         },
         "queues": [
             {
                 "key": {
-                    "node_index":20, 
+                    "node_index":24, 
                     "tier_index":0, 
                     "mode": "SERVER",
                     "type": {
@@ -1156,10 +1304,10 @@
                 }
             }
         ],
-        "children": [16, 17, 18, 
-            19
+        "children": [16, 17, 18, 19, 20, 21, 22, 
+            23
         ],
-        "children_queues": [0, 0, 0, 
+        "children_queues": [0, 0, 0, 0, 0, 0, 0, 
             0
         ],
         "parent": "NULL"
