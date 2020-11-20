@@ -72,6 +72,7 @@ int main(int argc, char*argv[]){
     MPI_Comm_rank(MPI_COMM_WORLD, &id);
 
     std::string buffer = client_gen_random(16*1024*1024);
+    uint64_t limit = (uint64_t)1*1024*1024*1024;
 
     std::string remote_host;
     int num_threads;
@@ -114,10 +115,11 @@ int main(int argc, char*argv[]){
         start_ssd = std::stoull(pfs_redis->subscribe_last().back().second.back().second);
     }
     else{
-        if(id == 0) start_ssd = std::stoull(pfs_redis->subscribe_last().back().second.back().second);
-        std::cout << "Broadcast" << std::endl;
+        if(id == 0) {
+            start_ssd = std::stoull(pfs_redis->subscribe_last().back().second.back().second);
+            std::cout << std::to_string(start_ssd) + "-" + std::to_string(start_ssd+(80 * comm_size * limit)) << std::endl;
+        }
         MPI_Bcast(&start_ssd, 1, MPI_INT64_T, 0, MPI_COMM_WORLD);
-        std::cout << id << ": " << start_ssd << std::endl;
     }
 
     for(int i = 0; i < num_threads; i++){
