@@ -37,7 +37,7 @@ void do_io(const std::shared_ptr<redis_client>& redis_memory, const std::shared_
     while(std::stod(redis_nvme->subscribe_last().back().second.back().second) - start_nvme < 40 * limit){
         write(file_nvme, buffer.c_str(), buffer.length());
     }
-    std::endl << "done NVMe" << std::endl;
+    std::cout << "done NVMe" << std::endl;
 }
 
 void do_ssd(const std::shared_ptr<redis_client>& redis_memory, const std::shared_ptr<redis_client>& redis_nvme,
