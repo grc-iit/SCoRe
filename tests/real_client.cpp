@@ -106,12 +106,15 @@ int main(int argc, char*argv[]){
     for(std::thread &thread: list_threads){
         thread.join();
     }
+
     uint64_t start_ssd;
     if(comm_size == 1){
+        std::cout << "Comm 1" << std::endl;
         start_ssd = std::stoull(pfs_redis->subscribe_last().back().second.back().second);
     }
     else{
         if(id == 0) start_ssd = std::stoull(pfs_redis->subscribe_last().back().second.back().second);
+        std::cout << "Broadcast" << std::endl;
         MPI_Bcast(&start_ssd, 1, MPI_INT64_T, 0, MPI_COMM_WORLD);
         std::cout << id << ": " << start_ssd << std::endl;
     }
