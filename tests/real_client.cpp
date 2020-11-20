@@ -60,7 +60,8 @@ void do_io(const std::shared_ptr<redis_client>& redis_memory, const std::shared_
 }
 
 int main(int argc, char*argv[]){
-    MPI_Init(&argc, &argv);
+    int provided;
+    MPI_Init_thread(&argc, &argv, MPI_THREAD_MULTIPLE, &provided);
     int comm_size, id;
     MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &id);
@@ -75,7 +76,7 @@ int main(int argc, char*argv[]){
     }
     else exit(1);
 
-    std::cout << remote_host << " " << comm_size << " " << id << " " << num_threads << std::endl;
+    std::cout << remote_host << " " << comm_size << " " << id << " " << provided << std::endl;
     std::shared_ptr<redis_client> redis_memory, redis_nvme, pfs_redis;
 
     //    config.topic_+"_LDMS"
