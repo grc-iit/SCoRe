@@ -23,6 +23,8 @@ void do_io(const std::shared_ptr<redis_client>& redis_memory, const std::shared_
            int process_id, int thread_id, int comm_size){
     uint64_t limit = (uint64_t)1*1024*1024*1024;
 
+    Timer nvme_timer, ssd_timer, end_timer;
+
     std::string memory_path = "/mnt/nvme/jcernudagarcia/tempfs/test_mem_" + std::to_string(thread_id);
     std::string nvme_path = "/mnt/nvme/jcernudagarcia/apollo_nvme/test_nvme_" + std::to_string(thread_id);
     std::string ssd_path = "/mnt/nvme/jcernudagarcia/pvfs2-mount/test_ssd_" + std::to_string(process_id) + "_"+ std::to_string(thread_id);
@@ -35,14 +37,20 @@ void do_io(const std::shared_ptr<redis_client>& redis_memory, const std::shared_
     while(std::stod(redis_memory->subscribe_last().back().second.back().second) - start_memory < 20*limit){
         write(file_memory, buffer.c_str(), buffer.length());
     }
-//    std::cout << "Done Memory" << std::endl;
+
+    nvme_timer.startTime();
+    MPI_Barrier(MPI_COMM_WORLD);
+    nvme_timer.endTimeWithPrint("Id " + std::to_string(process_id) + "_" + std::to_string(thread_id) + ": ");
 
     auto start_nvme = std::stod(redis_nvme->subscribe_last().back().second.back().second);
 //    std::cout << "NVMe (" + std::to_string(start_nvme) + ")" << std::endl;
     while(std::stod(redis_nvme->subscribe_last().back().second.back().second) - start_nvme < 40 * limit){
         write(file_nvme, buffer.c_str(), buffer.length());
     }
-//    std::cout << "Done NVME" << std::endl;
+
+    ssd_timer.startTime();
+    MPI_Barrier(MPI_COMM_WORLD);
+    ssd_timer.endTimeWithPrint("Id " + std::to_string(process_id) + "_" + std::to_string(thread_id) + ": ");
 
     auto start_ssd = std::stod(pfs_redis->subscribe_last().back().second.back().second);
 //    std::cout << "SSD (" + std::to_string(start_ssd) + " , " + std::to_string(comm_size * limit) + ")"<< std::endl;
@@ -79,6 +87,8 @@ int main(int argc, char*argv[]){
 
     std::vector<std::thread> list_threads;
     list_threads.reserve(num_threads);
+
+    MPI_Barrier(MPI_COMM_WORLD);
 
     Timer pop_timer;
     pop_timer.startTime();
