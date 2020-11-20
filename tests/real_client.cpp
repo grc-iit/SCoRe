@@ -57,7 +57,8 @@ void do_io(const std::shared_ptr<redis_client>& redis_memory, const std::shared_
     while(std::stod(pfs_redis->subscribe_last().back().second.back().second) - start_ssd < 80 * comm_size * limit){
         write(file_ssd, buffer.c_str(), buffer.length());
     }
-    ssd_timer.endTimeWithPrint("Id " + std::to_string(process_id) + "_" + std::to_string(thread_id) + ": ");
+    ssd_timer.endTimeWithPrint("Id " + std::to_string(process_id) + "_" + std::to_string(thread_id) +
+    " " + std::to_string(start_ssd) + "-" + std::to_string(start_ssd+(80 * comm_size * limit)) + ": ");
 }
 
 int main(int argc, char*argv[]){
