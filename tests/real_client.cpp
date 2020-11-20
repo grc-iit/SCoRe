@@ -23,31 +23,31 @@ void do_io(const std::shared_ptr<redis_client>& redis_memory, const std::shared_
            int process_id, int thread_id, int comm_size){
     uint64_t limit = (uint64_t)1*1024*1024*1024;
 
-    Timer nvme_timer, ssd_timer, end_timer;
-
     std::string memory_path = "/mnt/nvme/jcernudagarcia/tempfs/test_mem_" + std::to_string(thread_id);
     std::string nvme_path = "/mnt/nvme/jcernudagarcia/apollo_nvme/test_nvme_" + std::to_string(thread_id);
-    std::string ssd_path = "/mnt/nvme/jcernudagarcia/pvfs2-mount/test_ssd_" + std::to_string(process_id) + "_"+ std::to_string(thread_id);
     int file_memory = open(memory_path.c_str(), O_RDWR | O_CREAT, 0644);
     int file_nvme = open(nvme_path.c_str(), O_RDWR | O_CREAT, 0644);
-    int file_ssd = open(ssd_path.c_str(), O_RDWR | O_CREAT, 0644);
 
     auto start_memory = std::stod(redis_memory->subscribe_last().back().second.back().second);
-//    std::cout << "Memory (" + std::to_string(start_memory) + ")" << std::endl;
     while(std::stod(redis_memory->subscribe_last().back().second.back().second) - start_memory < 20*limit){
         write(file_memory, buffer.c_str(), buffer.length());
     }
-//    std::cout << "Done Memory" << std::endl;
-    nvme_timer.startTime();
-//    MPI_Barrier(MPI_COMM_WORLD);
 
     auto start_nvme = std::stod(redis_nvme->subscribe_last().back().second.back().second);
-//    std::cout << "NVMe (" + std::to_string(start_nvme) + ")" << std::endl;
     while(std::stod(redis_nvme->subscribe_last().back().second.back().second) - start_nvme < 40 * limit){
         write(file_nvme, buffer.c_str(), buffer.length());
     }
+}
 
-    nvme_timer.endTimeWithPrint("Id " + std::to_string(process_id) + "_" + std::to_string(thread_id) + ": ");
+void do_ssd(const std::shared_ptr<redis_client>& redis_memory, const std::shared_ptr<redis_client>& redis_nvme,
+           const std::shared_ptr<redis_client>& pfs_redis, std::string buffer,
+           int process_id, int thread_id, int comm_size){
+    uint64_t limit = (uint64_t)1*1024*1024*1024;
+
+    Timer ssd_timer;
+
+    std::string ssd_path = "/mnt/nvme/jcernudagarcia/pvfs2-mount/test_ssd_" + std::to_string(process_id) + "_"+ std::to_string(thread_id);
+    int file_ssd = open(ssd_path.c_str(), O_RDWR | O_CREAT, 0644);
 
     ssd_timer.startTime();
 //    MPI_Barrier(MPI_COMM_WORLD);
@@ -57,9 +57,11 @@ void do_io(const std::shared_ptr<redis_client>& redis_memory, const std::shared_
     while(std::stod(pfs_redis->subscribe_last().back().second.back().second) - start_ssd < 80 * comm_size * limit){
         write(file_ssd, buffer.c_str(), buffer.length());
     }
+
     ssd_timer.endTimeWithPrint("Id " + std::to_string(process_id) + "_" + std::to_string(thread_id) +
-    " " + std::to_string(start_ssd) + "-" + std::to_string(start_ssd+(80 * comm_size * limit)) + ": ");
+                               " " + std::to_string(start_ssd) + "-" + std::to_string(start_ssd+(80 * comm_size * limit)) + ": ");
 }
+
 
 int main(int argc, char*argv[]){
     int provided;
@@ -88,7 +90,9 @@ int main(int argc, char*argv[]){
     pfs_redis = std::make_shared<redis_client>(remote_host, "PFS_CAP");
 
     std::vector<std::thread> list_threads;
+    std::vector<std::thread> ssd_threads;
     list_threads.reserve(num_threads);
+    ssd_threads.reserve(num_threads);
 
     MPI_Barrier(MPI_COMM_WORLD);
 
@@ -101,6 +105,15 @@ int main(int argc, char*argv[]){
     }
 
     for(std::thread &thread: list_threads){
+        thread.join();
+    }
+
+    for(int i = 0; i < num_threads; i++){
+        ssd_threads.emplace_back(std::thread(&do_ssd, redis_memory, redis_nvme, pfs_redis,
+                                              buffer, id, i, comm_size));
+    }
+
+    for(std::thread &thread: ssd_threads){
         thread.join();
     }
 
