@@ -28,12 +28,12 @@ int64_t ReverseTrieQueueNode::PopulateInterval(double last_val, double curr_val)
     }
     else {
         if (diff_val < (differences_sum_ / differences_.size()) * fluctuation_percentage_) {
-            if (populate_interval_ + 25 > 20000000) {
+            if (populate_interval_ + 10000 > 20000000) {
                 // Later, can configure max delay time
                 return_interval = populate_interval_;
             }
             else {
-                return_interval = populate_interval_ + 25;
+                return_interval = populate_interval_ + 10000;
             }
         }
         else {
