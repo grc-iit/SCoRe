@@ -42,7 +42,7 @@ void do_io(const std::shared_ptr<redis_client>& redis_memory, const std::shared_
 void do_ssd(const std::shared_ptr<redis_client>& pfs_redis, const std::string& buffer,
            int process_id, int thread_id, int comm_size, uint64_t start_ssd){
     uint64_t gig = (uint64_t)1*1024*1024*1024;
-    uint64_t limit = 70 * comm_size * gig;
+    uint64_t limit = 35 * comm_size * gig;
 
     std::string ssd_path = "/mnt/nvme/jcernudagarcia/pvfs2-mount/test_ssd_" + std::to_string(process_id) + "_"+ std::to_string(thread_id);
     int file_ssd = open(ssd_path.c_str(), O_RDWR | O_CREAT, 0644);
@@ -98,7 +98,7 @@ int main(int argc, char*argv[]){
     auto start_nvme = std::stoull(redis_nvme->subscribe_last().back().second.back().second);
     if(comm_size == 1 || id == 0){
         start_ssd = std::stoull(pfs_redis->subscribe_last().back().second.back().second);
-        std::cout << std::to_string(start_ssd) + "-" + std::to_string(start_ssd+(70 * comm_size * limit)) << std::endl;
+        std::cout << std::to_string(start_ssd) + "-" + std::to_string(start_ssd+(35 * comm_size * limit)) << std::endl;
     }
 
     Timer pop_timer;
