@@ -109,7 +109,7 @@ class Apollo(Graph):
 
     def spawn_redis(self, redis_hosts):
         redis_nodes = []
-        redis_cmd = f"nohup {self.redis_path}redis-server {self.redis_config}/redis_1.conf; sleep 10; " \
+        redis_cmd = f"nohup {self.redis_path}redis-server {self.redis_config}/redis_4.conf; sleep 10; " \
                     f"{self.redis_path}redis-cli ping"
         ldms_cmd = f"nohup {self.redis_path}redis-server {self.redis_config}/ldms.conf; sleep 10; " \
                    f"{self.redis_path}redis-cli -p 6380 ping"
