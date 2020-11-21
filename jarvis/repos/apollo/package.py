@@ -109,9 +109,11 @@ class Apollo(Graph):
 
     def spawn_redis(self, redis_hosts):
         redis_nodes = []
-        redis_cmd = f"nohup {self.redis_path}redis-server {self.redis_config}/redis_1.conf; sleep 10; " \
+        redis_cmd = f"nohup {self.redis_path}redis-server {self.redis_config}/redis_4.conf; sleep 10; " \
                     f"{self.redis_path}redis-cli ping"
         ldms_cmd = f"nohup {self.redis_path}redis-server {self.redis_config}/ldms.conf; sleep 10; " \
+                   f"{self.redis_path}redis-cli -p 6380 ping"
+        insight_cmd = f"nohup {self.redis_path}redis-server {self.redis_config}/insight.conf; sleep 10; " \
                    f"{self.redis_path}redis-cli -p 6380 ping"
         for client in redis_hosts.keys():
             for node in redis_hosts[client]:
@@ -119,7 +121,7 @@ class Apollo(Graph):
                     redis_nodes.append(SSHNode("Start Redis", client, ldms_cmd, print_output=True))
                     self.ldms = True
                 elif node == "2":
-                    redis_nodes.append(SSHNode("Start Redis", client, ldms_cmd, print_output=True))
+                    redis_nodes.append(SSHNode("Start Redis", client, insight_cmd, print_output=True))
                 else:
                     redis_nodes.append(SSHNode("Start Redis", client, redis_cmd, print_output=True))
         return redis_nodes
