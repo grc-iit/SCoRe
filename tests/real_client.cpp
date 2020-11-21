@@ -72,6 +72,13 @@ int main(int argc, char*argv[]){
     }
     else exit(1);
 
+    if(id < comm_size/2){
+        remote_host = "tcp://ares-comp-13-40g:6380";
+    }
+    else{
+        remote_host = "tcp://ares-comp-20-40g:6380";
+    }
+
     std::cout << remote_host << " " << comm_size << " " << id << std::endl;
     std::shared_ptr<redis_client> redis_memory, redis_nvme, pfs_redis;
 
@@ -106,9 +113,7 @@ int main(int argc, char*argv[]){
     }
 
     if(comm_size != 1){
-        std::cout << id << " Entry" << std::endl;
         MPI_Bcast(&start_ssd, 1, MPI_INT64_T, 0, MPI_COMM_WORLD);
-        std::cout << id << " Exit" << std::endl;
     }
 
     for(int i = 0; i < num_threads; i++){

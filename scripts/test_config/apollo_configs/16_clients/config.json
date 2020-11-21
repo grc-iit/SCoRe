@@ -1311,5 +1311,46 @@
             0
         ],
         "parent": "NULL"
+    },
+    {
+        "hostname": "tcp://ares-comp-20-40g:6380",
+        "key": {
+            "node_index":24,
+            "level":0,
+            "type": "NODE"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":24,
+                    "tier_index":0,
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":500000,
+                        "increase_factor": 0.1,
+                        "pythio_interval": -1,
+                        "tracefile": "/home/kbateman/Downloads/datasets/ssd.csv",
+                        "tracevar": "tps_"
+                    }
+                },
+                "url": "tcp://ares-comp-20-40g:6380",
+                "ldsm": "NONE",
+                "queue_port":3000,
+                "hook": "NULL",
+                "topic": "PFS_CAP",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [16, 17, 18, 19, 20, 21, 22,
+            23
+        ],
+        "children_queues": [0, 0, 0, 0, 0, 0, 0,
+            0
+        ],
+        "parent": "NULL"
     }
 ]
