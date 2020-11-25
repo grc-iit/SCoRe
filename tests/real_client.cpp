@@ -32,7 +32,7 @@ std::vector<uint64_t> measure(const std::shared_ptr<redis_client>& redis_memory,
         measurements[1] = std::stod(redis_nvme->subscribe_last().back().second.back().second);
         measurements[2] = std::stod(pfs_redis->subscribe_last().back().second.back().second);
     }
-    *counter += timer.stopTime();
+    *counter = *counter + timer.stopTime();
 
     return measurements;
 }
