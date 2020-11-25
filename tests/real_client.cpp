@@ -25,12 +25,13 @@ std::vector<uint64_t> measure(const std::shared_ptr<redis_client>& redis_memory,
                               int loops, double* counter){
     Timer timer;
     std::vector<uint64_t> measurements;
+    measurements.reserve(3);
 
     timer.startTime();
     for(int i = 0; i < loops; i++) {
-        measurements[0] = std::stod(redis_memory->subscribe_last().back().second.back().second);
-        measurements[1] = std::stod(redis_nvme->subscribe_last().back().second.back().second);
-        measurements[2] = std::stod(pfs_redis->subscribe_last().back().second.back().second);
+        measurements[0] = std::stoull(redis_memory->subscribe_last().back().second.back().second);
+        measurements[1] = std::stoull(redis_nvme->subscribe_last().back().second.back().second);
+        measurements[2] = std::stoull(pfs_redis->subscribe_last().back().second.back().second);
     }
     *counter = *counter + timer.stopTime();
 
@@ -46,10 +47,12 @@ void do_io(const std::shared_ptr<redis_client>& redis_memory,
     uint64_t memroy_limit = 20 * gig;
     uint64_t nvme_limit = 40 * gig;
 
-    double local_counter;
+    double local_counter = 0;
 
     std::string memory_path = "/mnt/nvme/jcernudagarcia/tempfs/test_mem_" + std::to_string(thread_id);
     std::string nvme_path = "/mnt/nvme/jcernudagarcia/apollo_nvme/test_nvme_" + std::to_string(thread_id);
+//    std::string memory_path = "/home/jaime/clienttest_mem_" + std::to_string(thread_id);
+//    std::string nvme_path = "/home/jaime/clienttest_nvme_" + std::to_string(thread_id);
     int file_memory = open(memory_path.c_str(), O_RDWR | O_CREAT, 0644);
     int file_nvme = open(nvme_path.c_str(), O_RDWR | O_CREAT, 0644);
 
@@ -78,9 +81,10 @@ void do_ssd(const std::shared_ptr<redis_client>& redis_memory,
     uint64_t gig = (uint64_t)1*1024*1024*1024;
     uint64_t limit = 35 * comm_size * gig;
 
-    double pfs_counter;
+    double pfs_counter = 0;
 
     std::string ssd_path = "/mnt/nvme/jcernudagarcia/pvfs2-mount/test_ssd_" + std::to_string(process_id) + "_"+ std::to_string(thread_id);
+//    std::string ssd_path = "/home/jaime/clienttest_ssd_" + std::to_string(process_id) + "_"+ std::to_string(thread_id);
     int file_ssd = open(ssd_path.c_str(), O_RDWR | O_CREAT, 0644);
 
     std::vector<uint64_t> measurements;
