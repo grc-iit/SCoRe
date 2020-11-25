@@ -112,8 +112,8 @@ int main(int argc, char*argv[]){
     MPI_Comm_size(MPI_COMM_WORLD, &comm_size);
     MPI_Comm_rank(MPI_COMM_WORLD, &id);
 
-//    std::string buffer = client_gen_random(16*1024*1024);
-    std::string buffer = client_gen_random(1);
+    std::string buffer = client_gen_random(16*1024*1024);
+//    std::string buffer = client_gen_random(1);
     uint64_t limit = (uint64_t)1*1024*1024*1024;
 
     std::string remote_host;
