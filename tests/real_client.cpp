@@ -44,6 +44,7 @@ void do_io(const std::shared_ptr<redis_client>& redis_memory,
            const std::string& buffer, int thread_id, uint64_t start_memory, uint64_t start_nvme,
            int num_loops,std::promise<double> p){
     uint64_t gig = (uint64_t)1*1024*1024*1024;
+//    uint64_t gig = (uint64_t)1;
     uint64_t memroy_limit = 20 * gig;
     uint64_t nvme_limit = 40 * gig;
 
@@ -63,12 +64,14 @@ void do_io(const std::shared_ptr<redis_client>& redis_memory,
         measurements = measure(redis_memory, redis_nvme, pfs_redis, num_loops, &local_counter);
     }
     while(measurements[0] - start_memory < memroy_limit);
+//    while(measurements[0] - start_memory < 0);
 
     do{
         write(file_nvme, buffer.c_str(), buffer.length());
         measurements = measure(redis_memory, redis_nvme, pfs_redis, num_loops, &local_counter);
     }
     while(measurements[1] - start_nvme < nvme_limit);
+//    while(measurements[1] - start_nvme < 0);
 
     p.set_value(local_counter);
 }
@@ -79,6 +82,7 @@ void do_ssd(const std::shared_ptr<redis_client>& redis_memory,
             int process_id, int thread_id, int comm_size, uint64_t start_ssd,
             int num_loops, std::promise<double> p){
     uint64_t gig = (uint64_t)1*1024*1024*1024;
+//    uint64_t gig = (uint64_t)1;
     uint64_t limit = 35 * comm_size * gig;
 
     double pfs_counter = 0;
@@ -94,6 +98,7 @@ void do_ssd(const std::shared_ptr<redis_client>& redis_memory,
         measurements = measure(redis_memory, redis_nvme, pfs_redis, num_loops, &pfs_counter);
     }
     while(measurements[2] - start_ssd < limit);
+//    while(measurements[2] - start_ssd < 0);
 
     p.set_value(pfs_counter);
 }
@@ -108,17 +113,16 @@ int main(int argc, char*argv[]){
     MPI_Comm_rank(MPI_COMM_WORLD, &id);
 
     std::string buffer = client_gen_random(16*1024*1024);
+//    std::string buffer = client_gen_random(1);
     uint64_t limit = (uint64_t)1*1024*1024*1024;
 
     std::string remote_host;
     int num_threads;
     int num_lopps;
-    int ldms;
-    if(argc == 5) {
+    if(argc == 4) {
         remote_host = argv[1];
         num_threads = atoi(argv[2]);
         num_lopps = atoi(argv[3]);
-        ldms = atoi(argv[4]);
     }
     else {
         std::cout << "Issue with parameters" << std::endl;
@@ -128,16 +132,10 @@ int main(int argc, char*argv[]){
     std::cout << remote_host << " " << comm_size << " " << id << std::endl;
     std::shared_ptr<redis_client> redis_memory, redis_nvme, pfs_redis;
 
-    if(ldms == 0) {
-        redis_memory = std::make_shared<redis_client>("tcp://localhost", "MEMORY_" + std::to_string(id));
-        redis_nvme = std::make_shared<redis_client>("tcp://localhost", "NVME_" + std::to_string(id));
-        pfs_redis = std::make_shared<redis_client>(remote_host, "PFS_CAP");
-    }
-    else {
-        redis_memory = std::make_shared<redis_client>(remote_host, "MEMORY_" + std::to_string(id) + "_LDMS");
-        redis_nvme = std::make_shared<redis_client>(remote_host, "NVME_" + std::to_string(id) + "_LDMS");
-        pfs_redis = std::make_shared<redis_client>(remote_host, "PFS_CAP_LDMS");
-    }
+    redis_memory = std::make_shared<redis_client>("tcp://localhost", "MEMORY_" + std::to_string(id));
+    redis_nvme = std::make_shared<redis_client>("tcp://localhost", "NVME_" + std::to_string(id));
+    pfs_redis = std::make_shared<redis_client>(remote_host, "PFS_CAP");
+
 
     std::vector<std::thread> list_threads;
     std::vector<std::thread> ssd_threads;
