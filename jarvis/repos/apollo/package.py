@@ -47,7 +47,8 @@ class Apollo(Graph):
         self.ldms = False
 
     def _DefineClean(self):
-        nodes = [SSHNode("clean Redis data", self.redis_hosts, f"{self.redis_path}redis-cli -p 6379 flushall; {self.redis_path}redis-cli -p 6380 flushall")]
+        nodes = [SSHNode("clean Redis data", list(self.redis_hosts.keys()), f"{self.redis_path}redis-cli -p 6379 flushall; {self.redis_path}redis-cli -p 6380 flushall")]
+        nodes += self.clean_clients(self.client_host)
         return nodes
 
     def _DefineStatus(self):
