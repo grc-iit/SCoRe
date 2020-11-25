@@ -109,7 +109,7 @@ int main(int argc, char*argv[]){
     std::string remote_host;
     int num_threads;
     int num_lopps;
-    if(argc == 3) {
+    if(argc == 4) {
         remote_host = argv[1];
         num_threads = atoi(argv[2]);
         num_lopps = atoi(argv[3]);
