@@ -47,7 +47,7 @@ class Apollo(Graph):
         self.ldms = False
 
     def _DefineClean(self):
-        nodes = [SSHNode("clean Redis data", list(self.redis_hosts.keys()), f"{self.redis_path}redis-cli -p 6379 flushall; {self.redis_path}redis-cli -p 6380 flushall")]
+        nodes = [SSHNode("clean Redis data", list(self.redis_hosts.keys()), f"{self.redis_path}redis-cli -p 6379 flushall; {self.redis_path}redis-cli -p 6380 flushall", print_output=True)]
         nodes += self.clean_clients(self.client_host)
         return nodes
 
@@ -171,7 +171,7 @@ class Apollo(Graph):
                 pass
             elif "comp" in client:
                 cmd = "rm -rf /mnt/nvme/jcernudagarcia/tempfs/*; rm -rf /mnt/nvme/jcernudagarcia/pvfs2-mount/*; rm -rf /mnt/nvme/jcernudagarcia/apollo_nvme/* "
-                client_clean.append(SSHNode("Clean Clients", client, cmd))
+                client_clean.append(SSHNode("Clean Clients", client, cmd, print_output=True))
             else:
                 raise Exception("Wrong host")
         return client_clean
