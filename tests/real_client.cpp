@@ -113,20 +113,31 @@ int main(int argc, char*argv[]){
     std::string remote_host;
     int num_threads;
     int num_lopps;
-    if(argc == 4) {
+    int ldms;
+    if(argc == 5) {
         remote_host = argv[1];
         num_threads = atoi(argv[2]);
         num_lopps = atoi(argv[3]);
+        ldms = atoi(argv[4]);
     }
-    else exit(1);
+    else {
+        std::cout << "Issue with parameters" << std::endl;
+        exit(1);
+    }
 
     std::cout << remote_host << " " << comm_size << " " << id << std::endl;
     std::shared_ptr<redis_client> redis_memory, redis_nvme, pfs_redis;
 
-    //    config.topic_+"_LDMS"
-    redis_memory = std::make_shared<redis_client>("tcp://localhost", "MEMORY_"+ std::to_string(id));
-    redis_nvme = std::make_shared<redis_client>("tcp://localhost", "NVME_"+ std::to_string(id));
-    pfs_redis = std::make_shared<redis_client>(remote_host, "PFS_CAP");
+    if(ldms == 0) {
+        redis_memory = std::make_shared<redis_client>("tcp://localhost", "MEMORY_" + std::to_string(id));
+        redis_nvme = std::make_shared<redis_client>("tcp://localhost", "NVME_" + std::to_string(id));
+        pfs_redis = std::make_shared<redis_client>(remote_host, "PFS_CAP");
+    }
+    else {
+        redis_memory = std::make_shared<redis_client>(remote_host, "MEMORY_" + std::to_string(id) + "_LDMS");
+        redis_nvme = std::make_shared<redis_client>(remote_host, "NVME_" + std::to_string(id) + "_LDMS");
+        pfs_redis = std::make_shared<redis_client>(remote_host, "PFS_CAP_LDMS");
+    }
 
     std::vector<std::thread> list_threads;
     std::vector<std::thread> ssd_threads;
