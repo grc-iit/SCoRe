@@ -47,7 +47,8 @@ class Apollo(Graph):
         self.ldms = False
 
     def _DefineClean(self):
-        nodes = [SSHNode("clean Redis data", self.redis_hosts, "redis-cli flushall")]
+        nodes = [SSHNode("clean Redis data", list(self.redis_hosts.keys()), f"{self.redis_path}redis-cli -p 6379 flushall; {self.redis_path}redis-cli -p 6380 flushall", print_output=True)]
+        nodes += self.clean_clients(self.client_host)
         return nodes
 
     def _DefineStatus(self):
@@ -97,27 +98,31 @@ class Apollo(Graph):
             client_path = self.ld_path(client)
             for vertex_id in host[client]:
                 if insight:
-                    cmd.append(f"sleep 30; export LD_LIBRARY_PATH={client_path}:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; "
+                    cmd.append(f"export LD_LIBRARY_PATH={client_path}:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; "
                                f"{self.executable}/SCoRe {self.apollo_config} {vertex_id} {self.pid_path}/score_{vertex_id}.pid; "
-                               f"sleep 10")
+                               f"sleep 5")
                 else:
                     cmd.append(f"export LD_LIBRARY_PATH={client_path}:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; "
                                f"{self.executable}/SCoRe {self.apollo_config} {vertex_id} {self.pid_path}/score_{vertex_id}.pid; "
-                               f"sleep 10")
+                               f"sleep 5")
             spawn_nodes.append(SSHNode("Start Vertex", client, cmd, print_output=out))
         return spawn_nodes
 
     def spawn_redis(self, redis_hosts):
         redis_nodes = []
-        redis_cmd = f"nohup {self.redis_path}redis-server {self.redis_config}/redis_1.conf; sleep 30; " \
+        redis_cmd = f"nohup {self.redis_path}redis-server {self.redis_config}/redis_4.conf; sleep 10; " \
                     f"{self.redis_path}redis-cli ping"
-        ldms_cmd = f"nohup {self.redis_path}redis-server {self.redis_config}/ldms.conf; sleep 30; " \
+        ldms_cmd = f"nohup {self.redis_path}redis-server {self.redis_config}/ldms.conf; sleep 10; " \
+                   f"{self.redis_path}redis-cli -p 6380 ping"
+        insight_cmd = f"nohup {self.redis_path}redis-server {self.redis_config}/insight.conf; sleep 10; " \
                    f"{self.redis_path}redis-cli -p 6380 ping"
         for client in redis_hosts.keys():
             for node in redis_hosts[client]:
                 if node == "1":
                     redis_nodes.append(SSHNode("Start Redis", client, ldms_cmd, print_output=True))
                     self.ldms = True
+                elif node == "2":
+                    redis_nodes.append(SSHNode("Start Redis", client, insight_cmd, print_output=True))
                 else:
                     redis_nodes.append(SSHNode("Start Redis", client, redis_cmd, print_output=True))
         return redis_nodes
@@ -130,11 +135,11 @@ class Apollo(Graph):
         if self.ldms:
             # client_cmd = f"echo Client; export LD_LIBRARY_PATH={self.ld_path_comp}:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; "
             mpi_cmd = f"export PATH={self.path}; export LD_LIBRARY_PATH={self.ld_path_comp}:$LD_LIBRARY_PATH; " \
-                      f"mpirun -n {num_clients} -f {self.apollo_path}client_hostfile {self.executable}/ldms_client_test tcp://ares-comp-13:6379 >> {self.result_dir}/real_client-results"
+                      f"mpirun -n {num_clients} -f {self.apollo_path}client_hostfile {self.executable}/ldms_client_test tcp://ares-comp-13:6380 >> {self.result_dir}/ldms_client_results"
         else:
             # client_cmd = f"echo Client; export LD_LIBRARY_PATH={self.ld_path_comp}:$LD_LIBRARY_PATH; echo $LD_LIBRARY_PATH; "
             mpi_cmd = f"export PATH={self.path}; export LD_LIBRARY_PATH={self.ld_path_comp}:$LD_LIBRARY_PATH; " \
-                      f"mpirun -n {num_clients} -f {self.apollo_path}client_hostfile {self.executable}/real_client_test tcp://ares-comp-13:6379 >> {self.result_dir}/real_client-results"
+                      f"mpirun -n {num_clients} -f {self.apollo_path}client_hostfile {self.executable}/real_client_test tcp://ares-comp-13:6380 >> {self.result_dir}/real_client-results"
 
         # client_nodes = [SSHNode("Start Client", hosts[0], f"echo {self.experiment} >> {self.result_dir}/real_client_test"),
         #                 SSHNode("Start mpi", hosts[0], mpi_cmd)]
@@ -146,7 +151,7 @@ class Apollo(Graph):
     def spawn_tempfs(self, tempfs_hosts):
         tempfs_nodes = []
         tempfs_cmd = "mkdir -p /mnt/nvme/jcernudagarcia/apollo_nvme/; mkdir -p /mnt/nvme/jcernudagarcia/tempfs; " \
-                     "sudo mount -t tmpfs -o size=3G tmpfs /mnt/nvme/jcernudagarcia/tempfs"
+                     "sudo mount -t tmpfs -o size=30G tmpfs /mnt/nvme/jcernudagarcia/tempfs"
         tempfs_nodes.append(SSHNode("Spawn Tempfs", tempfs_hosts, tempfs_cmd, print_output=True))
         return tempfs_nodes
 
@@ -166,7 +171,7 @@ class Apollo(Graph):
                 pass
             elif "comp" in client:
                 cmd = "rm -rf /mnt/nvme/jcernudagarcia/tempfs/*; rm -rf /mnt/nvme/jcernudagarcia/pvfs2-mount/*; rm -rf /mnt/nvme/jcernudagarcia/apollo_nvme/* "
-                client_clean.append(SSHNode("Clean Clients", client, cmd))
+                client_clean.append(SSHNode("Clean Clients", client, cmd, print_output=True))
             else:
                 raise Exception("Wrong host")
         return client_clean

@@ -9,11 +9,15 @@
 #include <chrono>
 #include <thread>
 #include <future>
+#include <tuple>
+#include <queue>
 #include "mon_hooks.h"
 #include "s_queues.h"
 #include "reverse_trie_queue_node_key.h"
 #include "config_generator.h"
 #include "reverse_trie_queue_node_config.h"
+#include <uv.h>
+#include <constants.h>
 
 #ifdef BENCH_TIMER
 #include "timer.h"
@@ -21,7 +25,22 @@
 
 
 class ReverseTrieQueueNode {
-
+private:
+    std::pair<QueueKey, std::shared_ptr<queue>> curr_obj_;
+    std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue>>> curr_child_queue_;
+    int64_t PopulateInterval(double last_val, double curr_val);
+    int64_t PythioInterval(double last_val, double curr_val);
+    int pythio_ratio_;
+    int pythio_counter_;
+    int64_t populate_interval_;
+    double fluctuation_percentage_;
+    double last_predicted_;
+    double last_measured_;
+    std::queue<double> differences_;
+    double differences_sum_;
+    // std::ofstream *outfile;
+    bool use_pythio_p_;
+    bool use_adaptivity_p_;
 public:
 	ReverseTrieQueueNodeKey key;
 	QM_type queue_map;

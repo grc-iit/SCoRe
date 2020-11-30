@@ -4,6 +4,7 @@ from enum import Enum
 class OperationType(Enum):
     START = 'start'
     STOP = 'stop'
+    CLEAN = 'clean'
 
     def __str__(self):
         return self.value

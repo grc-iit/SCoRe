@@ -7,6 +7,13 @@
 #include"enum.h"
 
 
+class sim_queue : public queue {
+public:
+    sim_queue(QueueConfig config) : queue(config) {}
+    std::string populate(
+            std::vector<std::unordered_map<QueueKey, std::shared_ptr<queue> >> child_queue_maps);
+};
+
 class capacity_queue : public queue {
 public:
 	capacity_queue(QueueConfig config) : queue(config) {}
