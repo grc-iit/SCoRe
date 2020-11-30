@@ -1,0 +1,91 @@
+[
+  {
+    "hostname": "localhost",
+    "key" : {
+      "node_index": 0,
+      "level": 0,
+      "type": "NODE"
+    },
+    "queues": [
+      {
+        "key":{
+          "node_index": 0,
+          "tier_index": 0,
+          "mode" : "SERVER",
+          "type": {
+            "value": "CLUSTER_LOAD",
+            "base_interval": 3000000,
+            "increase_factor": 0.1,
+            "pythio_interval": 30000000
+          }
+        },
+        "url": "tcp://localhost",
+        "queue_port": 3000,
+        "hook": "NULL",
+        "topic": "TIER_CAPACITY",
+        "pythio":{
+          "model": "MODEL_LINEAR",
+          "weights": "PATH_MODEL_WEIGHTS"
+        }
+      }
+    ],
+    "children": [1, 1],
+    "children_queues": [0, 1],
+    "parent": "NULL"
+  },
+  {
+    "hostname": "localhost",
+    "key" : {
+      "node_index": 1,
+      "level": 1,
+      "type": "LEAF"
+    },
+    "queues": [
+      {
+        "key":{
+          "node_index": 1,
+          "tier_index": 0,
+          "mode" : "SERVER",
+          "type": {
+            "value": "NODE_CAPACITY",
+            "base_interval": 3000000,
+            "increase_factor": 0.1,
+            "pythio_interval": 30000000
+          }
+        },
+        "url": "tcp://localhost",
+        "queue_port": 3001,
+        "hook": "CAPACITY",
+        "topic": "CAPACITY_MEMORY",
+        "pythio":{
+          "model": "MODEL_LINEAR",
+          "weights": "PATH_MODEL_WEIGHTS"
+        }
+      },
+      {
+        "key":{
+          "node_index": 1,
+          "tier_index": 1,
+          "mode" : "SERVER",
+          "type": {
+            "value": "NODE_CAPACITY",
+            "base_interval": 3000000,
+            "increase_factor": 0.1,
+            "pythio_interval": 30000000
+          }
+        },
+        "url": "tcp://localhost",
+        "queue_port": 3002,
+        "hook": "CAPACITY",
+        "topic": "CAPACITY_SSD",
+        "pythio":{
+          "model": "MODEL_LINEAR",
+          "weights": "PATH_MODEL_WEIGHTS"
+        }
+      }
+    ],
+    "children": [],
+    "children_queues": [],
+    "parent": 0
+  }
+]

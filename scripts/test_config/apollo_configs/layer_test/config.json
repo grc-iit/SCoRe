@@ -1,0 +1,1266 @@
+[
+    {
+        "hostname": "ares-comp-13",
+        "key": {
+            "node_index":0, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":0, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-13",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_0_0",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":0, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-13",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_0_1",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-comp-14",
+        "key": {
+            "node_index":1, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":1, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-14",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_1_0",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":1, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-14",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_1_1",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-comp-15",
+        "key": {
+            "node_index":2, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":2, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-15",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_2_0",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":2, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-15",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_2_1",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-comp-16",
+        "key": {
+            "node_index":3, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":3, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-16",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_3_0",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":3, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-16",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_3_1",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-comp-17",
+        "key": {
+            "node_index":4, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":4, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-17",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_4_0",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":4, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-17",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_4_1",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-comp-18",
+        "key": {
+            "node_index":5, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":5, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-18",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_5_0",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":5, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-18",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_5_1",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-comp-19",
+        "key": {
+            "node_index":6, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":6, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-19",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_6_0",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":6, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-19",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_6_1",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-comp-20",
+        "key": {
+            "node_index":7, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":7, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-20",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_7_0",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":7, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-20",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_7_1",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-comp-21",
+        "key": {
+            "node_index":8, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":8, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-21",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_8_0",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":8, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-21",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_8_1",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-comp-22",
+        "key": {
+            "node_index":9, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":9, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-22",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_9_0",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":9, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-22",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_9_1",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-comp-23",
+        "key": {
+            "node_index":10, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":10, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-23",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_10_0",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":10, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-23",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_10_1",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-comp-24",
+        "key": {
+            "node_index":11, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":11, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-24",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_11_0",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":11, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-24",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_11_1",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-comp-25",
+        "key": {
+            "node_index":12, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":12, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-25",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_12_0",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":12, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-25",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_12_1",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-comp-26",
+        "key": {
+            "node_index":13, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":13, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-26",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_13_0",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":13, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-26",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_13_1",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-comp-27",
+        "key": {
+            "node_index":14, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":14, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-27",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_14_0",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":14, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-27",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_14_1",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+    {
+        "hostname": "ares-comp-28",
+        "key": {
+            "node_index":15, 
+            "level":0, 
+            "type": "LEAF"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":15, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-28",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_15_0",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            },
+            {
+                "key": {
+                    "node_index":15, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-28",
+                "queue_port":3000, 
+                "hook": "CAPACITY",
+                "topic": "FACT_15_1",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [],
+        "children_queues": [],
+        "parent": 0
+    },
+
+    {
+        "hostname": "ares-comp-13",
+        "key": {
+            "node_index":16, 
+            "level":0, 
+            "type": "NODE"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":16, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-13",
+                "queue_port":3000, 
+                "hook": "NULL",
+                "topic": "INSIGHT_16",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [14, 3, 10, 7, 11, 1, 12, 2, 15, 4, 13, 8, 
+            0
+        ],
+        "children_queues": [0, 1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1, 
+            0
+        ],
+        "parent": "NULL"
+    },
+    {
+        "hostname": "ares-comp-14",
+        "key": {
+            "node_index":17, 
+            "level":0, 
+            "type": "NODE"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":17, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-14",
+                "queue_port":3000, 
+                "hook": "NULL",
+                "topic": "INSIGHT_17",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [2, 3, 4, 14, 12, 5, 8, 9, 10, 6, 
+            7
+        ],
+        "children_queues": [0, 0, 1, 1, 0, 0, 1, 0, 0, 0, 
+            0
+        ],
+        "parent": "NULL"
+    },
+    {
+        "hostname": "ares-comp-15",
+        "key": {
+            "node_index":18, 
+            "level":0, 
+            "type": "NODE"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":18, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-15",
+                "queue_port":3000, 
+                "hook": "NULL",
+                "topic": "INSIGHT_18",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [6, 2, 9, 4, 7, 3, 15, 1, 10, 13, 
+            0
+        ],
+        "children_queues": [1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 
+            0
+        ],
+        "parent": "NULL"
+    },
+    {
+        "hostname": "ares-comp-16",
+        "key": {
+            "node_index":19, 
+            "level":0, 
+            "type": "NODE"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":19, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-16",
+                "queue_port":3000, 
+                "hook": "NULL",
+                "topic": "INSIGHT_19",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [1, 9, 2, 4, 6, 3, 10, 5, 12, 15, 
+            14
+        ],
+        "children_queues": [1, 1, 0, 1, 1, 1, 0, 1, 0, 0, 
+            1
+        ],
+        "parent": "NULL"
+    },
+
+    {
+        "hostname": "ares-comp-17",
+        "key": {
+            "node_index":20, 
+            "level":0, 
+            "type": "NODE"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":20, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-17",
+                "queue_port":3000, 
+                "hook": "NULL",
+                "topic": "INSIGHT_20",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [18, 7, 14, 8, 1, 17, 9, 3, 
+            0
+        ],
+        "children_queues": [0, 0, 0, 1, 0, 0, 0, 0, 
+            0
+        ],
+        "parent": "NULL"
+    },
+    {
+        "hostname": "ares-comp-18",
+        "key": {
+            "node_index":21, 
+            "level":0, 
+            "type": "NODE"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":21, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-18",
+                "queue_port":3000, 
+                "hook": "NULL",
+                "topic": "INSIGHT_21",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [19, 3, 2, 0, 11, 13, 9, 14, 18, 15, 7, 10, 
+            1
+        ],
+        "children_queues": [0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 0, 0, 
+            0
+        ],
+        "parent": "NULL"
+    },
+    {
+        "hostname": "ares-comp-19",
+        "key": {
+            "node_index":22, 
+            "level":0, 
+            "type": "NODE"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":22, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-19",
+                "queue_port":3000, 
+                "hook": "NULL",
+                "topic": "INSIGHT_22",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [17, 1, 11, 0, 12, 18, 5, 13, 8, 
+            4
+        ],
+        "children_queues": [0, 1, 0, 0, 1, 0, 0, 0, 1, 
+            1
+        ],
+        "parent": "NULL"
+    },
+
+    {
+        "hostname": "ares-comp-20",
+        "key": {
+            "node_index":23, 
+            "level":0, 
+            "type": "NODE"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":23, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-20",
+                "queue_port":3000, 
+                "hook": "NULL",
+                "topic": "INSIGHT_23",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [22, 11, 1, 8, 13, 4, 9, 10, 2, 16, 
+            21
+        ],
+        "children_queues": [0, 1, 1, 0, 0, 0, 1, 0, 0, 0, 
+            0
+        ],
+        "parent": "NULL"
+    },
+    {
+        "hostname": "ares-comp-21",
+        "key": {
+            "node_index":24, 
+            "level":0, 
+            "type": "NODE"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":24, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-21",
+                "queue_port":3000, 
+                "hook": "NULL",
+                "topic": "INSIGHT_24",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [21, 3, 2, 10, 11, 18, 22, 6, 4, 
+            14
+        ],
+        "children_queues": [0, 1, 0, 1, 0, 0, 0, 0, 1, 
+            0
+        ],
+        "parent": "NULL"
+    },
+
+    {
+        "hostname": "ares-comp-22",
+        "key": {
+            "node_index":25, 
+            "level":0, 
+            "type": "NODE"
+        },
+        "queues": [
+            {
+                "key": {
+                    "node_index":25, 
+                    "tier_index":0, 
+                    "mode": "SERVER",
+                    "type": {
+                        "value": "TIER_CAPACITY",
+                        "base_interval":250, 
+                        "increase_factor": 0.1,
+                        "pythio_interval": 250
+                    }
+                },
+                "url": "tcp://ares-comp-22",
+                "queue_port":3000, 
+                "hook": "NULL",
+                "topic": "FINAL_INSIGHT",
+                "pythio": {
+                    "model": "MODEL_LINEAR",
+                    "weights": "PATH_MODEL_WEIGHTS"
+                }
+            }
+        ],
+        "children": [24, 9, 15, 1, 5, 3, 18, 7, 20, 2, 22, 
+            13
+        ],
+        "children_queues": [0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 
+            0
+        ],
+        "parent": "NULL"
+    }
+]

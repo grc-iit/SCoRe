@@ -1,0 +1,87 @@
+[
+  {
+    "hostname": "localhost",
+    "key" : {
+      "node_index": 0,
+      "level": 0,
+      "type": "NODE"
+    },
+    "queues": [
+      {
+        "key":{
+          "node_index": 0,
+          "tier_index": 0,
+          "mode" : "SERVER",
+          "type": {
+            "value": "TIER_CAPACITY",
+            "interval": 10000
+          }
+        },
+        "url": "tcp://localhost",
+        "queue_port": 3000,
+        "hook": "NULL",
+        "topic": "TIER_CAPACITY",
+        "pythio":{
+          "model": "MODEL_LINEAR",
+          "weights": "PATH_MODEL_WEIGHTS"
+        }
+      }
+    ],
+    "children": [1, 1, 2],
+    "children_queues": [0, 1, 0],
+    "parent": "NULL"
+  },
+  {
+    "hostname": "localhost",
+    "key" : {
+      "node_index": 1,
+      "level": 1,
+      "type": "LEAF"
+    },
+    "queues": [
+      {
+        "key":{
+          "node_index": 1,
+          "tier_index": 0,
+          "mode" : "SERVER",
+          "type": {
+            "value": "NODE_CAPACITY",
+            "interval": 10000
+          }
+        },
+        "url": "tcp://localhost",
+        "hook": "CAPACITY",
+        "topic": "NODE_CAPACITY"
+      }
+    ],
+    "children": [],
+    "parent": 0
+  },
+
+  {
+    "hostname": "localhost",
+    "key" : {
+      "node_index": 2,
+      "level": 1,
+      "type": "LEAF"
+    },
+    "queues": [
+      {
+        "key":{
+          "node_index": 2,
+          "tier_index": 0,
+          "mode" : "SERVER",
+          "type": {
+            "value": "NODE_CAPACITY",
+            "interval": 10000
+          }
+        },
+        "url": "tcp://localhost",
+        "hook": "CAPACITY",
+        "topic": "NODE_CAPACITY"
+      }
+    ],
+    "children": [],
+    "parent": 0
+  }
+]
